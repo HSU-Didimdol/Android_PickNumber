@@ -11,6 +11,15 @@ import java.util.concurrent.TimeUnit
 object RetrofitUtil {
 
     val bankApi: BankApi by lazy { getBankRetrofit().create(BankApi::class.java) }
+    val direction5Api: Direction5Api by lazy { getDirection5Retrofit().create(Direction5Api::class.java) }
+
+    private fun getDirection5Retrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(Url.DIRECTION5_URL)
+            .client(buildOkHttpClient())
+            .addConverterFactory(provideConverterFactory())
+            .build()
+    }
 
     private fun getBankRetrofit(): Retrofit {
         return Retrofit.Builder()

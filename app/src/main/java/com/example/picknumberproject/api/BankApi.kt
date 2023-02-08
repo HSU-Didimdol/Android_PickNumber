@@ -7,5 +7,5 @@ import retrofit2.http.GET
 
 interface BankApi {
     @GET(Url.GET_BANK_DATA)
-    fun getBankList(): Response<BankListDto>
+    suspend fun getBankList(): Response<BankListDto>
 }

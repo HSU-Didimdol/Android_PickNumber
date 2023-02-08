@@ -2,22 +2,26 @@ package com.example.picknumberproject.view
 
 import android.content.Intent
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationListener
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.core.view.WindowCompat
 import com.example.picknumber_androidproject.common.ViewBindingActivity
 import com.example.picknumberproject.R
+import com.example.picknumberproject.api.RetrofitUtil
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.dto.bank.BankListDto
+import com.example.picknumberproject.model.LocationLatLngEntity
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : ViewBindingActivity<ActivityMainBinding>(), OnMapReadyCallback,
@@ -75,6 +79,33 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>(), OnMapReadyCallb
             )
 
         naverMap.moveCamera(cameraUpdate)
+        getBankList()
+    }
+
+    private fun getBankList() {
+        launch(coroutineContext) {
+            try {
+                withContext(Dispatchers.IO) {
+                    val response = RetrofitUtil.bankApi.getBankList()
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        withContext(Dispatchers.Main) {
+                            Log.d("Banks", body.toString())
+                            body?.let {
+                                updateMarker(it)
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    this@MainActivity,
+                    "검색하는 과정에서 에러가 발생했습니다. : ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun updateMarker(banks: BankListDto) {
@@ -116,6 +147,19 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>(), OnMapReadyCallb
             }
             return
         }
+    }
+
+    private fun onCurrentLocationChanged(locationEntity: LocationLatLngEntity) {
+        naverMap.moveCamera(
+            CameraUpdate.scrollAndZoomTo(
+                LatLng(
+                    locationEntity.latitude.toDouble(),
+                    locationEntity.longitude.toDouble()
+                ),
+                9.0
+            )
+
+        )
     }
 
     override fun onStart() {
