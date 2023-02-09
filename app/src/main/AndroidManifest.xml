@@ -30,7 +30,7 @@
             android:value="f1qm5gy16z" />
 
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.MapActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
