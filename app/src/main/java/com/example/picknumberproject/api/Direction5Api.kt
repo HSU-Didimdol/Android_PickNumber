@@ -1,6 +1,6 @@
 package com.example.picknumberproject.api
 
-import com.example.data.model.directions5.DirectionsDto
+import com.example.picknumberproject.dto.directions5.DirectionsDto
 import com.example.picknumberproject.url.Key
 import com.example.picknumberproject.url.Url
 import retrofit2.Response

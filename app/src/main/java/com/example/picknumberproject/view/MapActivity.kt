@@ -11,7 +11,7 @@ import com.example.picknumber_androidproject.common.ViewBindingActivity
 import com.example.picknumberproject.R
 import com.example.picknumberproject.api.RetrofitUtil
 import com.example.picknumberproject.databinding.ActivityMapBinding
-import com.example.picknumberproject.model.BankListEntity
+import com.example.picknumberproject.model.BankEntity
 import com.example.picknumberproject.model.toEntity
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
@@ -27,7 +27,8 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
-    private lateinit var dataList: BankListEntity
+
+    private lateinit var dataList: List<BankEntity>
 
     private val mapView: MapView by lazy {
         findViewById(R.id.mapView)
@@ -92,9 +93,11 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                     val response = RetrofitUtil.bankApi.getBankList()
                     if (response.isSuccessful) {
                         val body = response.body()
-                        body?.let { bankListDto ->
-                            dataList = bankListDto.toEntity()
-                            getBankDistance(dataList)
+                        body?.let {
+                            dataList = it.map { bank ->
+                                bank.toEntity()
+                            }
+                            Log.d("dataList 1", dataList.toString())
                         }
                     }
                 }
@@ -109,8 +112,8 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
         }
     }
 
-    private suspend fun getBankDistance(banksEntity: BankListEntity) {
-        banksEntity.items.forEach { bankEntity ->
+    private suspend fun getBankDistance(banksEntity: List<BankEntity>) {
+        banksEntity.forEach { bankEntity ->
             val deferred: Deferred<Int> = coroutineScope {
                 async {
                     val goal = "${bankEntity.longitude},${bankEntity.latitude}"
@@ -122,27 +125,26 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                         if (response.isSuccessful) {
                             val body = response.body()
                             check(body != null) { "body 응답이 없습니다." }
-                            return@async body.routeDto.traoptimalDto.get(0).summaryDto.distance
+                            Log.d(
+                                "distance",
+                                body.routeDto.traoptimalDto[0].summaryDto.distance.toString()
+                            )
+                            return@async body.routeDto.traoptimalDto[0].summaryDto.distance
                         }
 
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        Toast.makeText(
-                            this@MapActivity,
-                            "에러가 발생했습니다. : ${e.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                     return@async 0
                 }
             }
             bankEntity.distance = deferred.await()
         }
-        Log.d("bankEntity", banksEntity.items.toString())
+        Log.d("bankEntity", banksEntity.toString())
     }
 
-    private fun updateMarker(banks: BankListEntity) {
-        banks.items.forEach { bank ->
+    private fun updateMarker(banks: List<BankEntity>) {
+        banks.forEach { bank ->
             val marker = Marker()
             marker.position = LatLng(bank.latitude, bank.longitude)
             marker.infoWindow

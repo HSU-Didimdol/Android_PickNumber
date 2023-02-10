@@ -1,4 +1,4 @@
-package com.example.data.model.directions5
+package com.example.picknumberproject.dto.directions5
 
 data class RouteDto(
     val traoptimalDto: List<TraoptimalDto>
