@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import com.example.picknumber_androidproject.common.ViewBindingActivity
+import com.example.picknumberproject.common.ViewBindingActivity
 import com.example.picknumberproject.databinding.ActivitySearchBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +29,7 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
     }
 }

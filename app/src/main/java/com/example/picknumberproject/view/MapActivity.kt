@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.core.view.WindowCompat
-import com.example.picknumber_androidproject.common.ViewBindingActivity
+import com.example.picknumberproject.common.ViewBindingActivity
 import com.example.picknumberproject.R
 import com.example.picknumberproject.api.RetrofitUtil
 import com.example.picknumberproject.databinding.ActivityMapBinding
@@ -33,6 +33,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
     private val mapView: MapView by lazy {
         findViewById(R.id.mapView)
     }
+
     override val bindingInflater: (LayoutInflater) -> ActivityMapBinding
         get() = ActivityMapBinding::inflate
 
@@ -52,7 +53,6 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
         super.onCreate(savedInstanceState)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
-
         job = Job()
 
         WindowCompat.setDecorFitsSystemWindows(window, true)
@@ -60,6 +60,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
         binding.searchButton.setOnClickListener {
             startSearchActivity()
         }
+
         getBankList()
     }
 
@@ -129,6 +130,11 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                         if (response.isSuccessful) {
                             val body = response.body()
                             check(body != null) { "body 응답이 없습니다." }
+                            banksEntity.map {
+                                it.distance = body.route.traoptimal[0].summary.distance
+                                it.duration = body.route.traoptimal[0].summary.duration
+                            }
+
                             return@async body.route.traoptimal[0].summary.distance
                         }
 

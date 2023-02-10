@@ -7,7 +7,8 @@ data class BankEntity(
     val address: String,
     val longitude: Double,
     val latitude: Double,
-    var distance: Int = 0
+    var distance: Int = 0,
+    var duration: Int = 0
 )
 
 fun BankDto.toEntity() = BankEntity(
@@ -15,5 +16,6 @@ fun BankDto.toEntity() = BankEntity(
     address = address,
     longitude = longitude,
     latitude = latitude,
-    distance = 0
+    distance = 0,
+    duration = 0
 )
