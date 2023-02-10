@@ -97,7 +97,11 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                             dataList = it.map { bank ->
                                 bank.toEntity()
                             }
+                            dataList = getBankDistance(dataList)
                             Log.d("dataList 1", dataList.toString())
+                            withContext(Dispatchers.Main) {
+                                updateMarker(dataList)
+                            }
                         }
                     }
                 }
@@ -112,7 +116,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
         }
     }
 
-    private suspend fun getBankDistance(banksEntity: List<BankEntity>) {
+    private suspend fun getBankDistance(banksEntity: List<BankEntity>): List<BankEntity> {
         banksEntity.forEach { bankEntity ->
             val deferred: Deferred<Int> = coroutineScope {
                 async {
@@ -125,11 +129,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                         if (response.isSuccessful) {
                             val body = response.body()
                             check(body != null) { "body 응답이 없습니다." }
-                            Log.d(
-                                "distance",
-                                body.routeDto.traoptimalDto[0].summaryDto.distance.toString()
-                            )
-                            return@async body.routeDto.traoptimalDto[0].summaryDto.distance
+                            return@async body.route.traoptimal[0].summary.distance
                         }
 
                     } catch (e: Exception) {
@@ -140,7 +140,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
             }
             bankEntity.distance = deferred.await()
         }
-        Log.d("bankEntity", banksEntity.toString())
+        return banksEntity
     }
 
     private fun updateMarker(banks: List<BankEntity>) {
@@ -153,7 +153,6 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.BLUE
-            // 마커 대신에 infoWindow로 대체해야함
             val infoWindow = InfoWindow()
             infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(this) {
                 override fun getText(infoWindow: InfoWindow): CharSequence {

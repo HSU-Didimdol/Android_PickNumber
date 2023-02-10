@@ -1,6 +1,6 @@
 package com.example.picknumberproject.dto.directions5
 
-data class GuideDto(
+data class Guide(
     val distance: Int,
     val duration: Int,
     val instructions: String,

@@ -1,8 +1,8 @@
 package com.example.picknumberproject.dto.directions5
 
-data class DirectionsDto(
+data class Directions5Dto(
     val code: Int,
     val currentDateTime: String,
     val message: String,
-    val routeDto: RouteDto
+    val route: Route
 )

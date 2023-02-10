@@ -1,6 +1,6 @@
 package com.example.picknumberproject.api
 
-import com.example.picknumberproject.dto.directions5.DirectionsDto
+import com.example.picknumberproject.dto.directions5.Directions5Dto
 import com.example.picknumberproject.url.Key
 import com.example.picknumberproject.url.Url
 import retrofit2.Response
@@ -15,5 +15,5 @@ interface Direction5Api {
         @Header("X-NCP-APIGW-API-KEY") clientSecret: String = Key.clientSecret,
         @Query("start", encoded = true) start: String,
         @Query("goal", encoded = true) goal: String,
-    ): Response<DirectionsDto>
+    ): Response<Directions5Dto>
 }

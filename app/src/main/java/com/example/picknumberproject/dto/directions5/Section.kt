@@ -1,6 +1,6 @@
 package com.example.picknumberproject.dto.directions5
 
-data class SectionDto(
+data class Section(
     val congestion: Int,
     val distance: Int,
     val name: String,
