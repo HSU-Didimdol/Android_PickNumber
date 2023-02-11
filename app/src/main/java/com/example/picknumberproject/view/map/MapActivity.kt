@@ -22,6 +22,7 @@ import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.activity_map.*
@@ -160,12 +161,17 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
             marker.position = LatLng(bank.latitude, bank.longitude)
             marker.infoWindow
             marker.map = naverMap
-            marker.icon = MarkerIcons.BLACK
+            marker.icon = MarkerIcons.GREEN
+            //marker.icon = OverlayImage.fromResource(R.drawable.bankmarker)
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.BLUE
             marker.tag = bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" +  bank.code + "/" + bank.divisionCode + "/" + bank.tel
             marker.onClickListener = this
+
+
+            marker.captionText = bank.name
+            marker.captionTextSize = 16f
 
             val infoWindow = InfoWindow()
             infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(this) {
@@ -173,8 +179,9 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                     return bank.name
                 }
             }
-            infoWindow.open(marker)
+            //infoWindow.open(marker)
             marker.isHideCollidedSymbols = true
+            marker.isHideCollidedMarkers = true
 
 
 
