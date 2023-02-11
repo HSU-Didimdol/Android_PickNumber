@@ -137,7 +137,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                 }
             }
         }
-        return banksEntity
+        return banksEntity.sortedBy(BankEntity::distance)
     }
 
     private fun updateMarker(banks: List<BankEntity>) {

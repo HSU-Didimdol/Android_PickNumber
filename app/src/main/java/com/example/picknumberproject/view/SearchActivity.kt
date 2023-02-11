@@ -21,6 +21,8 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
+    private lateinit var adapter: SearchRecyclerAdapter
+
     companion object {
         fun getIntent(context: Context): Intent {
             return Intent(context, SearchActivity::class.java)
@@ -30,6 +32,33 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initAdapter()
+        initViews()
+        bindViews()
+        initData()
+    }
 
+    private fun initAdapter() {
+        adapter = SearchRecyclerAdapter()
+    }
+
+    private fun initViews() = with(binding) {
+        //.isVisible = false
+        recyclerView.adapter = adapter
+    }
+
+    private fun bindViews() = with(binding) {
+        queryInput.isTextInputLayoutFocusedRectEnabled
+    }
+
+    private fun initData() {
+        adapter.notifyDataSetChanged()
+    }
+
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 }
