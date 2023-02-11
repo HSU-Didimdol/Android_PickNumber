@@ -7,9 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.core.view.WindowCompat
-import com.example.picknumberproject.common.ViewBindingActivity
 import com.example.picknumberproject.R
 import com.example.picknumberproject.api.RetrofitUtil
+import com.example.picknumberproject.common.ViewBindingActivity
 import com.example.picknumberproject.databinding.ActivityMapBinding
 import com.example.picknumberproject.model.BankEntity
 import com.example.picknumberproject.model.toEntity
@@ -118,33 +118,24 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
     }
 
     private suspend fun getBankDistance(banksEntity: List<BankEntity>): List<BankEntity> {
-        banksEntity.forEach { bankEntity ->
-            val deferred: Deferred<Int> = coroutineScope {
-                async {
-                    val goal = "${bankEntity.longitude},${bankEntity.latitude}"
-                    try {
-                        val response = RetrofitUtil.direction5Api.getDistance(
-                            start = "126.9050532,37.4652659",
-                            goal = goal
-                        )
-                        if (response.isSuccessful) {
-                            val body = response.body()
-                            check(body != null) { "body 응답이 없습니다." }
-                            banksEntity.map {
-                                it.distance = body.route.traoptimal[0].summary.distance
-                                it.duration = body.route.traoptimal[0].summary.duration
-                            }
-
-                            return@async body.route.traoptimal[0].summary.distance
-                        }
-
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+        withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+            banksEntity.map {
+                val goal = "${it.longitude},${it.latitude}"
+                try {
+                    val response = RetrofitUtil.direction5Api.getDistance(
+                        start = "126.9050532,37.4652659",
+                        goal = goal
+                    )
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        check(body != null) { "body 응답이 없습니다." }
+                        it.distance = body.route.traoptimal[0].summary.distance
+                        it.duration = body.route.traoptimal[0].summary.duration
                     }
-                    return@async 0
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
-            bankEntity.distance = deferred.await()
         }
         return banksEntity
     }
