@@ -19,7 +19,7 @@
         android:theme="@style/Theme.PickNumberProject"
         tools:targetApi="31">
         <activity
-            android:name=".view.SearchActivity"
+            android:name=".view.search.SearchActivity"
             android:exported="false" />
 
         <meta-data
@@ -27,7 +27,7 @@
             android:value="f1qm5gy16z" />
 
         <activity
-            android:name=".view.MapActivity"
+            android:name=".view.map.MapActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
