@@ -1,7 +1,10 @@
 package com.example.picknumberproject.model
 
+import android.os.Parcelable
 import com.example.picknumberproject.dto.bank.BankDto
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class BankEntity(
     val name: String,
     val address: String,
@@ -9,7 +12,7 @@ data class BankEntity(
     val latitude: Double,
     var distance: Double = 0.0,
     var duration: Int = 0
-)
+) : Parcelable
 
 fun BankDto.toEntity() = BankEntity(
     name = "$name 새마을금고 $divisionName",

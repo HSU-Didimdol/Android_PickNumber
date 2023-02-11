@@ -7,9 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.core.view.WindowCompat
-import com.example.picknumberproject.common.ViewBindingActivity
 import com.example.picknumberproject.R
 import com.example.picknumberproject.api.RetrofitUtil
+import com.example.picknumberproject.common.ViewBindingActivity
 import com.example.picknumberproject.databinding.ActivityMapBinding
 import com.example.picknumberproject.model.BankEntity
 import com.example.picknumberproject.model.toEntity
@@ -141,7 +141,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                 }
             }
         }
-        return banksEntity
+        return banksEntity.sortedBy(BankEntity::distance)
     }
 
 
