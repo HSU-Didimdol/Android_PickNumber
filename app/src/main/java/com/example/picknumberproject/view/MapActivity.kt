@@ -2,6 +2,7 @@ package com.example.picknumberproject.view
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -155,7 +156,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.BLUE
-            marker.tag = bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration
+            marker.tag = bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" +  bank.code + "/" + bank.divisionCode + "/" + bank.tel
             marker.onClickListener = this
 
             val infoWindow = InfoWindow()
@@ -166,6 +167,9 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
             }
             infoWindow.open(marker)
             marker.isHideCollidedSymbols = true
+
+
+
         }
     }
 
@@ -247,6 +251,23 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                 bottomSheetDurationTextView.text = "$duration 분"
             }
 
+            reservationButton.setOnClickListener { overlay ->
+                Toast.makeText(this, "예약 버튼 클릭", Toast.LENGTH_SHORT).show()
+                //https://www.kfcc.co.kr/map/view.do?gmgoCd={0}&name=&gmgoNm=&divCd={1}&code1={0}&code2={1}&tab=sub_tab_map
+                //{0} = code, {1} = divisionCode
+                var url = "https://www.kfcc.co.kr/map/view.do?gmgoCd="+ bankData[4] +"&name=&gmgoNm=&divCd=00" + bankData[5] + "&code1=" + bankData[4] + "&code2=00" + bankData[5]  + "&tab=sub_tab_map"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+                true
+            }
+
+            callButton.setOnClickListener { overlay ->
+                Toast.makeText(this, "전화 버튼 클릭", Toast.LENGTH_SHORT).show()
+                var call = bankData[6]
+                val intent2 = Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+call))
+                startActivity(intent2)
+
+            }
             return true
         }
         return false
