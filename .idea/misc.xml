@@ -10,7 +10,7 @@
         <entry key="app/src/main/res/drawable/top_radius_white_background.xml" value="0.1455" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_map.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_map.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.28854166666666664" />
         <entry key="app/src/main/res/layout/bottom_sheet.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_load_state.xml" value="0.25" />

@@ -55,8 +55,6 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
         adapter.notifyDataSetChanged()
     }
 
-
-
     override fun onDestroy() {
         super.onDestroy()
         job.cancel()
