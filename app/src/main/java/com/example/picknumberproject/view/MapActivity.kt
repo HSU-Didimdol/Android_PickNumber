@@ -13,16 +13,20 @@ import com.example.picknumberproject.api.RetrofitUtil
 import com.example.picknumberproject.databinding.ActivityMapBinding
 import com.example.picknumberproject.model.BankEntity
 import com.example.picknumberproject.model.toEntity
+import com.google.android.gms.common.api.internal.GoogleApiManager
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
+import kotlinx.android.synthetic.main.activity_map.view.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.min
 
-class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallback,
+class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallback, Overlay.OnClickListener,
     CoroutineScope {
 
     private lateinit var naverMap: NaverMap
@@ -102,6 +106,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                             Log.d("dataList 1", dataList.toString())
                             withContext(Dispatchers.Main) {
                                 updateMarker(dataList)
+                                Log.d("marker update", "marker update")
                             }
                         }
                     }
@@ -118,36 +123,28 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
     }
 
     private suspend fun getBankDistance(banksEntity: List<BankEntity>): List<BankEntity> {
-        banksEntity.forEach { bankEntity ->
-            val deferred: Deferred<Int> = coroutineScope {
-                async {
-                    val goal = "${bankEntity.longitude},${bankEntity.latitude}"
-                    try {
-                        val response = RetrofitUtil.direction5Api.getDistance(
-                            start = "126.9050532,37.4652659",
-                            goal = goal
-                        )
-                        if (response.isSuccessful) {
-                            val body = response.body()
-                            check(body != null) { "body 응답이 없습니다." }
-                            banksEntity.map {
-                                it.distance = body.route.traoptimal[0].summary.distance
-                                it.duration = body.route.traoptimal[0].summary.duration
-                            }
-
-                            return@async body.route.traoptimal[0].summary.distance
-                        }
-
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+        withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+            banksEntity.map {
+                val goal = "${it.longitude},${it.latitude}"
+                try {
+                    val response = RetrofitUtil.direction5Api.getDistance(
+                        start = "126.9050532,37.4652659",
+                        goal = goal
+                    )
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        check(body != null) { "body 응답이 없습니다." }
+                        it.distance = body.route.traoptimal[0].summary.distance/1000
+                        it.duration = body.route.traoptimal[0].summary.duration/1000/60
                     }
-                    return@async 0
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
-            bankEntity.distance = deferred.await()
         }
         return banksEntity
     }
+
 
     private fun updateMarker(banks: List<BankEntity>) {
         banks.forEach { bank ->
@@ -159,6 +156,9 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.BLUE
+            marker.tag = bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration
+            marker.onClickListener = this
+
             val infoWindow = InfoWindow()
             infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(this) {
                 override fun getText(infoWindow: InfoWindow): CharSequence {
@@ -166,7 +166,6 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                 }
             }
             infoWindow.open(marker)
-
             marker.isHideCollidedSymbols = true
         }
     }
@@ -228,5 +227,29 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
         }
         startActivity(intent)
+    }
+
+    override fun onClick(p0: Overlay): Boolean {
+        if (p0 is Marker) {
+            Log.d("p0:", p0.tag.toString())
+            val bankData = p0.tag.toString().split("/")
+            binding.bottomSheetNameTextView.setText(bankData[0])
+            binding.bottomSheetAddressTextView.setText(bankData[1])
+            binding.bottomSheetDistanceTextView.setText(bankData[2] + " km")
+
+            // 소요시간 '시간 분' 으로 맞추기
+            val duration = bankData[3].toInt()
+
+            if (duration >= 60) {
+                val hour = duration / 60
+                val minute = duration % 60
+                binding.bottomSheetDurationTextView.setText("${hour} 시간 ${minute} 분")
+            } else {
+                binding.bottomSheetDurationTextView.setText("${duration} 분")
+            }
+
+            return true
+        }
+        return false
     }
 }

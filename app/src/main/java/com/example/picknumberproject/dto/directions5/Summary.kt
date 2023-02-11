@@ -3,7 +3,7 @@ package com.example.picknumberproject.dto.directions5
 data class Summary(
     val bbox: List<List<Double>>,
     val departureTime: String,
-    val distance: Int,
+    val distance: Double,
     val duration: Int,
     val etaServiceType: Int,
     val fuelPrice: Int,
