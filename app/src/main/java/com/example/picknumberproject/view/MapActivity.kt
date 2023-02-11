@@ -17,12 +17,15 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
+import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallback,
+    Overlay.OnClickListener,
     CoroutineScope {
 
     private lateinit var naverMap: NaverMap
@@ -102,6 +105,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                             Log.d("dataList 1", dataList.toString())
                             withContext(Dispatchers.Main) {
                                 updateMarker(dataList)
+                                Log.d("marker update", "marker update")
                             }
                         }
                     }
@@ -129,8 +133,8 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                     if (response.isSuccessful) {
                         val body = response.body()
                         check(body != null) { "body 응답이 없습니다." }
-                        it.distance = body.route.traoptimal[0].summary.distance
-                        it.duration = body.route.traoptimal[0].summary.duration
+                        it.distance = body.route.traoptimal[0].summary.distance / 1000
+                        it.duration = body.route.traoptimal[0].summary.duration / 1000 / 60
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -139,6 +143,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
         }
         return banksEntity.sortedBy(BankEntity::distance)
     }
+
 
     private fun updateMarker(banks: List<BankEntity>) {
         banks.forEach { bank ->
@@ -150,6 +155,9 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.BLUE
+            marker.tag = bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration
+            marker.onClickListener = this
+
             val infoWindow = InfoWindow()
             infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(this) {
                 override fun getText(infoWindow: InfoWindow): CharSequence {
@@ -157,7 +165,6 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
                 }
             }
             infoWindow.open(marker)
-
             marker.isHideCollidedSymbols = true
         }
     }
@@ -219,5 +226,29 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
         }
         startActivity(intent)
+    }
+
+    override fun onClick(p0: Overlay): Boolean {
+        if (p0 is Marker) {
+            Log.d("p0:", p0.tag.toString())
+            val bankData = p0.tag.toString().split("/")
+            bottomSheetNameTextView.text = bankData[0]
+            bottomSheetAddressTextView.text = bankData[1]
+            bottomSheetDistanceTextView.text = bankData[2] + " km"
+
+            // 소요시간 '시간 분' 으로 맞추기
+            val duration = bankData[3].toInt()
+
+            if (duration >= 60) {
+                val hour = duration / 60
+                val minute = duration % 60
+                bottomSheetDurationTextView.text = "$hour 시간 $minute 분"
+            } else {
+                bottomSheetDurationTextView.text = "$duration 분"
+            }
+
+            return true
+        }
+        return false
     }
 }

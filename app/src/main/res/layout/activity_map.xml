@@ -68,7 +68,7 @@
                     android:layout_marginTop="12dp"
                     android:padding="8dp"
                     android:text="새마을 금고 이름"
-                    android:textColor="@color/black"
+                    android:textColor="@color/teal_700"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -80,28 +80,42 @@
                     android:id="@+id/bottomSheetAddressTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:padding="8dp"
                     android:text="새마을 금고 주소"
                     android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.053"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bottomSheetNameTextView" />
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/bottomSheetDistanceTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/view"
+                    app:layout_constraintVertical_bias="0.458" />
 
                 <TextView
                     android:id="@+id/bottomSheetDistanceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:padding="8dp"
                     android:text="100 M"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.088"
-                    app:layout_constraintStart_toEndOf="@+id/bottomSheetAddressTextView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bottomSheetNameTextView"
                     app:layout_constraintTop_toTopOf="@+id/view"
-                    app:layout_constraintVertical_bias="0.455" />
+                    app:layout_constraintVertical_bias="0.475" />
+
+                <TextView
+                    android:id="@+id/bottomSheetDurationTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="소요시간"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.046"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bottomSheetDistanceTextView" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
