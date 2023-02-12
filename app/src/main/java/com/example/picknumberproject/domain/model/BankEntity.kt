@@ -16,7 +16,6 @@ data class BankEntity(
     val latitude: Double,
     var distance: Double = 0.0,
     var duration: Int = 0,
-    val code: String,
     val divisionCode: String,
     val tel: String
 ) : Parcelable
@@ -29,7 +28,6 @@ fun BankDto.toEntity() = BankEntity(
     latitude = latitude,
     distance = 0.0,
     duration = 0,
-    code = code,
     divisionCode = divisionCode,
     tel = tel
 
