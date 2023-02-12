@@ -3,14 +3,16 @@ package com.example.picknumberproject.view.search
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.core.view.isVisible
+import com.example.picknumberproject.data.dao.BankDao
+import com.example.picknumberproject.data.db.BankDatabase
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.databinding.ActivitySearchBinding
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineScope {
@@ -31,8 +33,14 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
         }
     }
 
+    private val databaseDao: BankDao by lazy {
+        BankDatabase.getDatabase(this).getBankDao()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        job = Job()
 
         initAdapter()
         initViews()
@@ -41,7 +49,25 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
     }
 
     private fun setData() {
+        val dataList = databaseDao.getAll()
+        Log.d("dataList", dataList.value.toString())
+    }
 
+    private fun searchKeyWord(keyWord: String) {
+        launch(coroutineContext) {
+            try {
+                withContext(Dispatchers.IO) {
+                    setData()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    this@SearchActivity,
+                    "검색하는 과정에서 에러가 발생했습니다. : ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun initAdapter() {
@@ -54,7 +80,9 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
     }
 
     private fun bindViews() = with(binding) {
-        queryInput.isTextInputLayoutFocusedRectEnabled
+        searchButton.setOnClickListener {
+            searchKeyWord(queryInput.text.toString())
+        }
     }
 
     private fun initData() {
