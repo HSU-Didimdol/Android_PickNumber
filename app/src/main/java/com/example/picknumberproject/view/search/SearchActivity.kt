@@ -49,11 +49,9 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
         initData()
     }
 
-    private fun setData() {
-        val dataList: List<BankEntity> = databaseDao.getAll()
-        dataList.sortedBy(BankEntity::distance)
-        Log.d("dataList", dataList.toString())
-        adapter.setSearchResultList(dataList) {
+    private fun setData(banks: List<BankEntity>) {
+        Log.d("dataList", banks.toString())
+        adapter.setSearchResultList(banks) {
             //TODO : 아이템 클릭시 UI 변화
         }
     }
@@ -61,8 +59,12 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
     private fun searchKeyWord(keyWord: String) {
         launch(coroutineContext) {
             try {
-                withContext(Dispatchers.Main) {
-                    setData()
+                withContext(Dispatchers.IO) {
+                    //val dataList = databaseDao.getSearchKeyWord(keyWord)
+                    val dataList = databaseDao.getAll()
+                    withContext(Dispatchers.Main) {
+                        setData(dataList.sortedBy(BankEntity::distance))
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -73,6 +75,7 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
                 ).show()
             }
         }
+
     }
 
     private fun initAdapter() {
