@@ -7,7 +7,7 @@ import com.example.picknumberproject.data.dto.bank.BankDto
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity(tableName = "bank")
+@Entity(tableName = "bank_table")
 data class BankEntity(
     @PrimaryKey val code: String,
     val name: String,
