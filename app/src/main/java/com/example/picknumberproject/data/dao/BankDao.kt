@@ -10,7 +10,7 @@ import com.example.picknumberproject.domain.model.BankEntity
 @Dao
 interface BankDao {
     @Query("SELECT * FROM bank")
-    fun getAll(): LiveData<List<BankEntity>>
+    fun getAll(): List<BankEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) // 같은 것이 충돌시에 새로운 것으로 대체한다.
     suspend fun insertAll(banks: List<BankEntity>)

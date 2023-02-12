@@ -11,6 +11,7 @@ import com.example.picknumberproject.data.dao.BankDao
 import com.example.picknumberproject.data.db.BankDatabase
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.databinding.ActivitySearchBinding
+import com.example.picknumberproject.domain.model.BankEntity
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -49,14 +50,18 @@ class SearchActivity : ViewBindingActivity<ActivitySearchBinding>(), CoroutineSc
     }
 
     private fun setData() {
-        val dataList = databaseDao.getAll()
-        Log.d("dataList", dataList.value.toString())
+        val dataList: List<BankEntity> = databaseDao.getAll()
+        dataList.sortedBy(BankEntity::distance)
+        Log.d("dataList", dataList.toString())
+        adapter.setSearchResultList(dataList) {
+            //TODO : 아이템 클릭시 UI 변화
+        }
     }
 
     private fun searchKeyWord(keyWord: String) {
         launch(coroutineContext) {
             try {
-                withContext(Dispatchers.IO) {
+                withContext(Dispatchers.Main) {
                     setData()
                 }
             } catch (e: Exception) {

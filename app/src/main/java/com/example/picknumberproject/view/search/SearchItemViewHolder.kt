@@ -9,8 +9,8 @@ class SearchItemViewHolder(
     val searchItemClickListener: (BankEntity) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bindData(data: BankEntity) = with(binding) {
-        nameTextView.text = data.address
-        addressTextView.text = data.name
+        nameTextView.text = data.name
+        addressTextView.text = data.address
         distanceTextView.text = data.distance.toString()
     }
 
