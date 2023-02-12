@@ -7,7 +7,7 @@ import com.example.picknumberproject.data.dto.bank.BankDto
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity(tableName = "bank")
+@Entity(tableName = "bank_table")
 data class BankEntity(
     @PrimaryKey val code: String,
     val name: String,
@@ -15,7 +15,9 @@ data class BankEntity(
     val longitude: Double,
     val latitude: Double,
     var distance: Double = 0.0,
-    var duration: Int = 0
+    var duration: Int = 0,
+    val divisionCode: String,
+    val tel: String
 ) : Parcelable
 
 fun BankDto.toEntity() = BankEntity(
@@ -25,5 +27,8 @@ fun BankDto.toEntity() = BankEntity(
     longitude = longitude,
     latitude = latitude,
     distance = 0.0,
-    duration = 0
+    duration = 0,
+    divisionCode = divisionCode,
+    tel = tel
+
 )

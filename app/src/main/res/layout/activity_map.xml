@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/top_radius_white_background"
+            android:backgroundTint="#FFFFFF"
             app:behavior_peekHeight="120dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -130,21 +131,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/home" />
+                    android:backgroundTint="#FFFFFF"
+                    android:drawableLeft="@drawable/ic_baseline_home_24"
+                    android:text="@string/home"
+                    android:textColor="#000000" />
 
                 <Button
                     android:id="@+id/callButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/call" />
+                    android:backgroundTint="#FFFFFF"
+                    android:drawableLeft="@drawable/ic_baseline_call_24"
+                    android:text="@string/call"
+                    android:textColor="#000000" />
 
                 <Button
                     android:id="@+id/reservationButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="@string/reservation" />
+                    android:backgroundTint="#FFFFFF"
+                    android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
+                    android:text="@string/reservation"
+                    android:textColor="#000000" />
 
             </LinearLayout>
 
