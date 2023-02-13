@@ -11,7 +11,7 @@ class SearchItemViewHolder(
     fun bindData(data: BankEntity) = with(binding) {
         nameTextView.text = data.name
         addressTextView.text = data.address
-        distanceTextView.text = data.distance.toString()
+        distanceTextView.text = data.distance.toString() + "Km"
     }
 
     fun bindViews(data: BankEntity) {
