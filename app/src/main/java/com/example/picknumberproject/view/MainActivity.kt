@@ -12,12 +12,14 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.domain.model.BankEntity
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.*
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationTrackingMode
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
@@ -31,10 +33,6 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>(), OnMapReadyCallb
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
-
-    private val mapView: MapView by lazy {
-        findViewById(R.id.mapView)
-    }
 
     private val viewModel: MainViewModel by viewModels()
 

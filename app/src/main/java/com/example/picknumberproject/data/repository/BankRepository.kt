@@ -26,7 +26,7 @@ object BankRepository {
             val goal = "${bank.longitude},${bank.latitude}"
             val response =
                 RetrofitUtil.direction5Api.getDistance(
-                    start = "126.9050532,37.4652659",
+                    start = "126.9050532,37.4652659", // TODO :이건 추후 수정바람 내 위치 따라 유동적으로 바뀌게끔
                     goal = goal
                 )
             if (response.isSuccessful && response.body() != null) {
