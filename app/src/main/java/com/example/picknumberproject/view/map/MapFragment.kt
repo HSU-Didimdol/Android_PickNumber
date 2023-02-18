@@ -44,7 +44,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        // 2. Context를 Activity로 형변환하여 할당
+        // Context를 Activity로 형변환하여 할당
         mainActivity = context as MainActivity
     }
 
@@ -113,8 +113,6 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             marker.tag =
                 bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel
             marker.onClickListener = this
-
-
             marker.captionText = bank.name
             marker.captionTextSize = 16f
             marker.isHideCollidedSymbols = true
@@ -186,6 +184,12 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
                 navigationToHome(url)
             }
 
+            reservationButton.setOnClickListener {
+                Toast.makeText(mainActivity, "예약 버튼 클릭", Toast.LENGTH_SHORT).show()
+                val url = "" // TODO : 예약 URL 추후에 추가
+                navigationToReservation(url)
+            }
+
             callButton.setOnClickListener {
                 Toast.makeText(mainActivity, "전화 버튼 클릭", Toast.LENGTH_SHORT).show()
                 val call = bankData[6]
@@ -201,6 +205,11 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     private fun navigationToHome(url: String) {
         val bundle = bundleOf("url" to url)
         findNavController().navigate(R.id.action_mapFragment_to_homeFragment, bundle)
+    }
+
+    private fun navigationToReservation(url: String) {
+        val bundle = bundleOf("url" to url)
+        findNavController().navigate(R.id.action_mapFragment_to_reservationFragment, bundle)
     }
 
 }

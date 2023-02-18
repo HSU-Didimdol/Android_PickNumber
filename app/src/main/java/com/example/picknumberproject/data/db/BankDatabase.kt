@@ -12,14 +12,15 @@ abstract class BankDatabase : RoomDatabase() {
 
     companion object {
         private var INSTANCE: BankDatabase? = null
-
         fun getDatabase(context: Context): BankDatabase {
             if (INSTANCE == null) {
-                INSTANCE = Room.databaseBuilder(
-                    context, BankDatabase::class.java, "bank_table"
-                )
-                    .build()
-
+                synchronized(BankDatabase::class) {
+                    INSTANCE = Room.databaseBuilder(
+                        context, BankDatabase::class.java, "bank_table"
+                    )
+                        .fallbackToDestructiveMigration()
+                        .build()
+                }
             }
             return INSTANCE as BankDatabase
         }

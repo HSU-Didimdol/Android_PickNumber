@@ -1,6 +1,8 @@
 package com.example.picknumberproject.data.repository
 
 import com.example.picknumberproject.data.api.RetrofitUtil
+import com.example.picknumberproject.data.db.BankDao
+import com.example.picknumberproject.data.db.BankDatabase
 import com.example.picknumberproject.domain.model.BankEntity
 import com.example.picknumberproject.domain.model.toEntity
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +13,10 @@ import kotlinx.coroutines.withContext
  *  다만, 이번 프로젝트에서는 의존성주입을 전부 제외하였기에, Repository의 역할은 data를 곧바로 viewModel로 쏘아줍니다.
  */
 object BankRepository {
+    private val bankDao: BankDao
+        get() {
+            return BankDatabase.getDatabase().getBankDao()
+        }
 
     private suspend fun getBankList() = withContext(Dispatchers.IO) {
         val response = RetrofitUtil.bankApi.getBankList()
@@ -26,7 +32,7 @@ object BankRepository {
             val goal = "${bank.longitude},${bank.latitude}"
             val response =
                 RetrofitUtil.direction5Api.getDistance(
-                    start = "126.9050532,37.4652659", // TODO :이건 추후 수정바람 내 위치 따라 유동적으로 바뀌게끔
+                    start = "126.9050532,37.4652659", // TODO:이건 추후 수정바람 내 위치 따라 유동적으로 바뀌게끔
                     goal = goal
                 )
             if (response.isSuccessful && response.body() != null) {
@@ -39,6 +45,7 @@ object BankRepository {
                 bank.duration = 0
             }
         }
+        bankDao.insertAll(bankList)
         bankList
     }
 
