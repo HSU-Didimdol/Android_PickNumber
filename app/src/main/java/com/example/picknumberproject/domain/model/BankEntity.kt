@@ -14,6 +14,7 @@ import kotlinx.android.parcel.Parcelize
 data class BankEntity(
     @PrimaryKey val code: Int,
     val name: String,
+    val divisionCode: Int,
     val address: String,
     val longitude: Double,
     val latitude: Double,
@@ -25,6 +26,7 @@ data class BankEntity(
 fun BankDto.toEntity() = BankEntity(
     code = code,
     name = name,
+    divisionCode = divisionCode,
     address = address,
     longitude = longitude,
     latitude = latitude,
