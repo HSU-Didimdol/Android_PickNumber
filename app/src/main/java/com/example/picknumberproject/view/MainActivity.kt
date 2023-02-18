@@ -13,8 +13,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.picknumberproject.R
-import com.example.picknumberproject.data.db.BankDao
-import com.example.picknumberproject.data.db.BankDatabase
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.domain.model.BankEntity
 import com.example.picknumberproject.view.common.ViewBindingActivity
@@ -45,10 +43,6 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>(), OnMapReadyCallb
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
-    }
-
-    private val databaseDao: BankDao by lazy {
-        BankDatabase.getDatabase(this).getBankDao()
     }
 
     //  "x": "126.9050532",
@@ -103,7 +97,6 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>(), OnMapReadyCallb
             marker.infoWindow
             marker.map = naverMap
             marker.icon = MarkerIcons.GREEN
-            //marker.icon = OverlayImage.fromResource(R.drawable.bankmarker)
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.BLUE
@@ -213,7 +206,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>(), OnMapReadyCallb
 
             callButton.setOnClickListener { overlay ->
                 Toast.makeText(this, "전화 버튼 클릭", Toast.LENGTH_SHORT).show()
-                var call = bankData[6]
+                var call = bankData[5]
                 val intent2 = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + call))
                 startActivity(intent2)
 
