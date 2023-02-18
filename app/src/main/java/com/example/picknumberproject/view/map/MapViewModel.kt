@@ -9,14 +9,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MapViewModel : ViewModel() {
+class MapViewModel() : ViewModel() {
+    private val bankRepository = BankRepository()
+
     private val _uiState = MutableStateFlow(MapUiState())
     val uiState: StateFlow<MapUiState> = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
             _uiState.update {
-                it.copy(bankListData = BankRepository.getAllBankEntityList())
+                it.copy(bankListData = bankRepository.getAllBankEntityList())
             }
         }
     }
