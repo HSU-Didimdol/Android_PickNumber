@@ -120,10 +120,8 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             marker.isHideCollidedSymbols = true
             marker.isHideCollidedMarkers = true
 
-
         }
     }
-
 
     override fun onStart() {
         super.onStart()
