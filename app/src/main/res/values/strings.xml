@@ -9,4 +9,8 @@
     <string name="home">홈</string>
     <string name="call">전화</string>
     <string name="reservation">예약</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

@@ -27,13 +27,17 @@
             android:value="f1qm5gy16z" />
 
         <activity
-            android:name=".view.map.MapActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
     </application>
 

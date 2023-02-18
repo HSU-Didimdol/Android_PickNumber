@@ -7,11 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.core.view.isVisible
-import com.example.picknumberproject.data.dao.BankDao
+import com.example.picknumberproject.data.db.BankDao
 import com.example.picknumberproject.data.db.BankDatabase
-import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.databinding.ActivitySearchBinding
 import com.example.picknumberproject.domain.model.BankEntity
+import com.example.picknumberproject.view.common.ViewBindingActivity
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext

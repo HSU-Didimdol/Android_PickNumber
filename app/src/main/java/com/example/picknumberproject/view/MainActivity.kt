@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view.map
+package com.example.picknumberproject.view
 
 import android.content.Intent
 import android.graphics.Color
@@ -7,16 +7,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.picknumberproject.R
-import com.example.picknumberproject.data.api.RetrofitUtil
-import com.example.picknumberproject.view.common.ViewBindingActivity
-import com.example.picknumberproject.databinding.ActivityMapBinding
-import com.example.picknumberproject.data.dao.BankDao
+import com.example.picknumberproject.data.db.BankDao
 import com.example.picknumberproject.data.db.BankDatabase
+import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.domain.model.BankEntity
-import com.example.picknumberproject.domain.model.toEntity
-import com.example.picknumberproject.view.search.SearchActivity
+import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
@@ -24,30 +25,23 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
-import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.launch
 
-class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallback,
-    Overlay.OnClickListener,
-    CoroutineScope {
+class MainActivity : ViewBindingActivity<ActivityMainBinding>(), OnMapReadyCallback,
+    Overlay.OnClickListener {
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
-
-    private lateinit var dataList: List<BankEntity>
 
     private val mapView: MapView by lazy {
         findViewById(R.id.mapView)
     }
 
-    override val bindingInflater: (LayoutInflater) -> ActivityMapBinding
-        get() = ActivityMapBinding::inflate
+    private val viewModel: MainViewModel by viewModels()
 
-    private lateinit var job: Job
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+    override val bindingInflater: (LayoutInflater) -> ActivityMainBinding
+        get() = ActivityMainBinding::inflate
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
@@ -64,15 +58,15 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
         super.onCreate(savedInstanceState)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
-        job = Job()
-
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
-        binding.searchButton.setOnClickListener {
-            startSearchActivity()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    updateUi(it)
+                }
+            }
         }
-
-        getBankList()
     }
 
     override fun onMapReady(Map: NaverMap) {
@@ -82,7 +76,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
         uiSetting.isLocationButtonEnabled = true
 
         locationSource =
-            FusedLocationSource(this@MapActivity, LOCATION_PERMISSION_REQUEST_CODE)
+            FusedLocationSource(this@MainActivity, LOCATION_PERMISSION_REQUEST_CODE)
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
 
@@ -98,61 +92,9 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
         naverMap.moveCamera(cameraUpdate)
     }
 
-    private fun getBankList() {
-        launch(coroutineContext) {
-            try {
-                withContext(Dispatchers.IO) {
-                    val response = RetrofitUtil.bankApi.getBankList()
-                    if (response.isSuccessful) {
-                        val body = response.body()
-                        body?.let {
-                            dataList = it.map { bank ->
-                                bank.toEntity()
-                            }
-                            dataList = getBankDistance(dataList)
-                            Log.d("dataList 1", dataList.toString())
-                            withContext(Dispatchers.Main) {
-                                updateMarker(dataList)
-                                Log.d("marker update", "marker update")
-                            }
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(
-                    this@MapActivity,
-                    "에러가 발생했습니다. : ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
+    private fun updateUi(uiState: MainUiState) {
+        updateMarker(uiState.bankListData)
     }
-
-    private suspend fun getBankDistance(banksEntity: List<BankEntity>): List<BankEntity> {
-        withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
-            banksEntity.map {
-                val goal = "${it.longitude},${it.latitude}"
-                try {
-                    val response = RetrofitUtil.direction5Api.getDistance(
-                        start = "126.9050532,37.4652659",
-                        goal = goal
-                    )
-                    if (response.isSuccessful) {
-                        val body = response.body()
-                        check(body != null) { "body 응답이 없습니다." }
-                        it.distance = body.route.traoptimal[0].summary.distance / 1000
-                        it.duration = body.route.traoptimal[0].summary.duration / 1000 / 60
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            databaseDao.insertAll(banksEntity)
-        }
-        return banksEntity.sortedBy(BankEntity::distance)
-    }
-
 
     private fun updateMarker(banks: List<BankEntity>) {
         banks.forEach { bank ->
@@ -166,7 +108,7 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.BLUE
             marker.tag =
-                bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel
+                bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.tel
             marker.onClickListener = this
 
 
@@ -232,19 +174,11 @@ class MapActivity : ViewBindingActivity<ActivityMapBinding>(), OnMapReadyCallbac
     override fun onDestroy() {
         super.onDestroy()
         mapView.onDestroy()
-        job.cancel()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
-    }
-
-    private fun startSearchActivity() {
-        val intent = SearchActivity.getIntent(this).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
-        }
-        startActivity(intent)
     }
 
     override fun onClick(p0: Overlay): Boolean {

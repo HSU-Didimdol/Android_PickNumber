@@ -1,4 +1,4 @@
-package com.example.picknumberproject.data.dao
+package com.example.picknumberproject.data.db
 
 import androidx.room.Dao
 import androidx.room.Insert
