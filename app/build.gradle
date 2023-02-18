@@ -48,6 +48,10 @@ dependencies {
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // webView
+    implementation 'androidx.webkit:webkit:1.6.0'
+    
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
