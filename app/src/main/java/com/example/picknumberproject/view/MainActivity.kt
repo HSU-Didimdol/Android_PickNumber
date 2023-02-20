@@ -4,45 +4,40 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
+import androidx.fragment.app.Fragment
+import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
-import com.naver.maps.map.LocationTrackingMode
-import com.naver.maps.map.NaverMap
-import com.naver.maps.map.util.FusedLocationSource
+import com.example.picknumberproject.view.map.MapFragment
+
 
 class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
-
-    private lateinit var naverMap: NaverMap
-    private lateinit var locationSource: FusedLocationSource
 
     private val viewModel: MainViewModel by viewModels()
 
     override val bindingInflater: (LayoutInflater) -> ActivityMainBinding
         get() = ActivityMainBinding::inflate
 
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, true)
+        initMapFragment()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
-            return
-        }
-        if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
-            if (!locationSource.isActivated) {
-                naverMap.locationTrackingMode = LocationTrackingMode.None
-            }
-            return
-        }
+    private fun initMapFragment() {
+        val fragmentManager = supportFragmentManager
+        val mapFragment = MapFragment()
+        fragmentManager.beginTransaction().apply {
+            replace(R.id.container_view, mapFragment)
+        }.commit()
+    }
+
+    fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction
+            .replace(R.id.container_view, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
