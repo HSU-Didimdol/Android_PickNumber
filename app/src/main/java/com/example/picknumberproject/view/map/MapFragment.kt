@@ -101,7 +101,6 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             marker.iconTintColor = Color.BLUE
             marker.tag =
                 bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel
-            marker.tag = bank
             marker.onClickListener = this
             marker.captionText = bank.name
             marker.captionTextSize = 16f
