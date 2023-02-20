@@ -8,7 +8,9 @@ import androidx.fragment.app.viewModels
 import com.example.picknumberproject.databinding.FragmentReservationBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
 
-class ReservationFragment : ViewBindingFragment<FragmentReservationBinding>() {
+class ReservationFragment(
+    private val url: String
+) : ViewBindingFragment<FragmentReservationBinding>() {
 
 
     private val viewModel: ReservationViewModel by viewModels()
@@ -19,6 +21,5 @@ class ReservationFragment : ViewBindingFragment<FragmentReservationBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
-
 
 }

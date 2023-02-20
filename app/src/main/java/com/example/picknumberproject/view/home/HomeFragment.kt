@@ -1,5 +1,6 @@
 package com.example.picknumberproject.view.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,20 +11,22 @@ import com.example.picknumberproject.databinding.FragmentHomeBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : ViewBindingFragment<FragmentHomeBinding>() {
+class HomeFragment(
+    private val url: String
+) : ViewBindingFragment<FragmentHomeBinding>() {
 
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val url = arguments?.getString("url") ?: ""
 
         webView.settings.apply {
             this.setSupportMultipleWindows(false) // 새창 띄우기 허용
             this.setSupportZoom(false) // 화면 확대 허용
-            this.javaScriptEnabled = true // 자바스크립트 허용
+            this.javaScriptEnabled = true
             this.javaScriptCanOpenWindowsAutomatically = false // 자바스크립트 새창 띄우기 허용
             this.loadWithOverviewMode = true // html의 컨텐츠가 웹뷰보다 클 경우 스크린 크기에 맞게 조정
             this.useWideViewPort = true // html의 viewport 메타 태그 지원

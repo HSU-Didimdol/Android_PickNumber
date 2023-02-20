@@ -9,15 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.FragmentMapBinding
 import com.example.picknumberproject.domain.model.BankEntity
+import com.example.picknumberproject.view.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.home.HomeFragment
 import com.example.picknumberproject.view.reservation.ReservationFragment
@@ -45,6 +43,9 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
     }
 
+    private val mainActivity: MainActivity
+        get() = activity as MainActivity
+
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
@@ -57,14 +58,6 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         super.onViewCreated(view, savedInstanceState)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    updateUi(it)
-                }
-            }
-        }
     }
 
     override fun onMapReady(Map: NaverMap) {
@@ -83,6 +76,31 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             )
         naverMap.moveCamera(cameraUpdate)
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    updateUi(it)
+                }
+            }
+        }
+
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return
+        }
+        if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+            if (!locationSource.isActivated) {
+                naverMap.locationTrackingMode = LocationTrackingMode.None
+            }
+            return
+        }
     }
 
     private fun updateUi(uiState: MapUiState) {
@@ -192,21 +210,12 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     private fun navigationToHome(url: String) {
-        val fragmentManager = childFragmentManager
-        fragmentManager.beginTransaction().apply {
-            replace<HomeFragment>(R.id.container_view)
-            addToBackStack(null)
-        }.commit()
-        val bundle = bundleOf("url" to url)
+        val homeFragment = HomeFragment(url = url)
+        mainActivity.replaceFragment(homeFragment)
     }
 
     private fun navigationToReservation(url: String) {
-        val fragmentManager = childFragmentManager
-        fragmentManager.beginTransaction().apply {
-            replace<ReservationFragment>(R.id.container_view)
-            addToBackStack(null)
-        }.commit()
-        val bundle = bundleOf("url" to url)
+        val reservationFragment = ReservationFragment(url = url)
+        mainActivity.replaceFragment(reservationFragment)
     }
-
 }
