@@ -25,7 +25,7 @@ data class BankEntity(
 
 fun BankDto.toEntity() = BankEntity(
     code = code,
-    name = name,
+    name = "$name ($divisionName)",
     divisionCode = divisionCode,
     address = address,
     longitude = longitude,

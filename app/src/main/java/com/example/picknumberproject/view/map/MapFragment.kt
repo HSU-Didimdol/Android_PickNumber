@@ -2,6 +2,7 @@ package com.example.picknumberproject.view.map
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PointF
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,7 @@ import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
@@ -118,12 +120,24 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.BLUE
             marker.tag =
-                bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel
+                bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel + "/" + bank.latitude + "/" +bank.longitude
             marker.onClickListener = this
-            marker.captionText = bank.name
+            //marker.captionText = bank.name
             marker.captionTextSize = 16f
             marker.isHideCollidedSymbols = true
             marker.isHideCollidedMarkers = true
+
+            val infoWindow = InfoWindow()
+            infoWindow.position = LatLng(bank.latitude, bank.longitude)
+            infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(requireContext()) { //DefaultViewadapter? 아니면 Adapter 구현?
+                override fun getText(infoWindow: InfoWindow): CharSequence {
+                    return bank.name
+                }
+            }
+            infoWindow.anchor = PointF(0.5f, 0.5f)
+            //infoWindow.open(marker)
+            infoWindow.open(naverMap)
+
 
         }
     }
@@ -202,6 +216,28 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
                 val call = bankData[6]
                 val intent2 = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$call"))
                 startActivity(intent2)
+
+            }
+
+            routeButton.setOnClickListener {
+                //자동차 길찾기
+                val url = "nmap://route/car?slat="+ naverMap.cameraPosition.target.latitude + "&slng=" + naverMap.cameraPosition.target.longitude +  "&sname="  + "&dlat=" + bankData[7] + "&dlng=" + bankData[8] + "&dname="+ bankData[0] + "&appname=com.example.picknumberproject"
+
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                intent.addCategory(Intent.CATEGORY_BROWSABLE)
+
+                //네이버 지도 앱 설치 여부 확인
+                val installed = requireContext().packageManager.getLaunchIntentForPackage("com.nhn.android.nmap")
+                if (installed == null) {
+                    requireContext().startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=com.nhn.android.nmap")
+                        )
+                    )
+                } else {
+                    requireContext().startActivity(intent)
+                }
 
             }
             return true
