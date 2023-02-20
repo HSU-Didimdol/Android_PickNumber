@@ -68,6 +68,11 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     override fun onMapReady(Map: NaverMap) {
+        naverMap = Map
+        val uiSetting = naverMap.uiSettings
+        uiSetting.isLocationButtonEnabled = true
+        naverMap.locationSource = locationSource
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
         val cameraUpdate = CameraUpdate
             .scrollAndZoomTo(
                 LatLng(
@@ -76,15 +81,8 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
                 ),
                 9.0
             )
+        naverMap.moveCamera(cameraUpdate)
 
-        naverMap = Map.apply {
-            locationSource = this@MapFragment.locationSource //현재 위치값을 넘긴다
-            locationTrackingMode = LocationTrackingMode.Follow
-            uiSettings.isLocationButtonEnabled = true
-            uiSettings.isScaleBarEnabled = true
-            uiSettings.isCompassEnabled = true
-            moveCamera(cameraUpdate)
-        }
     }
 
     private fun updateUi(uiState: MapUiState) {
@@ -195,7 +193,6 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     private fun navigationToHome(url: String) {
-        val
         val fragmentManager = childFragmentManager
         fragmentManager.beginTransaction().apply {
             replace<HomeFragment>(R.id.container_view)

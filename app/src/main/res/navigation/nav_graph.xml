@@ -8,7 +8,14 @@
         android:id="@+id/mapFragment"
         android:name="com.example.picknumberproject.view.map.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map"/>
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_mapFragment_to_reservationFragment"
+            app:destination="@id/reservationFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/reservationFragment"
         android:name="com.example.picknumberproject.view.reservation.ReservationFragment"
