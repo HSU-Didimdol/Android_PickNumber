@@ -1,6 +1,5 @@
 package com.example.picknumberproject.view.map
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -11,16 +10,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.FragmentMapBinding
 import com.example.picknumberproject.domain.model.BankEntity
-import com.example.picknumberproject.view.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingFragment
+import com.example.picknumberproject.view.home.HomeFragment
+import com.example.picknumberproject.view.reservation.ReservationFragment
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
@@ -37,19 +37,13 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     Overlay.OnClickListener {
 
     private lateinit var naverMap: NaverMap
-    private lateinit var locationSource: FusedLocationSource
-
-    private lateinit var mainActivity: MainActivity
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        // Context를 Activity로 형변환하여 할당
-        mainActivity = context as MainActivity
-    }
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMapBinding
         get() = FragmentMapBinding::inflate
+
+    private val locationSource: FusedLocationSource by lazy {
+        FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+    }
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
@@ -74,16 +68,6 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     override fun onMapReady(Map: NaverMap) {
-        naverMap = Map
-
-        val uiSetting = naverMap.uiSettings
-        uiSetting.isLocationButtonEnabled = true
-
-        locationSource =
-            FusedLocationSource(this@MapFragment, LOCATION_PERMISSION_REQUEST_CODE)
-        naverMap.locationSource = locationSource
-        naverMap.locationTrackingMode = LocationTrackingMode.Follow
-
         val cameraUpdate = CameraUpdate
             .scrollAndZoomTo(
                 LatLng(
@@ -93,7 +77,14 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
                 9.0
             )
 
-        naverMap.moveCamera(cameraUpdate)
+        naverMap = Map.apply {
+            locationSource = this@MapFragment.locationSource //현재 위치값을 넘긴다
+            locationTrackingMode = LocationTrackingMode.Follow
+            uiSettings.isLocationButtonEnabled = true
+            uiSettings.isScaleBarEnabled = true
+            uiSettings.isCompassEnabled = true
+            moveCamera(cameraUpdate)
+        }
     }
 
     private fun updateUi(uiState: MapUiState) {
@@ -112,6 +103,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             marker.iconTintColor = Color.BLUE
             marker.tag =
                 bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel
+            marker.tag = bank
             marker.onClickListener = this
             marker.captionText = bank.name
             marker.captionTextSize = 16f
@@ -176,7 +168,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             }
 
             homeButton.setOnClickListener {
-                Toast.makeText(mainActivity, "홈 버튼 클릭", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "홈 버튼 클릭", Toast.LENGTH_SHORT).show()
                 //https://www.kfcc.co.kr/map/view.do?gmgoCd={0}&name=&gmgoNm=&divCd={1}&code1={0}&code2={1}&tab=sub_tab_map
                 //{0} = code, {1} = divisionCode
                 val url =
@@ -185,13 +177,13 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             }
 
             reservationButton.setOnClickListener {
-                Toast.makeText(mainActivity, "예약 버튼 클릭", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "예약 버튼 클릭", Toast.LENGTH_SHORT).show()
                 val url = "" // TODO : 예약 URL 추후에 추가
                 navigationToReservation(url)
             }
 
             callButton.setOnClickListener {
-                Toast.makeText(mainActivity, "전화 버튼 클릭", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "전화 버튼 클릭", Toast.LENGTH_SHORT).show()
                 val call = bankData[6]
                 val intent2 = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$call"))
                 startActivity(intent2)
@@ -203,13 +195,22 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     private fun navigationToHome(url: String) {
+        val
+        val fragmentManager = childFragmentManager
+        fragmentManager.beginTransaction().apply {
+            replace<HomeFragment>(R.id.container_view)
+            addToBackStack(null)
+        }.commit()
         val bundle = bundleOf("url" to url)
-        findNavController().navigate(R.id.action_mapFragment_to_homeFragment, bundle)
     }
 
     private fun navigationToReservation(url: String) {
+        val fragmentManager = childFragmentManager
+        fragmentManager.beginTransaction().apply {
+            replace<ReservationFragment>(R.id.container_view)
+            addToBackStack(null)
+        }.commit()
         val bundle = bundleOf("url" to url)
-        findNavController().navigate(R.id.action_mapFragment_to_reservationFragment, bundle)
     }
 
 }
