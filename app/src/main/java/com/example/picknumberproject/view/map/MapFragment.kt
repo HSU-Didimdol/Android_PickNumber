@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallback,
     Overlay.OnClickListener {
 
-    private lateinit var naverMap: NaverMap
+    private lateinit var map: NaverMap
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMapBinding
         get() = FragmentMapBinding::inflate
@@ -75,20 +75,20 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     override fun onMapReady(Map: NaverMap) {
-        naverMap = Map
-        val uiSetting = naverMap.uiSettings
+        map = Map
+        val uiSetting = map.uiSettings
         uiSetting.isLocationButtonEnabled = true
-        naverMap.locationSource = locationSource
-        naverMap.locationTrackingMode = LocationTrackingMode.Follow
+        map.locationSource = locationSource
+        map.locationTrackingMode = LocationTrackingMode.Follow
         val cameraUpdate = CameraUpdate
             .scrollAndZoomTo(
                 LatLng(
-                    naverMap.cameraPosition.target.latitude,
-                    naverMap.cameraPosition.target.longitude
+                    map.cameraPosition.target.latitude,
+                    map.cameraPosition.target.longitude
                 ),
                 9.0
             )
-        naverMap.moveCamera(cameraUpdate)
+        map.moveCamera(cameraUpdate)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -110,7 +110,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         }
         if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             if (!locationSource.isActivated) {
-                naverMap.locationTrackingMode = LocationTrackingMode.None
+                map.locationTrackingMode = LocationTrackingMode.None
             }
             return
         }
@@ -125,7 +125,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             val marker = Marker()
             marker.position = LatLng(bank.latitude, bank.longitude)
             marker.infoWindow
-            marker.map = naverMap
+            marker.map = map
             marker.icon = MarkerIcons.GREEN
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
@@ -148,7 +148,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             }
             infoWindow.anchor = PointF(0.5f, 0.5f)
             //infoWindow.open(marker)
-            infoWindow.open(naverMap)
+            infoWindow.open(map)
 
 
         }
@@ -234,7 +234,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             routeButton.setOnClickListener {
                 //자동차 길찾기
                 val url =
-                    "nmap://route/car?slat=" + naverMap.cameraPosition.target.latitude + "&slng=" + naverMap.cameraPosition.target.longitude + "&sname=" + "&dlat=" + bankData[7] + "&dlng=" + bankData[8] + "&dname=" + bankData[0] + "&appname=com.example.picknumberproject"
+                    "nmap://route/car?slat=" + map.cameraPosition.target.latitude + "&slng=" + map.cameraPosition.target.longitude + "&sname=" + "&dlat=" + bankData[7] + "&dlng=" + bankData[8] + "&dname=" + bankData[0] + "&appname=com.example.picknumberproject"
 
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 intent.addCategory(Intent.CATEGORY_BROWSABLE)
