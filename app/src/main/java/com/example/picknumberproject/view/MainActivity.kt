@@ -9,8 +9,10 @@ import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.map.MapFragment
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
 
     private val viewModel: MainViewModel by viewModels()

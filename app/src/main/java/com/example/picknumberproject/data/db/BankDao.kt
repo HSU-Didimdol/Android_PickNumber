@@ -14,6 +14,6 @@ interface BankDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE) // 같은 것이 충돌시에 새로운 것으로 대체한다.
     suspend fun insertAll(banks: List<BankEntity>)
 
-    @Query("SELECT * FROM bank_table WHERE name = :keyWord")
-    suspend fun getSearchKeyWord(keyWord: String): List<BankEntity>
+    @Query("delete from bank_table")
+    suspend fun deleteAll()
 }

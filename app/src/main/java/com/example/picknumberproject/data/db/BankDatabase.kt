@@ -16,10 +16,12 @@ abstract class BankDatabase : RoomDatabase() {
             if (INSTANCE == null) {
                 synchronized(BankDatabase::class) {
                     INSTANCE = Room.databaseBuilder(
-                        context, BankDatabase::class.java, "bank_table"
+                        context.applicationContext,
+                        BankDatabase::class.java,
+                        "bank_table"
                     )
                         .fallbackToDestructiveMigration()
-                        .build()
+                        .build();
                 }
             }
             return INSTANCE as BankDatabase

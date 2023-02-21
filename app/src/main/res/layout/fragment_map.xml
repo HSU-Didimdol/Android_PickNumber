@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.map.MapFragment">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,176 +18,175 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
-
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:iconifiedByDefault="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:queryHint="@string/searchHint" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:iconifiedByDefault="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:queryHint="@string/searchHint" />
 
         </androidx.appcompat.widget.Toolbar>
 
-        <LinearLayout
+        <com.naver.maps.map.MapView
+            android:id="@+id/mapView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toTopOf="@+id/bottomSheet"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-            <com.naver.maps.map.MapView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="450dp"
-                android:layout_marginTop="56dp"
-                app:layout_constraintBottom_toTopOf="@id/toolbar"
-                app:layout_constraintTop_toBottomOf="@id/bottomSheet">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            app:behavior_peekHeight="120dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            </com.naver.maps.map.MapView>
+            <View
+                android:id="@+id/view"
+                android:layout_width="30dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="12dp"
+                android:background="#cccccc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/bottomSheet"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/bottomSheetNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:padding="8dp"
+                android:text="@string/name"
+                android:textColor="@color/teal_700"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/bottomSheetDistanceTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.043"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view"
+                app:layout_constraintVertical_bias="0.502" />
+
+            <TextView
+                android:id="@+id/bottomSheetAddressTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:padding="8dp"
+                android:text="@string/address"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.003"
+                app:layout_constraintStart_toEndOf="@+id/bottomSheetDistanceTextView"
+                app:layout_constraintTop_toBottomOf="@+id/view"
+                app:layout_constraintVertical_bias="0.338" />
+
+            <TextView
+                android:id="@+id/bottomSheetDistanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:padding="8dp"
+                android:text="@string/distance"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bottomSheetNameTextView"
+                app:layout_constraintTop_toTopOf="@+id/view"
+                app:layout_constraintVertical_bias="0.357" />
+
+
+            <TextView
+                android:id="@+id/bottomSheetDurationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:padding="8dp"
+                android:text="@string/time"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.046"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bottomSheetDistanceTextView"
+                app:layout_constraintVertical_bias="0.112" />
+
+            <!-- 버튼 위치 옮기기 -->
+
+            <Button
+                android:id="@+id/routeButton"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@drawable/top_radius_white_background"
-                android:backgroundTint="#FFFFFF"
-                app:behavior_peekHeight="120dp"
-                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+                android:layout_weight="1"
+                android:backgroundTint="#03A9F4"
+                android:drawableLeft="@drawable/baseline_fork_right_24"
+                android:drawableTint="#FFFFFF"
+                android:padding="8dp"
+                android:text="@string/find_road"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.947"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view"
+                app:layout_constraintVertical_bias="0.837" />
 
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="30dp"
-                    android:layout_height="3dp"
-                    android:layout_marginTop="12dp"
-                    android:background="#cccccc"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bottomSheetDurationTextView"
+                app:layout_constraintVertical_bias="1.0">
 
-                <TextView
-                    android:id="@+id/bottomSheetNameTextView"
+                <Button
+                    android:id="@+id/homeButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:padding="8dp"
-                    android:text="이름"
-                    android:textColor="@color/teal_700"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.04"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="#FFFFFF"
+                    android:drawableLeft="@drawable/ic_baseline_home_24"
+                    android:text="@string/home"
+                    android:textColor="#000000" />
 
-                <TextView
-                    android:id="@+id/bottomSheetAddressTextView"
+                <Button
+                    android:id="@+id/callButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="주소"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/bottomSheetDistanceTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/view"
-                    app:layout_constraintVertical_bias="0.346" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="#FFFFFF"
+                    android:drawableLeft="@drawable/ic_baseline_call_24"
+                    android:text="@string/call"
+                    android:textColor="#000000" />
 
-                <TextView
-                    android:id="@+id/bottomSheetDistanceTextView"
+                <Button
+                    android:id="@+id/reservationButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:padding="8dp"
-                    android:text="거리"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bottomSheetNameTextView"
-                    app:layout_constraintTop_toTopOf="@+id/view"
-                    app:layout_constraintVertical_bias="0.357" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="#FFFFFF"
+                    android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
+                    android:text="@string/reservation"
+                    android:textColor="#000000" />
 
+            </LinearLayout>
 
-                <TextView
-                    android:id="@+id/bottomSheetDurationTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="소요시간"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.046"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bottomSheetDistanceTextView"
-                    app:layout_constraintVertical_bias="0.112" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bottomSheetDurationTextView"
-                    app:layout_constraintVertical_bias="1.0">
-
-                    <Button
-                        android:id="@+id/homeButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:backgroundTint="#FFFFFF"
-                        android:drawableLeft="@drawable/ic_baseline_home_24"
-                        android:text="@string/home"
-                        android:textColor="#000000" />
-
-                    <Button
-                        android:id="@+id/callButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:backgroundTint="#FFFFFF"
-                        android:drawableLeft="@drawable/ic_baseline_call_24"
-                        android:text="@string/call"
-                        android:textColor="#000000" />
-
-                    <Button
-                        android:id="@+id/reservationButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:backgroundTint="#FFFFFF"
-                        android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
-                        android:text="@string/reservation"
-                        android:textColor="#000000" />
-
-                    <!-- 버튼 위치 옮기기 -->
-                    <Button
-                        android:id="@+id/routeButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:backgroundTint="#03A9F4"
-                        android:drawableLeft="@drawable/baseline_fork_right_24"
-                        android:drawableTint="#FFFFFF"
-                        android:text="길찾기" />
-
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
