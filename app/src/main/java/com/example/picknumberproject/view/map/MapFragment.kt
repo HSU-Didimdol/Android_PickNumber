@@ -19,6 +19,7 @@ import com.example.picknumberproject.databinding.FragmentMapBinding
 import com.example.picknumberproject.domain.model.BankEntity
 import com.example.picknumberproject.view.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingFragment
+import com.example.picknumberproject.view.extension.hideKeyboard
 import com.example.picknumberproject.view.home.HomeFragment
 import com.example.picknumberproject.view.reservation.ReservationFragment
 import com.naver.maps.geometry.LatLng
@@ -62,16 +63,38 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-        searchView.isSubmitButtonEnabled = true
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+        initSearchView()
+    }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
+    private fun initSearchView() {
+
+        searchView.isSubmitButtonEnabled = true
+        searchView.suggestionsAdapter
+
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    this@MapFragment.hideKeyboard()
+                    return false
+
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return true
+                }
+            })
+
+        searchView.setOnSuggestionListener(
+            object : SearchView.OnSuggestionListener {
+                override fun onSuggestionSelect(position: Int): Boolean {
+                    return false
+                }
+
+                override fun onSuggestionClick(position: Int): Boolean {
+                    this@MapFragment.hideKeyboard()
+                    return true
+                }
+            })
     }
 
     override fun onMapReady(Map: NaverMap) {
@@ -108,7 +131,12 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
             return
         }
-        if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+        if (locationSource.onRequestPermissionsResult(
+                requestCode,
+                permissions,
+                grantResults
+            )
+        ) {
             if (!locationSource.isActivated) {
                 map.locationTrackingMode = LocationTrackingMode.None
             }
