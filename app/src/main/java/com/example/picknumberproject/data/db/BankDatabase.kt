@@ -11,7 +11,9 @@ abstract class BankDatabase : RoomDatabase() {
     abstract fun getBankDao(): BankDao
 
     companion object {
+        @Volatile
         private var INSTANCE: BankDatabase? = null
+
         fun getDatabase(context: Context): BankDatabase {
             if (INSTANCE == null) {
                 synchronized(BankDatabase::class) {

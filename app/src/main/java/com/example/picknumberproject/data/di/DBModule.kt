@@ -2,6 +2,7 @@ package com.example.picknumberproject.data.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.picknumberproject.data.db.BankDao
 import com.example.picknumberproject.data.db.BankDatabase
 import dagger.Module
 import dagger.Provides
@@ -22,4 +23,8 @@ object DBModule {
             .allowMainThreadQueries()
             .build()
 
+    @Provides
+    fun provideBankDao(bankDatabase: BankDatabase): BankDao {
+        return bankDatabase.getBankDao()
+    }
 }
