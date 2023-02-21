@@ -38,4 +38,8 @@
         </activity>
     </application>
 
+    <queries>
+        <package android:name="com.nhn.android.nmap"/>
+    </queries>
+
 </manifest>
