@@ -149,8 +149,6 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             infoWindow.anchor = PointF(0.5f, 0.5f)
             //infoWindow.open(marker)
             infoWindow.open(map)
-
-
         }
     }
 
