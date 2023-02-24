@@ -11,15 +11,19 @@ abstract class BankDatabase : RoomDatabase() {
     abstract fun getBankDao(): BankDao
 
     companion object {
+        @Volatile
         private var INSTANCE: BankDatabase? = null
+
         fun getDatabase(context: Context): BankDatabase {
             if (INSTANCE == null) {
                 synchronized(BankDatabase::class) {
                     INSTANCE = Room.databaseBuilder(
-                        context, BankDatabase::class.java, "bank_table"
+                        context.applicationContext,
+                        BankDatabase::class.java,
+                        "bank_table"
                     )
                         .fallbackToDestructiveMigration()
-                        .build()
+                        .build();
                 }
             }
             return INSTANCE as BankDatabase

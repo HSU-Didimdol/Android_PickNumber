@@ -10,7 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -18,6 +19,7 @@ import com.example.picknumberproject.databinding.FragmentMapBinding
 import com.example.picknumberproject.domain.model.BankEntity
 import com.example.picknumberproject.view.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingFragment
+import com.example.picknumberproject.view.extension.hideKeyboard
 import com.example.picknumberproject.view.home.HomeFragment
 import com.example.picknumberproject.view.reservation.ReservationFragment
 import com.naver.maps.geometry.LatLng
@@ -36,7 +38,7 @@ import kotlinx.coroutines.launch
 class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallback,
     Overlay.OnClickListener {
 
-    private lateinit var naverMap: NaverMap
+    private lateinit var map: NaverMap
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMapBinding
         get() = FragmentMapBinding::inflate
@@ -52,7 +54,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
 
-    private val viewModel: MapViewModel by viewModels()
+    private val viewModel: MapViewModel by activityViewModels()
     //  "x": "126.9050532",
     //  "y": "37.4652659",
 
@@ -60,23 +62,56 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         super.onViewCreated(view, savedInstanceState)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+        initSearchView()
+    }
+
+    private fun initSearchView() {
+
+        searchView.isSubmitButtonEnabled = true
+        searchView.suggestionsAdapter
+
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    this@MapFragment.hideKeyboard()
+                    return false
+
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return true
+                }
+            })
+
+        searchView.setOnSuggestionListener(
+            object : SearchView.OnSuggestionListener {
+                override fun onSuggestionSelect(position: Int): Boolean {
+                    return false
+                }
+
+                override fun onSuggestionClick(position: Int): Boolean {
+                    this@MapFragment.hideKeyboard()
+                    return true
+                }
+            })
     }
 
     override fun onMapReady(Map: NaverMap) {
-        naverMap = Map
-        val uiSetting = naverMap.uiSettings
+        map = Map
+        val uiSetting = map.uiSettings
         uiSetting.isLocationButtonEnabled = true
-        naverMap.locationSource = locationSource
-        naverMap.locationTrackingMode = LocationTrackingMode.Follow
+        map.locationSource = locationSource
+        map.locationTrackingMode = LocationTrackingMode.Follow
         val cameraUpdate = CameraUpdate
             .scrollAndZoomTo(
                 LatLng(
-                    naverMap.cameraPosition.target.latitude,
-                    naverMap.cameraPosition.target.longitude
+                    map.cameraPosition.target.latitude,
+                    map.cameraPosition.target.longitude
                 ),
                 9.0
             )
-        naverMap.moveCamera(cameraUpdate)
+        map.moveCamera(cameraUpdate)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -85,7 +120,6 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
                 }
             }
         }
-
     }
 
     @Deprecated("Deprecated in Java")
@@ -97,9 +131,14 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
             return
         }
-        if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+        if (locationSource.onRequestPermissionsResult(
+                requestCode,
+                permissions,
+                grantResults
+            )
+        ) {
             if (!locationSource.isActivated) {
-                naverMap.locationTrackingMode = LocationTrackingMode.None
+                map.locationTrackingMode = LocationTrackingMode.None
             }
             return
         }
@@ -114,13 +153,13 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             val marker = Marker()
             marker.position = LatLng(bank.latitude, bank.longitude)
             marker.infoWindow
-            marker.map = naverMap
+            marker.map = map
             marker.icon = MarkerIcons.GREEN
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.BLUE
             marker.tag =
-                bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel + "/" + bank.latitude + "/" +bank.longitude
+                bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel + "/" + bank.latitude + "/" + bank.longitude
             marker.onClickListener = this
             //marker.captionText = bank.name
             marker.captionTextSize = 16f
@@ -129,16 +168,15 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
 
             val infoWindow = InfoWindow()
             infoWindow.position = LatLng(bank.latitude, bank.longitude)
-            infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(requireContext()) { //DefaultViewadapter? 아니면 Adapter 구현?
+            infoWindow.adapter = object :
+                InfoWindow.DefaultTextAdapter(requireContext()) { //DefaultViewadapter? 아니면 Adapter 구현?
                 override fun getText(infoWindow: InfoWindow): CharSequence {
                     return bank.name
                 }
             }
             infoWindow.anchor = PointF(0.5f, 0.5f)
             //infoWindow.open(marker)
-            infoWindow.open(naverMap)
-
-
+            infoWindow.open(map)
         }
     }
 
@@ -221,13 +259,15 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
 
             routeButton.setOnClickListener {
                 //자동차 길찾기
-                val url = "nmap://route/car?slat="+ naverMap.cameraPosition.target.latitude + "&slng=" + naverMap.cameraPosition.target.longitude +  "&sname="  + "&dlat=" + bankData[7] + "&dlng=" + bankData[8] + "&dname="+ bankData[0] + "&appname=com.example.picknumberproject"
+                val url =
+                    "nmap://route/car?slat=" + map.cameraPosition.target.latitude + "&slng=" + map.cameraPosition.target.longitude + "&sname=" + "&dlat=" + bankData[7] + "&dlng=" + bankData[8] + "&dname=" + bankData[0] + "&appname=com.example.picknumberproject"
 
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 intent.addCategory(Intent.CATEGORY_BROWSABLE)
 
                 //네이버 지도 앱 설치 여부 확인
-                val installed = requireContext().packageManager.getLaunchIntentForPackage("com.nhn.android.nmap")
+                val installed =
+                    requireContext().packageManager.getLaunchIntentForPackage("com.nhn.android.nmap")
                 if (installed == null) {
                     requireContext().startActivity(
                         Intent(
