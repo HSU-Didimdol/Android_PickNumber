@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -46,7 +47,6 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     private val locationSource: FusedLocationSource by lazy {
         FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
     }
-
     private val mainActivity: MainActivity
         get() = activity as MainActivity
 
@@ -64,16 +64,19 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         mapView.getMapAsync(this)
 
         initSearchView()
+        routeButton.isVisible = false
     }
 
     private fun initSearchView() {
 
         searchView.isSubmitButtonEnabled = true
-        searchView.suggestionsAdapter
+        val adapter = SearchAdapter(requireContext())
+        searchView.suggestionsAdapter = adapter
 
         searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
+
                     this@MapFragment.hideKeyboard()
                     return false
 
@@ -91,6 +94,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
                 }
 
                 override fun onSuggestionClick(position: Int): Boolean {
+
                     this@MapFragment.hideKeyboard()
                     return true
                 }
@@ -161,7 +165,6 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
             marker.tag =
                 bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel + "/" + bank.latitude + "/" + bank.longitude
             marker.onClickListener = this
-            //marker.captionText = bank.name
             marker.captionTextSize = 16f
             marker.isHideCollidedSymbols = true
             marker.isHideCollidedMarkers = true
@@ -175,7 +178,6 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
                 }
             }
             infoWindow.anchor = PointF(0.5f, 0.5f)
-            //infoWindow.open(marker)
             infoWindow.open(map)
         }
     }
@@ -216,6 +218,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     override fun onClick(p0: Overlay): Boolean {
+        routeButton.isVisible = true
         if (p0 is Marker) {
             Log.d("p0:", p0.tag.toString())
             val bankData = p0.tag.toString().split("/")

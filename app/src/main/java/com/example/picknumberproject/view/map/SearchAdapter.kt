@@ -1,43 +1,41 @@
 package com.example.picknumberproject.view.map
 
+import android.content.Context
+import android.database.Cursor
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import android.widget.ImageView
+import androidx.cursoradapter.widget.CursorAdapter
 import com.example.picknumberproject.R
-import com.example.picknumberproject.databinding.SearchItemBinding
-import com.example.picknumberproject.domain.model.BankEntity
+import kotlinx.android.synthetic.main.search_item.view.*
 
 
-class SearchAdapter : RecyclerView.Adapter<SearchItemViewHolder>() {
+class SearchAdapter(context: Context) : CursorAdapter(context, null, 0) {
 
-    private var searchResultList: List<BankEntity> = listOf()
-    lateinit var searchResultClickListener: (BankEntity) -> Unit
-
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {
-        val view = SearchItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return SearchItemViewHolder(view, searchResultClickListener)
+    private val inflater by lazy {
+        LayoutInflater.from(context)
     }
 
-    override fun getItemViewType(position: Int): Int = R.layout.search_item
+    override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View =
+        inflater.inflate(R.layout.search_item, parent, false)
 
-    override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
-        holder.bindData(searchResultList[position])
-        holder.bindViews(searchResultList[position])
+    override fun bindView(view: View, context: Context, cursor: Cursor) {
+        val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
+        val address = cursor.getString(cursor.getColumnIndexOrThrow("address"))
+        val distance = cursor.getInt(cursor.getColumnIndexOrThrow("distance"))
+        val nameText = view.nameTextView
+        val addressText = view.addressTextView
+        val distanceText = view.distanceTextView
+
+        nameText.text = name
+        addressText.text = address
+        distanceText.text = distance.toString()
+
+        val icon = view.findViewById<ImageView>(R.id.profileImage)
+        icon.setImageResource(R.drawable.ic_baseline_location_on_24)
+        icon.visibility = View.VISIBLE
     }
 
-    override fun getItemCount(): Int = searchResultList.size
-
-    fun setSearchResultList(
-        searchResultList: List<BankEntity>,
-        searchResultClickListener: (BankEntity) -> Unit
-    ) {
-        this.searchResultList = searchResultList
-        this.searchResultClickListener = searchResultClickListener
-        notifyDataSetChanged()
-    }
 }
+
