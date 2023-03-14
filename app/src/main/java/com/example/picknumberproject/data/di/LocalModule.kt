@@ -1,7 +1,7 @@
 package com.example.picknumberproject.data.di
 
-import com.example.picknumberproject.data.source.BankLocalDataSource
-import com.example.picknumberproject.data.source.BankLocalDataSourceImpl
+import com.example.picknumberproject.data.source.CompanyLocalDataSource
+import com.example.picknumberproject.data.source.CompanyLocalDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,9 +14,9 @@ abstract class LocalModule {
 
     @Singleton
     @Binds
-    abstract fun bindsBankLocalDataSource(
-        bankLocalDataSourceImpl: BankLocalDataSourceImpl
-    ): BankLocalDataSource
+    abstract fun bindsCompanyLocalDataSource(
+        companyLocalDataSourceImpl: CompanyLocalDataSourceImpl
+    ): CompanyLocalDataSource
 
 
 }

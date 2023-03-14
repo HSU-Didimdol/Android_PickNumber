@@ -2,8 +2,8 @@ package com.example.picknumberproject.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.picknumberproject.data.db.BankDao
-import com.example.picknumberproject.data.db.BankDatabase
+import com.example.picknumberproject.data.db.CompanyDao
+import com.example.picknumberproject.data.db.CompanyDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,14 +17,14 @@ object DBModule {
 
     @Provides
     @Singleton
-    fun provideBankDB(@ApplicationContext context: Context): BankDatabase =
-        Room.databaseBuilder(context, BankDatabase::class.java, "bank_table")
+    fun provideCompanyDB(@ApplicationContext context: Context): CompanyDatabase =
+        Room.databaseBuilder(context, CompanyDatabase::class.java, "bank_table")
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
 
     @Provides
-    fun provideBankDao(bankDatabase: BankDatabase): BankDao {
+    fun provideCompanyDao(bankDatabase: CompanyDatabase): CompanyDao {
         return bankDatabase.getBankDao()
     }
 }

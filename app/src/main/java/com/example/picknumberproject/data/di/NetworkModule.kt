@@ -1,9 +1,9 @@
 package com.example.picknumberproject.data.di
 
 import com.example.picknumberproject.BuildConfig
-import com.example.picknumberproject.data.api.BankApi
+import com.example.picknumberproject.data.api.CompanyApi
 import com.example.picknumberproject.data.api.Direction5Api
-import com.example.picknumberproject.data.di.annotation.BankRetrofitInstance
+import com.example.picknumberproject.data.di.annotation.CompanyRetrofitInstance
 import com.example.picknumberproject.data.di.annotation.Directions5RetrofitInstance
 import com.example.picknumberproject.data.url.Url
 import dagger.Module
@@ -43,15 +43,15 @@ class NetworkModule {
         return GsonConverterFactory.create()
     }
 
-    @BankRetrofitInstance
+    @CompanyRetrofitInstance
     @Provides
     @Singleton
-    fun provideBankRetrofit(
+    fun provideCompanyRetrofit(
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(Url.MOCK_BANK_URL)
+            .baseUrl(Url.COMPANY_URL)
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .build()
@@ -73,8 +73,8 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideBankApiService(@BankRetrofitInstance retrofit: Retrofit): BankApi {
-        return retrofit.create(BankApi::class.java)
+    fun provideBankApiService(@CompanyRetrofitInstance retrofit: Retrofit): CompanyApi {
+        return retrofit.create(CompanyApi::class.java)
     }
 
     @Provides
