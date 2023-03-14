@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.example.picknumberproject.domain.model.BankEntity
 
 @Dao
-interface BankDao {
+interface CompanyDao {
     @Query("SELECT * FROM bank_table")
     fun getAll(): List<BankEntity>
 

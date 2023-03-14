@@ -1,22 +1,21 @@
-package com.example.picknumberproject.data.dto.bank
+package com.example.picknumberproject.data.dto.company
 
-data class BankDto(
+data class Result(
     val address: String,
-    val categoryID: Int,
-    val code: Int,
+    val code: String,
     val companyID: Int,
-    val divisionCode: Int,
+    val divisionCode: String,
     val divisionName: String,
-    val endTime: String,
+    val email: String,
     val fax: String,
     val gugun: String,
-    val latitude: Double,
-    val longitude: Double,
+    val latitude: String,
+    val longitude: String,
     val modifyDate: String,
     val name: String,
     val registrationDate: String,
+    val securityKey: String,
     val sido: String,
-    val startTime: String,
     val tel: String,
     val type: String,
     val use: String
