@@ -7,26 +7,26 @@ import androidx.room.RoomDatabase
 import com.example.picknumberproject.domain.model.BankEntity
 
 @Database(entities = [BankEntity::class], version = 1)
-abstract class BankDatabase : RoomDatabase() {
-    abstract fun getBankDao(): BankDao
+abstract class CompanyDatabase : RoomDatabase() {
+    abstract fun getBankDao(): CompanyDao
 
     companion object {
         @Volatile
-        private var INSTANCE: BankDatabase? = null
+        private var INSTANCE: CompanyDatabase? = null
 
-        fun getDatabase(context: Context): BankDatabase {
+        fun getDatabase(context: Context): CompanyDatabase {
             if (INSTANCE == null) {
-                synchronized(BankDatabase::class) {
+                synchronized(CompanyDatabase::class) {
                     INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
-                        BankDatabase::class.java,
-                        "bank_table"
+                        CompanyDatabase::class.java,
+                        "company_table"
                     )
                         .fallbackToDestructiveMigration()
                         .build();
                 }
             }
-            return INSTANCE as BankDatabase
+            return INSTANCE as CompanyDatabase
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.example.picknumberproject.data.di
 
-import com.example.picknumberproject.data.repository.BankRepositoryImpl
+import com.example.picknumberproject.data.repository.CompanyRepositoryImpl
 import com.example.picknumberproject.domain.repository.BankRepository
 import dagger.Binds
 import dagger.Module
@@ -15,7 +15,7 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindBankRepository(
-        bankRepositoryImpl: BankRepositoryImpl
+        companyRepositoryImpl: CompanyRepositoryImpl
     ): BankRepository
 
 }

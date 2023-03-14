@@ -1,12 +1,12 @@
 package com.example.picknumberproject.data.source
 
-import com.example.picknumberproject.data.db.BankDao
+import com.example.picknumberproject.data.db.CompanyDao
 import com.example.picknumberproject.domain.model.BankEntity
 import javax.inject.Inject
 
-class BankLocalDataSourceImpl @Inject constructor(
-    private val bankDao: BankDao
-) : BankLocalDataSource {
+class CompanyLocalDataSourceImpl @Inject constructor(
+    private val companyDao: CompanyDao
+) : CompanyLocalDataSource {
 
     private var data: List<BankEntity>? = null
 
@@ -19,18 +19,18 @@ class BankLocalDataSourceImpl @Inject constructor(
         if (data != null) {
             return data
         }
-        return bankDao.getAll()
+        return companyDao.getAll()
 
     }
 
     override suspend fun setData(bankLocalData: List<BankEntity>) {
         data = bankLocalData
-        bankDao.insertAll(data!!)
+        companyDao.insertAll(data!!)
     }
 
     override suspend fun clear() {
         data = null
-        bankDao.deleteAll()
+        companyDao.deleteAll()
     }
 
 }

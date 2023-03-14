@@ -1,7 +1,7 @@
 package com.example.picknumberproject.data.di
 
-import com.example.picknumberproject.data.source.BankRemoteDataSource
-import com.example.picknumberproject.data.source.BankRemoteDataSourceImpl
+import com.example.picknumberproject.data.source.CompanyRemoteDataSource
+import com.example.picknumberproject.data.source.CompanyRemoteDataSourceImpl
 import com.example.picknumberproject.data.source.Directions5RemoteDataSource
 import com.example.picknumberproject.data.source.Directions5RemoteDataSourceImpl
 import dagger.Binds
@@ -16,9 +16,9 @@ abstract class RemoteModule {
 
     @Singleton
     @Binds
-    abstract fun bindsBankRemoteDataSource(
-        bankRemoteDataSourceImpl: BankRemoteDataSourceImpl
-    ): BankRemoteDataSource
+    abstract fun bindsCompanyRemoteDataSource(
+        companyRemoteDataSourceImpl: CompanyRemoteDataSourceImpl
+    ): CompanyRemoteDataSource
 
     @Singleton
     @Binds
