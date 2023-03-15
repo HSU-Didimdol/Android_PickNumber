@@ -1,6 +1,7 @@
 package com.example.picknumberproject.domain.model
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_table")

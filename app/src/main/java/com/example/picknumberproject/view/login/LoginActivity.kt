@@ -40,7 +40,6 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
 
         /**
          * 일단 2명의 정보 저장해두기
-         * Unique 설정 해야 할 것 같은데...
          */
         userDB.getUser().insertUser(UserEntity("010-1111-0000", "박길동"))
         userDB.getUser().insertUser(UserEntity("010-2222-1111", "이길동"))
