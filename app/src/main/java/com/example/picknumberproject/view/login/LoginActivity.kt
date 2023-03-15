@@ -1,6 +1,5 @@
 package com.example.picknumberproject.view.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
@@ -11,6 +10,7 @@ import com.example.picknumberproject.R
 import com.example.picknumberproject.data.db.UserDatabase
 import com.example.picknumberproject.databinding.ActivityLoginBinding
 import com.example.picknumberproject.domain.model.UserEntity
+import com.example.picknumberproject.view.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,13 +77,16 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
 
             Log.d("userName:", userName.toString())
             Log.d("phoneNum:", phoneNumber.toString())
+
+            navigateMainActivity()
         }
 
         // 회원가입 버튼 클릭
         signUp_btn.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+            navigateSignUpActivity()
         }
+
+
     }
 
     // 입력된 전화번호가 가입되어 있는 전화번호인지 확인
@@ -94,5 +97,15 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
     // 입력된 전화번호로 DB 에서 사용자 이름 가져오기
     private fun checkValidName(phoneNumber: String): String {
         return userDB.getUser().getUserByPhone(phoneNumber)
+    }
+
+    private fun navigateSignUpActivity() {
+        val intent = SignUpActivity.getIntent(this)
+        startActivity(intent)
+    }
+
+    private fun navigateMainActivity() {
+        val intent = MainActivity.getIntent(this)
+        startActivity(intent)
     }
 }

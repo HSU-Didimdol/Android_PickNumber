@@ -1,5 +1,7 @@
 package com.example.picknumberproject.view
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -18,6 +20,12 @@ import kotlinx.android.synthetic.main.fragment_map.*
 
 @AndroidEntryPoint
 class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
+
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, MainActivity::class.java)
+        }
+    }
 
     private val viewModel: MainViewModel by viewModels()
 

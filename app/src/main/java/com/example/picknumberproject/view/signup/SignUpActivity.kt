@@ -1,5 +1,7 @@
 package com.example.picknumberproject.view.signup
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,6 +13,12 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 
 @AndroidEntryPoint
 class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
+
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, SignUpActivity::class.java)
+        }
+    }
 
     override val bindingInflater: (LayoutInflater) -> ActivitySignUpBinding
         get() = ActivitySignUpBinding::inflate
