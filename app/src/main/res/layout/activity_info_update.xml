@@ -3,12 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:backgroundTint="#E17373"
-    tools:context=".view.signup.SignUpActivity">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/signupAppBarLayout"
+        android:id="@+id/infoUpdateAppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -16,29 +14,29 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/signup_toolbar"
+            android:id="@+id/info_update_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?android:attr/windowBackground"
             android:backgroundTint="#F67A8D"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:menu="@menu/menu_signup"
+            app:menu="@menu/menu_infoupdate"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <TextView
-                android:id="@+id/signup_toolbar_title"
+                android:id="@+id/info_update_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="회원가입"
+                android:text="정보수정"
                 android:textColor="@color/white"
-                android:textSize="25dp" />
+                android:textSize="23dp" />
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/signupInfoTextView"
+        android:id="@+id/signupInfoTextView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
@@ -62,7 +60,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tableLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupInfoTextView">
+        app:layout_constraintTop_toBottomOf="@+id/signupInfoTextView2">
 
         <TableRow
             android:layout_width="match_parent"
@@ -72,7 +70,7 @@
             android:background="#FFFFFF">
 
             <TextView
-                android:id="@+id/termsTextView"
+                android:id="@+id/termsTextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_span="3" />
@@ -104,7 +102,7 @@
                 android:textColor="@color/black" />
 
             <CheckBox
-                android:id="@+id/agreementCheckBox"
+                android:id="@+id/agreementCheckBox2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="80dp"
@@ -134,7 +132,7 @@
             android:background="#FFFFFF">
 
             <TextView
-                android:id="@+id/userNameTextView"
+                android:id="@+id/userNameTextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -145,7 +143,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/userNameEditText"
+                android:id="@+id/userNameEditText2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
@@ -166,7 +164,7 @@
             android:background="#FFFFFF">
 
             <TextView
-                android:id="@+id/userPhoneTextView"
+                android:id="@+id/userPhoneTextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -177,7 +175,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/userPhoneEditText"
+                android:id="@+id/userPhoneEditText2"
                 android:layout_width="121dp"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
@@ -209,7 +207,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/verificationCodeButton"
+                android:id="@+id/verificationCodeButton2"
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -218,7 +216,7 @@
 
 
             <EditText
-                android:id="@+id/verificationCodeEditText"
+                android:id="@+id/verificationCodeEditText2"
                 android:layout_width="95dp"
                 android:layout_height="41dp"
                 android:layout_margin="5dp"
@@ -228,7 +226,7 @@
                 android:inputType="number" />
 
             <TextView
-                android:id="@+id/timeTextView"
+                android:id="@+id/timeTextView2"
                 android:layout_width="26dp"
                 android:layout_height="39dp"
                 android:layout_margin="5dp"
@@ -240,17 +238,15 @@
     </TableLayout>
 
     <Button
-        android:id="@+id/signupButton"
+        android:id="@+id/infoUpdateButton"
         android:layout_width="119dp"
         android:layout_height="54dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="#F2E041"
-        android:text="회원가입"
+        android:text="정보수정"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout2" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

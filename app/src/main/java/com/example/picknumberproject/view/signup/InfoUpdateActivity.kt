@@ -4,22 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import com.example.picknumberproject.R
-import com.example.picknumberproject.databinding.ActivitySignUpBinding
+import com.example.picknumberproject.databinding.ActivityInfoUpdateBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.activity_info_update.*
 
 @AndroidEntryPoint
-class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
+class InfoUpdateActivity : ViewBindingActivity<ActivityInfoUpdateBinding>() {
 
-    override val bindingInflater: (LayoutInflater) -> ActivitySignUpBinding
-        get() = ActivitySignUpBinding::inflate
+    override val bindingInflater: (LayoutInflater) -> ActivityInfoUpdateBinding
+        get() = ActivityInfoUpdateBinding::inflate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        setContentView(R.layout.activity_info_update)
 
-        setSupportActionBar(signup_toolbar)
+        setSupportActionBar(info_update_toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //왼쪽 뒤로가기 사용여부
         supportActionBar?.setHomeAsUpIndicator(R.drawable.cancel_button) //왼쪽 뒤로가기 아이콘 변경
@@ -28,7 +28,7 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(
-            R.menu.menu_signup,
+            R.menu.menu_infoupdate,
             menu
         )
         return true
