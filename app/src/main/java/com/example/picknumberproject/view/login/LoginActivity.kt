@@ -1,6 +1,6 @@
 package com.example.picknumberproject.view.login
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
@@ -12,6 +12,7 @@ import com.example.picknumberproject.data.db.UserDatabase
 import com.example.picknumberproject.databinding.ActivityLoginBinding
 import com.example.picknumberproject.domain.model.UserEntity
 import com.example.picknumberproject.view.common.ViewBindingActivity
+import com.example.picknumberproject.view.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -81,7 +82,8 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
 
         // 회원가입 버튼 클릭
         signUp_btn.setOnClickListener {
-
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
     }
 
