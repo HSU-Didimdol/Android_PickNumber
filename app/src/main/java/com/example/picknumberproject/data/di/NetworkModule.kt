@@ -3,8 +3,10 @@ package com.example.picknumberproject.data.di
 import com.example.picknumberproject.BuildConfig
 import com.example.picknumberproject.data.api.CompanyApi
 import com.example.picknumberproject.data.api.Direction5Api
+import com.example.picknumberproject.data.api.ReservationApi
 import com.example.picknumberproject.data.di.annotation.CompanyRetrofitInstance
 import com.example.picknumberproject.data.di.annotation.Directions5RetrofitInstance
+import com.example.picknumberproject.data.di.annotation.ReservationRetrofitInstance
 import com.example.picknumberproject.data.url.Url
 import dagger.Module
 import dagger.Provides
@@ -43,6 +45,22 @@ class NetworkModule {
         return GsonConverterFactory.create()
     }
 
+
+    @CompanyRetrofitInstance
+    @Provides
+    @Singleton
+    fun provideReservationRetrofit(
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(Url.RESERVATION_URL)
+            .client(okHttpClient)
+            .addConverterFactory(gsonConverterFactory)
+            .build()
+    }
+
+
     @CompanyRetrofitInstance
     @Provides
     @Singleton
@@ -73,8 +91,14 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideBankApiService(@CompanyRetrofitInstance retrofit: Retrofit): CompanyApi {
+    fun provideCompanyApiService(@CompanyRetrofitInstance retrofit: Retrofit): CompanyApi {
         return retrofit.create(CompanyApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideReservation(@ReservationRetrofitInstance retrofit: Retrofit) : ReservationApi{
+        return retrofit.create(ReservationApi::class.java)
     }
 
     @Provides

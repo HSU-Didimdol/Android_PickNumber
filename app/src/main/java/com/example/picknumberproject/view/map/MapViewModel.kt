@@ -2,7 +2,7 @@ package com.example.picknumberproject.view.map
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.picknumberproject.domain.repository.BankRepository
+import com.example.picknumberproject.domain.repository.CompanyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    private val bankRepository: BankRepository
+    private val companyRepository: CompanyRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MapUiState())
@@ -26,7 +26,7 @@ class MapViewModel @Inject constructor(
     private fun refreshData() {
         viewModelScope.launch {
             _uiState.update {
-                it.copy(bankListData = bankRepository.getAllBankEntityList())
+                it.copy(companyListData = companyRepository.getAllCompanyEntityList())
             }
         }
     }

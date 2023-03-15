@@ -11,11 +11,12 @@ class CompanyRemoteDataSourceImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : CompanyRemoteDataSource {
 
-    override suspend fun getBankList() = withContext(ioDispatcher) {
-        val response = companyApi.getBankList()
+    override suspend fun getCompanyList() = withContext(ioDispatcher) {
+        val response = companyApi.getCompanyList()
         if(response.isSuccessful && response.body() != null){
+            response
+        } else{
 
         }
     }
-
 }
