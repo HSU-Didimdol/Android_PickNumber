@@ -1,7 +1,7 @@
 package com.example.picknumberproject.view.map
 
-import com.example.picknumberproject.domain.model.BankEntity
+import com.example.picknumberproject.domain.model.CompanyEntity
 
 data class MapUiState(
-    val bankListData: List<BankEntity> = emptyList()
+    val companyListData: List<CompanyEntity> = emptyList()
 )

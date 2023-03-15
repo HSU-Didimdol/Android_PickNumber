@@ -4,6 +4,6 @@ import com.example.picknumberproject.data.dto.company.CompanyDto
 
 interface CompanyRemoteDataSource {
 
-    suspend fun getBankList(): CompanyDto
+    suspend fun getCompanyList(): CompanyDto
 
 }

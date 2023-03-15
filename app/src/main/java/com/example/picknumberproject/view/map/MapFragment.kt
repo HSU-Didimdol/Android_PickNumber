@@ -17,7 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.picknumberproject.databinding.FragmentMapBinding
-import com.example.picknumberproject.domain.model.BankEntity
+import com.example.picknumberproject.domain.model.CompanyEntity
 import com.example.picknumberproject.view.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.extension.hideKeyboard
@@ -152,7 +152,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         updateMarker(uiState.bankListData)
     }
 
-    private fun updateMarker(banks: List<BankEntity>) {
+    private fun updateMarker(banks: List<CompanyEntity>) {
         banks.forEach { bank ->
             val marker = Marker()
             marker.position = LatLng(bank.latitude, bank.longitude)
