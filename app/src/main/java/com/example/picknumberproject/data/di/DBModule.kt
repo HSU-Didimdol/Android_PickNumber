@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.picknumberproject.data.db.CompanyDao
 import com.example.picknumberproject.data.db.CompanyDatabase
+import com.example.picknumberproject.data.db.UserDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,13 +19,13 @@ object DBModule {
     @Provides
     @Singleton
     fun provideCompanyDB(@ApplicationContext context: Context): CompanyDatabase =
-        Room.databaseBuilder(context, CompanyDatabase::class.java, "bank_table")
+        Room.databaseBuilder(context, CompanyDatabase::class.java, "company_table")
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
 
     @Provides
-    fun provideCompanyDao(bankDatabase: CompanyDatabase): CompanyDao {
-        return bankDatabase.getBankDao()
+    fun provideCompanyDao(companyDatabase: CompanyDatabase): CompanyDao {
+        return companyDatabase.getBankDao()
     }
 }
