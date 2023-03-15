@@ -13,9 +13,9 @@ class CompanyRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getCompanyList() = withContext(ioDispatcher) {
         val response = companyApi.getCompanyList()
-        if(response.isSuccessful && response.body() != null){
+        if (response.isSuccessful && response.body() != null) {
             response
-        } else{
+        } else {
 
         }
     }
