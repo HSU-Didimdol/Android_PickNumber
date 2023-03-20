@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view.map
+package com.example.picknumberproject.view.main.map
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.picknumberproject.databinding.SearchItemBinding

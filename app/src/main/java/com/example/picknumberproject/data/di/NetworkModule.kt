@@ -3,10 +3,10 @@ package com.example.picknumberproject.data.di
 import com.example.picknumberproject.BuildConfig
 import com.example.picknumberproject.data.api.CompanyApi
 import com.example.picknumberproject.data.api.Direction5Api
-import com.example.picknumberproject.data.api.ReservationApi
+import com.example.picknumberproject.data.api.MainServerApi
 import com.example.picknumberproject.data.di.annotation.CompanyRetrofitInstance
 import com.example.picknumberproject.data.di.annotation.Directions5RetrofitInstance
-import com.example.picknumberproject.data.di.annotation.ReservationRetrofitInstance
+import com.example.picknumberproject.data.di.annotation.ServerRetrofitInstance
 import com.example.picknumberproject.data.url.Url
 import dagger.Module
 import dagger.Provides
@@ -26,9 +26,7 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideHttpClient(): OkHttpClient {
-
         val interceptor = HttpLoggingInterceptor()
-
         interceptor.level =
             if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
             else HttpLoggingInterceptor.Level.NONE
@@ -46,15 +44,15 @@ class NetworkModule {
     }
 
 
-    @CompanyRetrofitInstance
+    @ServerRetrofitInstance
     @Provides
     @Singleton
-    fun provideReservationRetrofit(
+    fun provideServerRetrofit(
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(Url.RESERVATION_URL)
+            .baseUrl(Url.SERVER_URL)
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .build()
@@ -97,8 +95,8 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideReservation(@ReservationRetrofitInstance retrofit: Retrofit) : ReservationApi{
-        return retrofit.create(ReservationApi::class.java)
+    fun provideServerApiServer(@ServerRetrofitInstance retrofit: Retrofit): MainServerApi {
+        return retrofit.create(MainServerApi::class.java)
     }
 
     @Provides

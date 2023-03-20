@@ -10,7 +10,7 @@ import com.example.picknumberproject.R
 import com.example.picknumberproject.data.db.UserDatabase
 import com.example.picknumberproject.databinding.ActivityLoginBinding
 import com.example.picknumberproject.domain.model.UserEntity
-import com.example.picknumberproject.view.MainActivity
+import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view.map
+package com.example.picknumberproject.view.main.map
 
 import android.content.Context
 import android.database.Cursor

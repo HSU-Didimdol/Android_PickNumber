@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view.map
+package com.example.picknumberproject.view.main.map
 
 import android.content.Intent
 import android.graphics.Color
@@ -18,11 +18,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.picknumberproject.databinding.FragmentMapBinding
 import com.example.picknumberproject.domain.model.CompanyEntity
-import com.example.picknumberproject.view.MainActivity
+import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.extension.hideKeyboard
-import com.example.picknumberproject.view.home.HomeFragment
-import com.example.picknumberproject.view.reservation.ReservationFragment
+import com.example.picknumberproject.view.main.homepage.HomePageFragment
+import com.example.picknumberproject.view.main.reservation.ReservationFragment
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
@@ -149,7 +149,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     private fun updateUi(uiState: MapUiState) {
-        updateMarker(uiState.bankListData)
+        updateMarker(uiState.companyListData)
     }
 
     private fun updateMarker(banks: List<CompanyEntity>) {
@@ -243,7 +243,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
                 //{0} = code, {1} = divisionCode
                 val url =
                     "https://www.kfcc.co.kr/map/view.do?gmgoCd=" + bankData[4] + "&name=&gmgoNm=&divCd=00" + bankData[5] + "&code1=" + bankData[4] + "&code2=00" + bankData[5] + "&tab=sub_tab_map"
-                navigationToHome(url)
+                navigationToHomePage(url)
             }
 
             reservationButton.setOnClickListener {
@@ -288,9 +288,9 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         return false
     }
 
-    private fun navigationToHome(url: String) {
-        val homeFragment = HomeFragment(url = url)
-        mainActivity.replaceFragment(homeFragment)
+    private fun navigationToHomePage(url: String) {
+        val homePageFragment = HomePageFragment(url = url)
+        mainActivity.replaceFragment(homePageFragment)
     }
 
     private fun navigationToReservation(url: String) {
