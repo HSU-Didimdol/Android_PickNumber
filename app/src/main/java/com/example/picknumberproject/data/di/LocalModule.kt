@@ -18,5 +18,4 @@ abstract class LocalModule {
         companyLocalDataSourceImpl: CompanyLocalDataSourceImpl
     ): CompanyLocalDataSource
 
-
 }

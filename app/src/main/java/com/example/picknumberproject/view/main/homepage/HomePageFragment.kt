@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view.home
+package com.example.picknumberproject.view.main.homepage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,7 +11,7 @@ import com.example.picknumberproject.databinding.FragmentHomeBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment(
+class HomePageFragment(
     private val url: String
 ) : ViewBindingFragment<FragmentHomeBinding>() {
 

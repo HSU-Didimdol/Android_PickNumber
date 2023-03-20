@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view
+package com.example.picknumberproject.view.main
 
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
-import com.example.picknumberproject.view.map.MapFragment
+import com.example.picknumberproject.view.main.map.MapFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_map.*
 

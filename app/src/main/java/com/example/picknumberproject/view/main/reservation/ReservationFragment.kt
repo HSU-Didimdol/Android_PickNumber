@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view.reservation
+package com.example.picknumberproject.view.main.reservation
 
 import android.os.Bundle
 import android.view.LayoutInflater
