@@ -22,7 +22,7 @@ import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.extension.hideKeyboard
 import com.example.picknumberproject.view.main.homepage.HomePageFragment
-import com.example.picknumberproject.view.main.reservation.ReservationFragment
+import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
@@ -63,42 +63,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-        initSearchView()
         routeButton.isVisible = false
-    }
-
-    private fun initSearchView() {
-
-        searchView.isSubmitButtonEnabled = true
-        val adapter = SearchAdapter(requireContext())
-        searchView.suggestionsAdapter = adapter
-
-        searchView.setOnQueryTextListener(
-            object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-
-                    this@MapFragment.hideKeyboard()
-                    return false
-
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    return true
-                }
-            })
-
-        searchView.setOnSuggestionListener(
-            object : SearchView.OnSuggestionListener {
-                override fun onSuggestionSelect(position: Int): Boolean {
-                    return false
-                }
-
-                override fun onSuggestionClick(position: Int): Boolean {
-
-                    this@MapFragment.hideKeyboard()
-                    return true
-                }
-            })
     }
 
     override fun onMapReady(Map: NaverMap) {
@@ -294,7 +259,7 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     private fun navigationToReservation(url: String) {
-        val reservationFragment = ReservationFragment(url = url)
-        mainActivity.replaceFragment(reservationFragment)
+        val reservationPageFragment = ReservationPageFragment(url = url)
+        mainActivity.replaceFragment(reservationPageFragment)
     }
 }

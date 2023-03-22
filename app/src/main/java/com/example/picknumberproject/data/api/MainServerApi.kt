@@ -1,6 +1,7 @@
 package com.example.picknumberproject.data.api
 
-import com.example.picknumberproject.data.dto.reservation.ReservationDto
+import com.example.picknumberproject.data.dto.reservation.ReservationsDto
+import com.example.picknumberproject.data.extension.ResponseBody
 import com.example.picknumberproject.data.model.ReservationBody
 import com.example.picknumberproject.data.url.Key
 import com.example.picknumberproject.data.url.Url
@@ -16,10 +17,10 @@ interface MainServerApi {
     suspend fun getReservationList(
         @Header("x-access-token") x_access_token: String = Key.x_access_token,
         @Body reservationBody: ReservationBody
-    ): Response<ReservationDto>
+    ): Response<ResponseBody<ReservationsDto>>
 
 
-    @DELETE(Url.DIRECTION5_URL)
+    @DELETE(Url.DELETE_RESERVATION)
     suspend fun deleteReservation(
         @Header("x-access-token") x_access_token: String
     )

@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view.main.homepage
+package com.example.picknumberproject.view.main.reservationpage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -7,17 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebViewClient
-import com.example.picknumberproject.databinding.FragmentHomePageBinding
+import com.example.picknumberproject.databinding.FragmentReservationPageBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import kotlinx.android.synthetic.main.fragment_home_page.*
 
-class HomePageFragment(
+class ReservationPageFragment(
     private val url: String
-) : ViewBindingFragment<FragmentHomePageBinding>() {
+) : ViewBindingFragment<FragmentReservationPageBinding>() {
 
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentReservationPageBinding
+        get() = FragmentReservationPageBinding::inflate
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomePageBinding
-        get() = FragmentHomePageBinding::inflate
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -3,7 +3,6 @@ package com.example.picknumberproject.domain.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.picknumberproject.data.dto.company.CompanyDto
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -12,13 +11,23 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity(tableName = "company_table")
 data class CompanyEntity(
-    @PrimaryKey val code: Int,
-    val name: String,
-    val divisionCode: Int,
     val address: String,
-    val longitude: Double,
-    val latitude: Double,
-    var distance: Double = 0.0,
-    var duration: Int = 0,
-    val tel: String
+    @PrimaryKey val code: String,
+    val companyID: Int,
+    val divisionCode: String,
+    val divisionName: String,
+    val email: String,
+    val fax: String,
+    val gugun: String,
+    val latitude: String,
+    val longitude: String,
+    val modifyDate: String,
+    val name: String,
+    val registrationDate: String,
+    val securityKey: String,
+    val sido: String,
+    val tel: String,
+    val type: String,
+    val use: String
 ) : Parcelable
+
