@@ -13,9 +13,9 @@ import androidx.fragment.app.Fragment
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
-import com.example.picknumberproject.view.main.map.MapFragment
+import com.example.picknumberproject.view.main.reservationList.ReservationListFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 @AndroidEntryPoint
@@ -38,7 +38,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
 
         setSupportActionBar(toolbar)
 
-        initMapFragment()
+        initReservationListFragment()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -55,11 +55,11 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initMapFragment() {
+    private fun initReservationListFragment() {
         val fragmentManager = supportFragmentManager
-        val mapFragment = MapFragment()
+        val reservationListFragment = ReservationListFragment()
         fragmentManager.beginTransaction().apply {
-            replace(R.id.container_view, mapFragment)
+            replace(R.id.container_view, reservationListFragment)
         }.commit()
     }
 
