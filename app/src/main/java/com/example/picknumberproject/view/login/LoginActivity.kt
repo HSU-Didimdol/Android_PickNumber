@@ -41,8 +41,8 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
         /**
          * 일단 2명의 정보 저장해두기
          */
-        userDB.getUser().insertUser(UserEntity("010-1111-0000", "박길동"))
-        userDB.getUser().insertUser(UserEntity("010-2222-1111", "이길동"))
+//        userDB.getUser().insertUser(UserEntity("010-1111-0000", "박길동"))
+//        userDB.getUser().insertUser(UserEntity("010-2222-1111", "이길동"))
 
         /**
          * 1. 사용자 이름과 전화번호를 DB 에서 비교 (사용자 조회)
@@ -88,11 +88,11 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
 
     // 입력된 전화번호가 가입되어 있는 전화번호인지 확인
     private fun checkValidUser(): Boolean {
-        return userDB.getUser().getPhone().isNotEmpty()
+        return userDB.getDao().getPhone().isNotEmpty()
     }
 
     // 입력된 전화번호로 DB 에서 사용자 이름 가져오기
     private fun checkValidName(phoneNumber: String): String {
-        return userDB.getUser().getUserByPhone(phoneNumber)
+        return userDB.getDao().getUserByPhone(phoneNumber)
     }
 }
