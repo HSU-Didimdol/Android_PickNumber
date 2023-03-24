@@ -8,8 +8,8 @@ interface UserDao {
     @Query("SELECT * FROM user_table")
     fun getAll(): List<UserEntity>
 
-    @Query("SELECT phone FROM user_table")
-    fun getPhone(): List<String>
+    @Query("SELECT phone FROM user_table where phone LIKE :phoneNum")
+    fun getPhone(phoneNum: String): List<String>
 
     @Query("SELECT name FROM user_table WHERE phone= :phone")
     fun getUserByPhone(phone: String): String

@@ -185,6 +185,7 @@
                 android:background="@null"
                 android:ems="10"
                 android:hint="@string/user_call"
+                android:maxLength="13"
                 android:inputType="phone"
                 android:textAlignment="center"
                 android:textSize="18sp" />

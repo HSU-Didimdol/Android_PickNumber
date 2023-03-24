@@ -1,5 +1,7 @@
 package com.example.picknumberproject.view.login
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
@@ -23,6 +25,12 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
     override val bindingInflater: (LayoutInflater) -> ActivityLoginBinding
         get() = ActivityLoginBinding::inflate
 
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, LoginActivity::class.java)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -39,12 +47,6 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
             .allowMainThreadQueries().build()
 
         /**
-         * 일단 2명의 정보 저장해두기
-         */
-        userDB.getUser().insertUser(UserEntity("010-1111-0000", "박길동"))
-        userDB.getUser().insertUser(UserEntity("010-2222-1111", "이길동"))
-
-        /**
          * 1. 사용자 이름과 전화번호를 DB 에서 비교 (사용자 조회)
          * 2. 조회된 사용자 정보와 입력된 사용자 정보 비교
          * 3. 로그인 성공/실패 처리 (실패 -> 회원가입)
@@ -58,9 +60,10 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
                     Toast.makeText(this, "전화번호를 정확하게 입력해주세요.", Toast.LENGTH_SHORT).show()
                 }*/
 
-                if (checkValidUser()) { // 사용자가 이미 존재하고
+                if (checkValidUser(phoneNumber.toString())) { // 사용자가 이미 존재하고
                     if (checkValidName(phoneNumber.toString()) == userName.toString()) { // DB 에 있는 사용자 이름과 입력된 사용자 이름이 같으면
                         Toast.makeText(this, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                        navigateMainActivity()
                     } else {
                         Log.d("userName:", userName.toString())
                         Toast.makeText(this, "입력된 정보가 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
@@ -77,8 +80,6 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
 
             Log.d("userName:", userName.toString())
             Log.d("phoneNum:", phoneNumber.toString())
-
-            navigateMainActivity()
         }
 
         // 회원가입 버튼 클릭
@@ -86,17 +87,16 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
             navigateSignUpActivity()
         }
 
-
     }
 
     // 입력된 전화번호가 가입되어 있는 전화번호인지 확인
-    private fun checkValidUser(): Boolean {
-        return userDB.getUser().getPhone().isNotEmpty()
+    private fun checkValidUser(phoneNum: String): Boolean {
+        return userDB.getDao().getPhone(phoneNum).isNotEmpty()
     }
 
     // 입력된 전화번호로 DB 에서 사용자 이름 가져오기
     private fun checkValidName(phoneNumber: String): String {
-        return userDB.getUser().getUserByPhone(phoneNumber)
+        return userDB.getDao().getUserByPhone(phoneNumber)
     }
 
     private fun navigateSignUpActivity() {
