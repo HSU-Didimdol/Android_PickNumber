@@ -79,7 +79,15 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
 
                 phoneNum = phoneNumEdit.text.toString()
                 requestBody = SMSRequestBody(
-                    Contents("15331490", "[순번관리시스템 본인인증] 인증번호 [$codeNum]\n를 입력해 주세요", "LANDPICK", phoneNum, "개인정보인증", ""))
+                    Contents(
+                        "15331490",
+                        "[순번관리시스템 본인인증] 인증번호 [$codeNum]\n를 입력해 주세요",
+                        "LANDPICK",
+                        phoneNum,
+                        "개인정보인증",
+                        ""
+                    )
+                )
             }
 
         })
@@ -89,10 +97,18 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
                 if (userNameEditText.text.isNotEmpty() && userPhoneEditText.text.isNotEmpty()) { // 정보 모두 입력했을 시
                     userDB.getDao().insertUser(UserEntity(phoneNum, userName)) // 회원등록
                 } else { // 하나라도 입력이 잘 안되었으면
-                    Toast.makeText(applicationContext, "사용자 이름과 전화번호를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "사용자 이름과 전화번호를 모두 입력해주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } else { // SMS 인증 요청 다시
-                Toast.makeText(applicationContext, "인증번호가 틀렸습니다. 다시 올바르게 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "인증번호가 틀렸습니다. 다시 올바르게 입력해주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -106,7 +122,7 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         // SMS 인증 요청
         verificationCodeButton.setOnClickListener {
             // SMS 인증코드 발송
-            service.getCode(Key.token, requestBody).enqueue(object: Callback<SMSResponseModel> {
+            service.getCode(Key.token, requestBody).enqueue(object : Callback<SMSResponseModel> {
                 override fun onResponse(
                     call: Call<SMSResponseModel>,
                     response: Response<SMSResponseModel>
