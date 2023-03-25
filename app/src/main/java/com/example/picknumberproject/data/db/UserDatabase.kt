@@ -8,5 +8,5 @@ import com.example.picknumberproject.domain.model.UserEntity
 
 @Database(entities = [UserEntity::class], version = 1)
 abstract class UserDatabase: RoomDatabase() {
-    abstract fun getUser(): UserDao
+    abstract fun getDao(): UserDao
 }
