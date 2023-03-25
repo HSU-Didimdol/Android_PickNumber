@@ -11,7 +11,7 @@ class SearchItemViewHolder(
     fun bindData(data: CompanyEntity) = with(binding) {
         nameTextView.text = data.name
         addressTextView.text = data.address
-        distanceTextView.text = "${data.distance} Km"
+        //distanceTextView.text = "${data.distance} Km"
     }
 
     fun bindViews(data: CompanyEntity) {

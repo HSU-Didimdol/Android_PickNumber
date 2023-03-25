@@ -56,7 +56,6 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
 
         setSupportActionBar(signup_toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게
@@ -130,7 +129,7 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         // SMS 인증 요청
         verificationCodeButton.setOnClickListener {
             // SMS 인증코드 발송
-            service.getCode(Key.token, requestBody).enqueue(object : Callback<SMSResponseModel> {
+            service.getCode(Key.x_access_token, requestBody).enqueue(object : Callback<SMSResponseModel> {
                 override fun onResponse(
                     call: Call<SMSResponseModel>,
                     response: Response<SMSResponseModel>

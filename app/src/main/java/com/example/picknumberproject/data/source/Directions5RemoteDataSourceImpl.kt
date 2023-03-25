@@ -24,11 +24,11 @@ class Directions5RemoteDataSourceImpl @Inject constructor(
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()
                     check(body != null) { "body 응답이 없습니다." }
-                    company.distance = body.route.traoptimal[0].summary.distance / 1000
-                    company.duration = body.route.traoptimal[0].summary.duration / 1000 / 60
+                    //company.distance = body.route.traoptimal[0].summary.distance / 1000
+                    //company.duration = body.route.traoptimal[0].summary.duration / 1000 / 60
                 } else {
-                    company.distance = 0.0
-                    company.duration = 0
+                    //company.distance = 0.0
+                    //company.duration = 0
                 }
             }
             companyList

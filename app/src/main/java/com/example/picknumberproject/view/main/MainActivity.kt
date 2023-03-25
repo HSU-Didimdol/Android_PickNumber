@@ -4,9 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
@@ -14,6 +11,7 @@ import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.main.reservationList.ReservationListFragment
+import com.example.picknumberproject.view.signup.InfoUpdateActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -35,24 +33,17 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, true)
-
         setSupportActionBar(toolbar)
 
         initReservationListFragment()
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_home, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_setting -> {
-                Toast.makeText(this, "셋팅 버튼 클릭", Toast.LENGTH_SHORT).show()
-            }
+        infoUpdateButton.setOnClickListener {
+            navigateToInfoUpdateView()
         }
-        return super.onOptionsItemSelected(item)
+
+        homeButton.setOnClickListener {
+            initReservationListFragment()
+        }
     }
 
     private fun initReservationListFragment() {
@@ -70,5 +61,10 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
             .replace(R.id.container_view, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun navigateToInfoUpdateView() {
+        val intent = InfoUpdateActivity.getIntent(this)
+        startActivity(intent)
     }
 }

@@ -25,8 +25,12 @@ class MapViewModel @Inject constructor(
 
     private fun refreshData() {
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(companyListData = companyRepository.getAllCompanyEntityList())
+
+            val result = companyRepository.getAllCompanyEntityList()
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(companyListData = result.getOrNull()!!)
+                }
             }
         }
     }

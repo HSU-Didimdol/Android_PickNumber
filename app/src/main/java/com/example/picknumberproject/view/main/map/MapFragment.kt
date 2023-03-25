@@ -1,8 +1,6 @@
 package com.example.picknumberproject.view.main.map
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.PointF
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,17 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.picknumberproject.databinding.FragmentMapBinding
-import com.example.picknumberproject.domain.model.CompanyEntity
-import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingFragment
-import com.example.picknumberproject.view.extension.hideKeyboard
+import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.homepage.HomePageFragment
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
 import com.naver.maps.geometry.LatLng
@@ -28,11 +23,9 @@ import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
-import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
-import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.launch
 
@@ -114,38 +107,9 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     private fun updateUi(uiState: MapUiState) {
-        updateMarker(uiState.companyListData)
+        //updateMarker(uiState.companyListData)
     }
 
-    private fun updateMarker(banks: List<CompanyEntity>) {
-        banks.forEach { bank ->
-            val marker = Marker()
-            marker.position = LatLng(bank.latitude, bank.longitude)
-            marker.infoWindow
-            marker.map = map
-            marker.icon = MarkerIcons.GREEN
-            marker.width = Marker.SIZE_AUTO
-            marker.height = Marker.SIZE_AUTO
-            marker.iconTintColor = Color.BLUE
-            marker.tag =
-                bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel + "/" + bank.latitude + "/" + bank.longitude
-            marker.onClickListener = this
-            marker.captionTextSize = 16f
-            marker.isHideCollidedSymbols = true
-            marker.isHideCollidedMarkers = true
-
-            val infoWindow = InfoWindow()
-            infoWindow.position = LatLng(bank.latitude, bank.longitude)
-            infoWindow.adapter = object :
-                InfoWindow.DefaultTextAdapter(requireContext()) { //DefaultViewadapter? 아니면 Adapter 구현?
-                override fun getText(infoWindow: InfoWindow): CharSequence {
-                    return bank.name
-                }
-            }
-            infoWindow.anchor = PointF(0.5f, 0.5f)
-            infoWindow.open(map)
-        }
-    }
 
     override fun onStart() {
         super.onStart()

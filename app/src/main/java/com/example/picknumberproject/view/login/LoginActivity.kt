@@ -1,17 +1,17 @@
 package com.example.picknumberproject.view.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.room.Room
-import com.example.picknumberproject.R
 import com.example.picknumberproject.data.db.UserDatabase
 import com.example.picknumberproject.databinding.ActivityLoginBinding
 import com.example.picknumberproject.domain.model.UserEntity
-import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.common.ViewBindingActivity
+import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_login.*
@@ -25,7 +25,6 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
 
         // 핸드폰 번호 입력 시 하이픈 자동 입력
         phoneNum_edit.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -105,7 +104,9 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
     }
 
     private fun navigateMainActivity() {
-        val intent = MainActivity.getIntent(this)
+        val intent = MainActivity.getIntent(this).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
+        }
         startActivity(intent)
     }
 }

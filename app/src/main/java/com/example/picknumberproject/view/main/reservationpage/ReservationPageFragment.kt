@@ -9,7 +9,7 @@ import android.webkit.WebSettings
 import android.webkit.WebViewClient
 import com.example.picknumberproject.databinding.FragmentReservationPageBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
-import kotlinx.android.synthetic.main.fragment_home_page.*
+import kotlinx.android.synthetic.main.fragment_reservation_page.*
 
 class ReservationPageFragment(
     private val url: String
