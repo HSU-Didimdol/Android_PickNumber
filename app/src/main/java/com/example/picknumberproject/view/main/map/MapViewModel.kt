@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,12 +25,6 @@ class MapViewModel @Inject constructor(
     private fun refreshData() {
         viewModelScope.launch {
 
-            val result = companyRepository.getAllCompanyEntityList()
-            if (result.isSuccess) {
-                _uiState.update {
-                    it.copy(companyListData = result.getOrNull()!!)
-                }
-            }
         }
     }
 }

@@ -2,14 +2,15 @@ package com.example.picknumberproject.view.main.reservationList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.example.picknumberproject.domain.repository.CompanyRepository
 import com.example.picknumberproject.domain.repository.ReservationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,23 +25,24 @@ class ReservationListViewModel @Inject constructor(
         ReservationListUiState()
     )
     val uiState = _uiState.asStateFlow()
+    private var bounded = false
 
-    private var fetchJob: Job? = null
-
-    init {
-        fetchReservation()
-    }
-
-    private fun fetchReservation() {
-        fetchJob?.cancel()
-        fetchJob = viewModelScope.launch {
-            reservationRepository.getAllReservationList().cachedIn(viewModelScope)
-                .collectLatest { pagingData ->
-                _uiState.update {
-                    it.copy(pagingData = pagingData)
+    fun bind(
+        initPostPagingData: PagingData<ReservationItemUiState>?
+    ) {
+        if (bounded) return
+        bounded = true
+        if (initPostPagingData != null) {
+            _uiState.update { it.copy(pagingData = initPostPagingData) }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val pagingFlow = reservationRepository.getAllReservationList()
+            pagingFlow.cachedIn(viewModelScope)
+                .collect { pagingData ->
+                    _uiState.update { uiState ->
+                        uiState.copy(pagingData = pagingData.map { it.toUiState() })
+                    }
                 }
-            }
         }
     }
-
 }

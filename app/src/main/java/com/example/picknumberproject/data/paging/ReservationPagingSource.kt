@@ -1,5 +1,6 @@
 package com.example.picknumberproject.data.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.picknumberproject.data.api.MainServerApi
@@ -16,20 +17,21 @@ class ReservationPagingSource @Inject constructor(
 
     companion object {
         private const val START_PAGE = 1
-        const val PAGE_SIZE = 15
+        const val PAGE_SIZE = 5
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ReservationEntity> {
         val page = params.key ?: START_PAGE
         return try {
             val response = api.getReservationList(reservationBody = reservationBody)
+            Log.d("response", response.body().toString())
             if (response.isSuccessful) {
-                val reservations = response.body()!!.data.reservations.map { it.toEntity() }
+                val reservations = response.body()!!.results.reservations.map { it.toEntity() }
                 val isEnd = reservations.isEmpty()
 
                 LoadResult.Page(
                     data = reservations,
-                    prevKey = if (page == START_PAGE) null else page - 1,
+                    prevKey = null,
                     nextKey = if (isEnd) null else page + 1
                 )
             } else {

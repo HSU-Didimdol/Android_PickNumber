@@ -6,6 +6,7 @@
     <string name="please_input_search_keyword">검색어를 입력해주세요</string>
     <string name="search">검색</string>
     <string name="retry">다시 시도</string>
+    <string name="empty">없음</string>
     <string name="home">홈</string>
     <string name="call">전화</string>
     <string name="reservation">예약</string>

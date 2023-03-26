@@ -5,7 +5,7 @@ import retrofit2.Response
 
 data class ResponseBody<T>(
     val success: Boolean,
-    val data: T
+    val results: T
 )
 
 val <T> Response<ResponseBody<T>>.errorMessage: String?
@@ -23,7 +23,7 @@ val <T> Response<ResponseBody<T>>.errorMessage: String?
 
 fun <T> Response<ResponseBody<T>>.getDataOrThrowMessage(): T {
     if (isSuccessful) {
-        return requireNotNull(body()).data
+        return requireNotNull(body()).results
     } else {
         throw Exception(errorMessage)
     }
