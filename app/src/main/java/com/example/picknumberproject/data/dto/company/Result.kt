@@ -41,5 +41,6 @@ fun Result.toEntity() = CompanyEntity(
     sido = sido,
     tel = tel,
     type = type,
-    use = use
+    use = use,
+    searchQuery = "$address 새마을금고 $divisionName"
 )

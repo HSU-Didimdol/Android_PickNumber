@@ -5,11 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.viewModels
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
+import com.example.picknumberproject.view.main.map.MapFragment
 import com.example.picknumberproject.view.main.reservationList.ReservationListFragment
 import com.example.picknumberproject.view.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +38,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         setSupportActionBar(toolbar)
         initReservationListFragment()
         viewModel.bind()
+        initSearchView()
         infoUpdateButton.setOnClickListener {
             navigateToInfoUpdateView()
         }
@@ -43,6 +46,25 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         homeButton.setOnClickListener {
             initReservationListFragment()
         }
+    }
+
+    private fun initSearchView() {
+        binding.searchView.isSubmitButtonEnabled = true
+        binding.searchView.suggestionsAdapter
+        binding.searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (query != null) {
+                        replaceFragment(MapFragment(query))
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+
+                    return true
+                }
+            })
     }
 
     private fun initReservationListFragment() {

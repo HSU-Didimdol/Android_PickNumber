@@ -25,11 +25,11 @@ class MainViewModel @Inject constructor(
             val result = companyRepository.getAllCompanyEntityList()
             _uiState.update {
                 it.copy(
-                    userMessage = (if (result.isSuccess) {
+                    userMessage = if (result.isSuccess) {
                         R.string.success_data
                     } else {
-                        result.exceptionOrNull()!!.localizedMessage
-                    }) as Int?
+                        R.string.failed_data
+                    }
                 )
             }
         }

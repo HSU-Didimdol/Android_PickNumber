@@ -11,6 +11,7 @@ data class CompanyEntity(
     val address: String,
     @PrimaryKey val code: String,
     val companyID: Int,
+    val searchQuery: String,
     val divisionCode: String,
     val divisionName: String,
     val email: String,

@@ -1,6 +1,7 @@
 package com.example.picknumberproject.view.main.map
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,7 @@ import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.homepage.HomePageFragment
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
+import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
@@ -26,10 +28,13 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
+import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.launch
 
-class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallback,
+class MapFragment(
+    private val query: String
+) : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallback,
     Overlay.OnClickListener {
 
     private lateinit var map: NaverMap
@@ -55,6 +60,8 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
         super.onViewCreated(view, savedInstanceState)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+        viewModel.bind(query)
 
         routeButton.isVisible = false
     }
@@ -107,7 +114,11 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     }
 
     private fun updateUi(uiState: MapUiState) {
-        //updateMarker(uiState.companyListData)
+        updateMarker(uiState)
+        if (uiState.userMessage != null) {
+            showSnackBar(getString(uiState.userMessage))
+            viewModel.userMessageShown()
+        }
     }
 
 
@@ -144,6 +155,23 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
+    }
+
+    private fun updateMarker(uiState: MapUiState) {
+        val companyList = uiState.companyListData
+        Log.d("company", companyList.toString())
+        companyList.forEach { company ->
+            val marker = Marker()
+            marker.position = LatLng(company.latitude.toDouble(), company.longitude.toDouble())
+            marker.infoWindow
+            marker.map = map
+            marker.icon = MarkerIcons.GREEN
+            marker.width = Marker.SIZE_AUTO
+            marker.height = Marker.SIZE_AUTO
+            marker.iconTintColor = Color.BLUE
+            //marker.tag =
+            //  bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel + "/" + bank.latitude + "/" + bank.longitude
+        }
     }
 
     override fun onClick(p0: Overlay): Boolean {
@@ -225,5 +253,9 @@ class MapFragment : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallbac
     private fun navigationToReservation(url: String) {
         val reservationPageFragment = ReservationPageFragment(url = url)
         mainActivity.replaceFragment(reservationPageFragment)
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 }

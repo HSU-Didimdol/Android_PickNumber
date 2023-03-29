@@ -16,4 +16,7 @@ interface CompanyDao {
 
     @Query("delete from company_table")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM company_table WHERE searchQuery LIKE :query")
+    suspend fun searchQuery(query: String): List<CompanyEntity>
 }
