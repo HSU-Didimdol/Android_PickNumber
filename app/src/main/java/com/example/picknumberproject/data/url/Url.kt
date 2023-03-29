@@ -9,6 +9,4 @@ object Url {
     const val POST_RESERVATION = "reservation/information"
     const val DELETE_RESERVATION = "reservation/cancel"
     const val POST_NOTIFICATION_SMS = "notification/sms"
-    const val SMS_AUTHENTICATION_URL = "https://service-api.landpick.net/notification/sms/"
-
 }

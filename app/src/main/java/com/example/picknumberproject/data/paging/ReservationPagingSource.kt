@@ -6,7 +6,7 @@ import androidx.paging.PagingState
 import com.example.picknumberproject.data.api.MainServerApi
 import com.example.picknumberproject.data.dto.reservation.toEntity
 import com.example.picknumberproject.data.extension.errorMessage
-import com.example.picknumberproject.data.model.ReservationBody
+import com.example.picknumberproject.data.requestBody.reservation.ReservationBody
 import com.example.picknumberproject.domain.model.ReservationEntity
 import javax.inject.Inject
 
@@ -20,6 +20,8 @@ class ReservationPagingSource @Inject constructor(
         const val PAGE_SIZE = 5
     }
 
+
+    //TODO : 계속해서 화면에 업로드되는 문제 발생
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ReservationEntity> {
         val page = params.key ?: START_PAGE
         return try {
@@ -31,7 +33,7 @@ class ReservationPagingSource @Inject constructor(
 
                 LoadResult.Page(
                     data = reservations,
-                    prevKey = null,
+                    prevKey = if (page == START_PAGE) null else page - 1,
                     nextKey = if (isEnd) null else page + 1
                 )
             } else {

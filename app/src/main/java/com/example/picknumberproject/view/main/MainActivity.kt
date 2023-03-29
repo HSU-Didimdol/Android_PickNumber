@@ -11,7 +11,7 @@ import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.main.reservationList.ReservationListFragment
-import com.example.picknumberproject.view.signup.InfoUpdateActivity
+import com.example.picknumberproject.view.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -64,7 +64,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     }
 
     private fun navigateToInfoUpdateView() {
-        val intent = InfoUpdateActivity.getIntent(this)
+        val intent = SignUpActivity.getIntent(this)
         startActivity(intent)
     }
 }

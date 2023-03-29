@@ -18,13 +18,14 @@
         <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.292" />
         <entry key="app/src/main/res/drawable/searchview_background.xml" value="0.102" />
         <entry key="app/src/main/res/drawable/top_radius_white_background.xml" value="0.1455" />
+        <entry key="app/src/main/res/drawable/underline.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_info_update.xml" value="0.2767210144927536" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.2767210144927536" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.28191489361702127" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.2767210144927536" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.335" />
         <entry key="app/src/main/res/layout/bottom_sheet.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_load_state.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.16893115942028986" />

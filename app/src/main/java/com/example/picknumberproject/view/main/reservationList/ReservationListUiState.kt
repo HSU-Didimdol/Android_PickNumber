@@ -1,10 +1,10 @@
 package com.example.picknumberproject.view.main.reservationList
 
-import androidx.paging.PagingData
 import com.example.picknumberproject.domain.model.ReservationEntity
 
 data class ReservationListUiState(
-    val pagingData: PagingData<ReservationItemUiState> = PagingData.empty()
+    val userMessage: String? = null,
+    val reservations: List<ReservationItemUiState> = emptyList()
 )
 
 data class ReservationItemUiState(

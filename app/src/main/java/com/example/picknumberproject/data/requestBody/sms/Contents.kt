@@ -1,4 +1,4 @@
-package com.example.picknumberproject.data.dto.sms
+package com.example.picknumberproject.data.requestBody.sms
 
 data class Contents(
     val callback: String,

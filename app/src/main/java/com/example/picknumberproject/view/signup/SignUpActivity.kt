@@ -3,47 +3,26 @@ package com.example.picknumberproject.view.signup
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
 import android.widget.Toast
-import androidx.room.Room
+import androidx.activity.viewModels
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.picknumberproject.R
-import com.example.picknumberproject.data.api.SMSAuthenticationCodeApi
-import com.example.picknumberproject.data.db.UserDatabase
-import com.example.picknumberproject.data.dto.sms.Contents
-import com.example.picknumberproject.data.dto.sms.SMSRequestBody
-import com.example.picknumberproject.data.dto.sms.SMSResponseModel
-import com.example.picknumberproject.data.url.Key
-import com.example.picknumberproject.data.url.Url
 import com.example.picknumberproject.databinding.ActivitySignUpBinding
-import com.example.picknumberproject.domain.model.UserEntity
 import com.example.picknumberproject.view.common.ViewBindingActivity
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import kotlinx.coroutines.launch
 import kotlin.concurrent.timer
 
 @AndroidEntryPoint
 class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
-    lateinit var retrofit: Retrofit
-    lateinit var phoneNum: String
-    lateinit var jsonString: String
-    lateinit var requestBody: SMSRequestBody
-    lateinit var codeNum: String
-    lateinit var userName: String
-    lateinit var userDB: UserDatabase
-
-    private val time = 120
-
-    private var second = time % 60
-    private var minute = time / 60
 
     companion object {
         fun getIntent(context: Context): Intent {
@@ -51,115 +30,89 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         }
     }
 
+    private val viewModel: SignUpViewModel by viewModels()
+
     override val bindingInflater: (LayoutInflater) -> ActivitySignUpBinding
         get() = ActivitySignUpBinding::inflate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initEventListeners()
+        userPhoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        setSupportActionBar(signup_toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) //왼쪽 뒤로가기 사용여부
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.cancel_button) //왼쪽 뒤로가기 아이콘 변경
-
-        // DB 생성
-        userDB = Room.databaseBuilder(this, UserDatabase::class.java, "UserDB")
-            .allowMainThreadQueries().build()
-
-        userName = userNameEditText.text.toString()
-        val phoneNumEdit = userPhoneEditText
-
-        phoneNum = ""
-        jsonString = ""
-
-        phoneNumEdit.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { // 입력하기 전
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { // 입력 중
-            }
-
-            override fun afterTextChanged(p0: Editable?) { // 입력이 끝날 때
-
-                // 랜덤으로 인증코드 4자리 생성
-                codeNum = (1000..9999).random().toString()
-
-                phoneNum = phoneNumEdit.text.toString()
-                requestBody = SMSRequestBody(
-                    Contents(
-                        "15331490",
-                        "[순번관리시스템 본인인증] 인증번호 [$codeNum]\n를 입력해 주세요",
-                        "LANDPICK",
-                        phoneNum,
-                        "개인정보인증",
-                        ""
-                    )
-                )
-            }
-
-        })
-
-        signupButton.setOnClickListener {
-            if (verificationCodeEditText.text.toString() == codeNum) { // 인증번호를 올바르게 입력하면 회원등록 (회원가입 완료)
-                if (userNameEditText.text.isNotEmpty() && userPhoneEditText.text.isNotEmpty()) { // 정보 모두 입력했을 시
-                    userDB.getDao().insertUser(UserEntity(phoneNum, userName)) // 회원등록
-                } else { // 하나라도 입력이 잘 안되었으면
-                    Toast.makeText(
-                        applicationContext,
-                        "사용자 이름과 전화번호를 모두 입력해주세요.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } else { // SMS 인증 요청 다시
-                Toast.makeText(
-                    applicationContext,
-                    "인증번호가 틀렸습니다. 다시 올바르게 입력해주세요.",
-                    Toast.LENGTH_SHORT
-                ).show()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect(::updateUi)
             }
         }
 
-        retrofit = Retrofit.Builder()
-            .baseUrl(Url.SMS_AUTHENTICATION_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    }
 
-        val service = retrofit.create(SMSAuthenticationCodeApi::class.java)
+    private fun navigateLoginActivity() {
+        finish()
+    }
 
-        // SMS 인증 요청
-        verificationCodeButton.setOnClickListener {
-            // SMS 인증코드 발송
-            service.getCode(Key.x_access_token, requestBody).enqueue(object : Callback<SMSResponseModel> {
-                override fun onResponse(
-                    call: Call<SMSResponseModel>,
-                    response: Response<SMSResponseModel>
-                ) {
-                    if (response.isSuccessful) {
-                        Log.d("request body", requestBody.toString())
-                        Log.d("response body", response.body().toString())
-                        Log.d("response code", response.code().toString())
-                        setTimer() // 인증번호 입력 시간 타이머 시작
-                    } else {
-                        Log.d("response", "응답에 실패했습니다.")
-                    }
-                }
+    private fun updateUi(uiState: SignUpUiState) {
 
-                override fun onFailure(call: Call<SMSResponseModel>, t: Throwable) {
-                    Log.d("인증 버튼 클릭", "API 응답 실패")
-                }
-            })
+        // 추후에 체크 박스가 체크되면 버튼이 활성화 되게끔
+        if (agreementCheckBox.isChecked) {
+
+        }
+
+        if (uiState.successToSignUp) {
+            navigateLoginActivity()
+        }
+
+        if (uiState.userMessage != null) {
+            showSnackBar(uiState.userMessage)
+            viewModel.userMessageShown()
+        }
+
+        signupButton.apply {
+            isEnabled = uiState.isInputValid && !uiState.isLoading && uiState.checkBox
+            setText(if (uiState.isLoading) R.string.loading else R.string.signUp)
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(
-            R.menu.menu_signup,
-            menu
-        )
-        return true
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun initEventListeners() {
+        userNameEditText.addTextChangedListener {
+            if (it != null) {
+                viewModel.updateUserName(it.toString())
+            }
+        }
+
+        userPhoneEditText.addTextChangedListener {
+            if (it != null) {
+                viewModel.updatePhoneNumber(it.toString())
+            }
+        }
+
+        verificationCodeEditText.addTextChangedListener {
+            if (it != null) {
+                viewModel.updateAuthenticCode(it.toString())
+            }
+        }
+
+        verificationCodeButton.setOnClickListener {
+            viewModel.checkValidCode()
+            setTimer()
+        }
+
+        signupButton.setOnClickListener {
+            viewModel.signUp()
+        }
+
     }
 
     private fun setTimer() {
+        val time = 120
+        var second = time % 60
+        var minute = time / 60
+
         timer(period = 1000, initialDelay = 1000) {
             runOnUiThread {
                 timeTextView.text = String.format("0$minute:%02d", second)

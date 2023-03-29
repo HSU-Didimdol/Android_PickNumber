@@ -8,7 +8,7 @@ import com.example.picknumberproject.domain.model.CompanyEntity
 
 @Database(entities = [CompanyEntity::class], version = 1)
 abstract class CompanyDatabase : RoomDatabase() {
-    abstract fun getBankDao(): CompanyDao
+    abstract fun getDao(): CompanyDao
 
     companion object {
         @Volatile

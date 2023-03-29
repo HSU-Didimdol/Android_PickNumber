@@ -2,9 +2,6 @@ package com.example.picknumberproject.view.main.reservationList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.map
 import com.example.picknumberproject.domain.repository.CompanyRepository
 import com.example.picknumberproject.domain.repository.ReservationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,21 +25,23 @@ class ReservationListViewModel @Inject constructor(
     private var bounded = false
 
     fun bind(
-        initPostPagingData: PagingData<ReservationItemUiState>?
+        initData: MutableList<ReservationItemUiState>?
     ) {
         if (bounded) return
         bounded = true
-        if (initPostPagingData != null) {
-            _uiState.update { it.copy(pagingData = initPostPagingData) }
+        if (initData != null) {
+            _uiState.update { it.copy(reservations = initData) }
         }
         viewModelScope.launch(Dispatchers.IO) {
-            val pagingFlow = reservationRepository.getAllReservationList()
-            pagingFlow.cachedIn(viewModelScope)
-                .collect { pagingData ->
-                    _uiState.update { uiState ->
-                        uiState.copy(pagingData = pagingData.map { it.toUiState() })
-                    }
+            val dataList = reservationRepository.getAllReservationList()
+            if (dataList.isSuccess) {
+                _uiState.update { data ->
+                    data.copy(
+                        reservations = dataList.getOrNull()!!.map { it.toUiState() })
                 }
+            } else {
+                _uiState.update { it.copy(userMessage = dataList.exceptionOrNull()!!.localizedMessage) }
+            }
         }
     }
 }

@@ -13,7 +13,6 @@ class ReservationListViewHolder(
         reservationDate.text = uiState.date
         reservationNumber.text = uiState.phoneNumber
 
-
         reservationButton.setOnClickListener {
 
         }
@@ -23,7 +22,6 @@ class ReservationListViewHolder(
         }
 
         deleteButton.setOnClickListener {
-
 
         }
 

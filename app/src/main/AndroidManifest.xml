@@ -32,10 +32,6 @@
             android:name=".view.main.MainActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".view.signup.InfoUpdateActivity"
-            android:exported="false" />
-
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="f1qm5gy16z" />

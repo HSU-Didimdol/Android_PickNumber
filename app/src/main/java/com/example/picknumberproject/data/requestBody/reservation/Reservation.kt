@@ -1,4 +1,4 @@
-package com.example.picknumberproject.data.model
+package com.example.picknumberproject.data.requestBody.reservation
 
 data class Reservation(
     val date: String?,

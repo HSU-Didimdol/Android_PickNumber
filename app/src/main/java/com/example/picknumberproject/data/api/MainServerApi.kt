@@ -1,8 +1,10 @@
 package com.example.picknumberproject.data.api
 
 import com.example.picknumberproject.data.dto.reservation.ReservationsDto
+import com.example.picknumberproject.data.dto.sms.ContentDto
 import com.example.picknumberproject.data.extension.ResponseBody
-import com.example.picknumberproject.data.model.ReservationBody
+import com.example.picknumberproject.data.requestBody.reservation.ReservationBody
+import com.example.picknumberproject.data.requestBody.sms.ContentBody
 import com.example.picknumberproject.data.url.Key
 import com.example.picknumberproject.data.url.Url
 import retrofit2.Response
@@ -24,4 +26,11 @@ interface MainServerApi {
     suspend fun deleteReservation(
         @Header("x-access-token") x_access_token: String
     )
+
+    @POST(Url.POST_NOTIFICATION_SMS)
+    suspend fun getSMSNotification(
+        @Header("x-access-token") x_access_token: String = Key.reservation_toke,
+        @Body contentsBody: ContentBody
+    ): Response<ResponseBody<ContentDto>>
+
 }

@@ -57,27 +57,15 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        tools:ignore="SpeakableTextPresentCheck"
+        tools:listitem="@layout/reservation_list_item" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:ignore="SpeakableTextPresentCheck"
-            tools:listitem="@layout/reservation_list_item" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <include
-        android:id="@+id/load_state"
-        layout="@layout/content_load_state"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,21 +5,12 @@ import com.example.picknumberproject.data.extension.getDataOrThrowMessage
 import com.example.picknumberproject.data.source.CompanyLocalDataSource
 import com.example.picknumberproject.data.source.CompanyRemoteDataSource
 import com.example.picknumberproject.domain.repository.CompanyRepository
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CompanyRepositoryImpl @Inject constructor(
     private val companyRemoteDataSource: CompanyRemoteDataSource,
     private val companyLocalDataSource: CompanyLocalDataSource
 ) : CompanyRepository {
-
-
-    init {
-        MainScope().launch {
-            getAllCompanyEntityList()
-        }
-    }
 
     override suspend fun getAllCompanyEntityList() {
         runCatching {
