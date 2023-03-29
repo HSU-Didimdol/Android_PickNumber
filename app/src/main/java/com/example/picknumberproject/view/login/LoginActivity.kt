@@ -29,7 +29,6 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initEventListeners()
         phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 

@@ -2,7 +2,7 @@ package com.example.picknumberproject.data.dto.company
 
 import com.example.picknumberproject.domain.model.CompanyEntity
 
-data class CompanyDto(
+data class Result(
     val address: String,
     val code: String,
     val companyID: Int,
@@ -23,7 +23,7 @@ data class CompanyDto(
     val use: String
 )
 
-fun CompanyDto.toEntity() = CompanyEntity(
+fun Result.toEntity() = CompanyEntity(
     address = address,
     code = code,
     companyID = companyID,

@@ -6,6 +6,6 @@ import retrofit2.Response
 
 interface CompanyRemoteDataSource {
 
-    suspend fun getCompanyList(): Response<ResponseBody<CompanysDto>>
+    suspend fun getCompanyList(): Response<CompanysDto>
 
 }

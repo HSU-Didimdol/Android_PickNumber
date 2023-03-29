@@ -13,8 +13,8 @@ class ReservationListViewHolder(
     fun bind(uiState: ReservationItemUiState) = with(binding) {
 
         companyName.text = uiState.companyName
-        reservationDate.text = uiState.date
-        reservationNumber.text = uiState.registrationDate
+        reservationDate.text = uiState.registrationDate
+        reservationNumber.text = uiState.companyNumber
 
         reservationButton.setOnClickListener {
             onClickReservationPageButton(uiState)

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
@@ -14,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.picknumberproject.databinding.FragmentReservationListBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
+import com.example.picknumberproject.view.extension.RefreshStateContract
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
 import com.google.android.material.snackbar.Snackbar
@@ -27,6 +29,7 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
 
     private val viewModel: ReservationListViewModel by activityViewModels()
     private val initData: MutableList<ReservationItemUiState>? = null
+    private var launcher: ActivityResultLauncher<Intent>? = null
     private val mainActivity: MainActivity
         get() = activity as MainActivity
 
@@ -64,6 +67,13 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
 
         checkButton.setOnClickListener {
             adapter.notifyDataSetChanged()
+        }
+
+        launcher = registerForActivityResult(RefreshStateContract()) {
+            if (it != null) {
+                adapter.notifyDataSetChanged()
+                it.message?.let { message -> showSnackBar(message) }
+            }
         }
 
     }

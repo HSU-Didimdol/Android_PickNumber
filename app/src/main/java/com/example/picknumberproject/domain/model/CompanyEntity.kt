@@ -1,14 +1,11 @@
 package com.example.picknumberproject.domain.model
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
 
 /**
  *  Domain에서 toEntity는 Data Layer에서 흘러온 Data들을 우리가 사용하기에 알맞은 형태로 변환 시켜준다.
  */
-@Parcelize
 @Entity(tableName = "company_table")
 data class CompanyEntity(
     val address: String,
@@ -29,5 +26,5 @@ data class CompanyEntity(
     val tel: String,
     val type: String,
     val use: String
-) : Parcelable
+) : java.io.Serializable
 
