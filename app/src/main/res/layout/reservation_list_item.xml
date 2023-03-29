@@ -37,20 +37,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="38dp"
                 android:text="2023-03-22 19:00"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/inquiryDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="20dp"
-                android:text="문의 일시 2022.07.18 10:26"
-                android:textSize="12sp" />
-
 
             <TextView
                 android:layout_width="wrap_content"

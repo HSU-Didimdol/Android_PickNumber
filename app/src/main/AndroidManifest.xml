@@ -28,8 +28,9 @@
         <activity
             android:name=".view.signup.SignUpActivity"
             android:exported="false" />
+
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".view.login.LoginActivity"
             android:exported="false" />
 
         <meta-data
@@ -37,7 +38,7 @@
             android:value="f1qm5gy16z" />
 
         <activity
-            android:name=".view.login.LoginActivity"
+            android:name=".view.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

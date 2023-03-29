@@ -4,9 +4,12 @@ import com.example.picknumberproject.data.dto.company.CompanysDto
 import com.example.picknumberproject.data.extension.ResponseBody
 import com.example.picknumberproject.data.url.Key
 import retrofit2.Response
+import retrofit2.http.GET
 import retrofit2.http.Header
 
 interface CompanyApi {
+
+    @GET
     suspend fun getCompanyList(
         @Header("x-access-token") x_access_token: String = Key.x_access_token
     ): Response<ResponseBody<CompanysDto>>

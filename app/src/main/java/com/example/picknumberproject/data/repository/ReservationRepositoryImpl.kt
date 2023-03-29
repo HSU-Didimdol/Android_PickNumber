@@ -2,6 +2,7 @@ package com.example.picknumberproject.data.repository
 
 import com.example.picknumberproject.data.dto.reservation.toEntity
 import com.example.picknumberproject.data.extension.getDataOrThrowMessage
+import com.example.picknumberproject.data.requestBody.deleteReservation.DeleteBody
 import com.example.picknumberproject.data.requestBody.reservation.Reservation
 import com.example.picknumberproject.data.requestBody.reservation.ReservationBody
 import com.example.picknumberproject.data.source.ReservationRemoteSource
@@ -25,6 +26,23 @@ class ReservationRepositoryImpl @Inject constructor(
                 )
             )
             response.getDataOrThrowMessage().reservations.map { it.toEntity() }
+        }
+    }
+
+    override suspend fun deleteReservationItem(
+        companyID: Int,
+        reservationID: Int
+    ): Result<Unit> {
+        return runCatching {
+            val response = reservationRemoteSource.deleteReservationItem(
+                deleteBody = DeleteBody(
+                    reservation = com.example.picknumberproject.data.requestBody.deleteReservation.Reservation(
+                        companyID = companyID,
+                        reservationID = reservationID
+                    )
+                )
+            )
+            response.getDataOrThrowMessage()
         }
     }
 }

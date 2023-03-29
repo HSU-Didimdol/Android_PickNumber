@@ -8,7 +8,7 @@ data class SignUpUiState(
     val isLoading: Boolean = false,
     val checkBox: Boolean = false,
     val successToSignUp: Boolean = false,
-    val userMessage: String? = null
+    val userMessage: Int? = null
 ) {
     val isInputValid: Boolean
         get() = isNameValid && isPhoneNumberValid && isCodeValid

@@ -6,4 +6,6 @@ interface ReservationRepository {
 
     suspend fun getAllReservationList(): Result<List<ReservationEntity>>
 
+    suspend fun deleteReservationItem(companyID: Int, reservationID: Int): Result<Unit>
+
 }

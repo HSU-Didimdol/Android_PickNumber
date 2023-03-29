@@ -6,13 +6,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.picknumberproject.databinding.ReservationListItemBinding
 
-class ReservationListAdapter() :
-    ListAdapter<ReservationItemUiState, ReservationListViewHolder>(diffCallback) {
+class ReservationListAdapter(
+    private val onClickFindRoadButton: (ReservationItemUiState) -> Unit,
+    private val onClickReservationPageButton: (ReservationItemUiState) -> Unit,
+    private val onClickDeleteReservationButton: (ReservationItemUiState) -> Unit
+
+) : ListAdapter<ReservationItemUiState, ReservationListViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservationListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ReservationListItemBinding.inflate(layoutInflater, parent, false)
-        return ReservationListViewHolder(binding)
+        return ReservationListViewHolder(
+            binding,
+            onClickFindRoadButton = onClickFindRoadButton,
+            onClickReservationPageButton = onClickReservationPageButton,
+            onClickDeleteReservationButton = onClickDeleteReservationButton
+        )
     }
 
     override fun onBindViewHolder(holder: ReservationListViewHolder, position: Int) {
@@ -37,5 +46,4 @@ class ReservationListAdapter() :
         }
 
     }
-
 }

@@ -64,12 +64,12 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         }
 
         if (uiState.userMessage != null) {
-            showSnackBar(uiState.userMessage)
+            showSnackBar(getString(uiState.userMessage))
             viewModel.userMessageShown()
         }
 
         signupButton.apply {
-            isEnabled = uiState.isInputValid && !uiState.isLoading && uiState.checkBox
+            isEnabled = uiState.isInputValid && !uiState.isLoading
             setText(if (uiState.isLoading) R.string.loading else R.string.signUp)
         }
     }

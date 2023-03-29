@@ -1,8 +1,10 @@
 package com.example.picknumberproject.data.api
 
+import com.example.picknumberproject.data.dto.cancel.CanceledDto
 import com.example.picknumberproject.data.dto.reservation.ReservationsDto
 import com.example.picknumberproject.data.dto.sms.ContentDto
 import com.example.picknumberproject.data.extension.ResponseBody
+import com.example.picknumberproject.data.requestBody.deleteReservation.DeleteBody
 import com.example.picknumberproject.data.requestBody.reservation.ReservationBody
 import com.example.picknumberproject.data.requestBody.sms.ContentBody
 import com.example.picknumberproject.data.url.Key
@@ -24,12 +26,14 @@ interface MainServerApi {
 
     @DELETE(Url.DELETE_RESERVATION)
     suspend fun deleteReservation(
-        @Header("x-access-token") x_access_token: String
-    )
+        @Header("x-access-token") x_access_token: String = Key.delete_token,
+        @Body deleteBody: DeleteBody
+    ): Response<ResponseBody<CanceledDto>>
+
 
     @POST(Url.POST_NOTIFICATION_SMS)
     suspend fun getSMSNotification(
-        @Header("x-access-token") x_access_token: String = Key.reservation_toke,
+        @Header("x-access-token") x_access_token: String = Key.reservation_token,
         @Body contentsBody: ContentBody
     ): Response<ResponseBody<ContentDto>>
 

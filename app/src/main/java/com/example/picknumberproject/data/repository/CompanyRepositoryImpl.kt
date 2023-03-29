@@ -12,13 +12,11 @@ class CompanyRepositoryImpl @Inject constructor(
     private val companyLocalDataSource: CompanyLocalDataSource
 ) : CompanyRepository {
 
-    override suspend fun getAllCompanyEntityList() {
-        runCatching {
+    override suspend fun getAllCompanyEntityList(): Result<Unit> {
+        return runCatching {
             val response = companyRemoteDataSource.getCompanyList()
             val companyList = response.getDataOrThrowMessage().companysDto.map { it.toEntity() }
             companyLocalDataSource.setData(companyList)
         }
     }
-
-
 }

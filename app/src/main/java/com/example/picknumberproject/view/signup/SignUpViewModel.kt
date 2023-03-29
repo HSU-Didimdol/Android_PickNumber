@@ -2,6 +2,7 @@ package com.example.picknumberproject.view.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.picknumberproject.R
 import com.example.picknumberproject.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +46,7 @@ class SignUpViewModel @Inject constructor(
             } else {
                 _uiState.update {
                     it.copy(
-                        userMessage = result.exceptionOrNull()!!.localizedMessage,
+                        userMessage = R.string.do_not_signUp,
                         isLoading = false
                     )
                 }
@@ -73,7 +74,7 @@ class SignUpViewModel @Inject constructor(
             } else {
                 _uiState.update {
                     it.copy(
-                        userMessage = result.exceptionOrNull()!!.localizedMessage
+                        userMessage = R.string.not_valid_code
                     )
                 }
             }

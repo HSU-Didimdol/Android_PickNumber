@@ -12,7 +12,14 @@
     <string name="call">전화</string>
     <string name="signUp">회원가입</string>
     <string name="login">로그인</string>
+    <string name="success_data">회사목록을 불러왔습니다.</string>
+    <string name="failed_data">회사목록을 불러오는데 실패하였습니다.</string>
+    <string name="notSignUp_user">가입된 회원이 아닙니다.</string>
+    <string name="not_valid_code">인증코드가 다릅니다.</string>
+    <string name="do_not_signUp">이미 가입된 회원이거나 회원가입 양식에 알맞지 않습니다.</string>
     <string name="userName">사용자 이름</string>
+    <string name="reservation_deleted">예약 삭제</string>
+    <string name="failed">실패!!</string>
     <string name="inputPhoneNumber">전화번호 입력</string>
     <string name="reservation">예약</string>
     <string name="title_activity_main">MainActivity</string>

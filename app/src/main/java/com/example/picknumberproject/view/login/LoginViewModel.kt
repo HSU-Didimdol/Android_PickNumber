@@ -2,6 +2,7 @@ package com.example.picknumberproject.view.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.picknumberproject.R
 import com.example.picknumberproject.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +38,7 @@ class LoginViewModel @Inject constructor(
             } else {
                 _uiState.update {
                     it.copy(
-                        userMessage = result.exceptionOrNull()!!.localizedMessage,
+                        userMessage = R.string.notSignUp_user,
                         isLoading = false
                     )
                 }

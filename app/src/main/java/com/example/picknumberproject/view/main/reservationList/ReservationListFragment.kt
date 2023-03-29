@@ -1,5 +1,7 @@
 package com.example.picknumberproject.view.main.reservationList
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.picknumberproject.databinding.FragmentReservationListBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
+import com.example.picknumberproject.view.main.MainActivity
+import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_reservation_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -22,6 +27,8 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
 
     private val viewModel: ReservationListViewModel by activityViewModels()
     private val initData: MutableList<ReservationItemUiState>? = null
+    private val mainActivity: MainActivity
+        get() = activity as MainActivity
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentReservationListBinding
         get() = FragmentReservationListBinding::inflate
@@ -31,7 +38,11 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
 
         viewModel.bind(initData)
 
-        val adapter = ReservationListAdapter()
+        val adapter = ReservationListAdapter(
+            onClickFindRoadButton = ::onClickFindRoadButton,
+            onClickReservationPageButton = ::onClickReservationPageButton,
+            onClickDeleteReservationButton = ::onClickDeleteReservationButton
+        )
         initRecyclerView(adapter)
 
         setFragmentResultListener("refreshReservation") { _, _ ->
@@ -66,5 +77,45 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
 
     private fun updateUi(uiState: ReservationListUiState, adapter: ReservationListAdapter) {
         adapter.submitList(uiState.reservations)
+        if (uiState.userMessage != null) {
+            viewModel.userMessageShown()
+            showSnackBar(getString(uiState.userMessage))
+        }
     }
+
+    private fun onClickFindRoadButton(uiState: ReservationItemUiState) {
+        //자동차 길찾기
+        val url = ""
+        //"nmap://route/car?slat=" + uiState.latitude + "&slng=" + uiState.longitude + "&sname=" + "&dlat=" + bankData[7] + "&dlng=" + bankData[8] + "&dname=" + bankData[0] + "&appname=com.example.picknumberproject"
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        intent.addCategory(Intent.CATEGORY_BROWSABLE)
+        //네이버 지도 앱 설치 여부 확인
+        val installed =
+            requireContext().packageManager.getLaunchIntentForPackage("com.nhn.android.nmap")
+        if (installed == null) {
+            requireContext().startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=com.nhn.android.nmap")
+                )
+            )
+        } else {
+            requireContext().startActivity(intent)
+        }
+    }
+
+    private fun onClickReservationPageButton(uiState: ReservationItemUiState) {
+        val reservationPageFragment = ReservationPageFragment(uiState.date) // <- TODO : 임의적인 데이터
+        mainActivity.replaceFragment(reservationPageFragment)
+    }
+
+    private fun onClickDeleteReservationButton(uiState: ReservationItemUiState) {
+        viewModel.reservationDelete(uiState)
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    }
+
 }

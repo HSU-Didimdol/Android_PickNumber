@@ -98,7 +98,7 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
         }
 
         if (uiState.userMessage != null) {
-            showSnackBar(uiState.userMessage)
+            showSnackBar(getString(uiState.userMessage))
             viewModel.userMessageShown()
         }
 

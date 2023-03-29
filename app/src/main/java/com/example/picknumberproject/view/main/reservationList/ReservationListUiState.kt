@@ -3,7 +3,7 @@ package com.example.picknumberproject.view.main.reservationList
 import com.example.picknumberproject.domain.model.ReservationEntity
 
 data class ReservationListUiState(
-    val userMessage: String? = null,
+    val userMessage: Int? = null,
     val reservations: List<ReservationItemUiState> = emptyList()
 )
 
@@ -23,7 +23,8 @@ data class ReservationItemUiState(
     val validTimeAfter: Int,
     val validTimeBefore: Int,
     val workGroupID: Int,
-    val workGroupName: String
+    val workGroupName: String,
+    val companyNumber: String = ""
 )
 
 fun ReservationEntity.toUiState() = ReservationItemUiState(

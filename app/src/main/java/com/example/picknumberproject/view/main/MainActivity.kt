@@ -12,6 +12,7 @@ import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.main.reservationList.ReservationListFragment
 import com.example.picknumberproject.view.signup.SignUpActivity
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -47,6 +48,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     }
 
     private fun initReservationListFragment() {
+        viewModel.bind()
         val fragmentManager = supportFragmentManager
         val reservationListFragment = ReservationListFragment()
         fragmentManager.beginTransaction().apply {

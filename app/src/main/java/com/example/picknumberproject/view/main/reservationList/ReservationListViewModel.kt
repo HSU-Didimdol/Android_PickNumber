@@ -2,7 +2,7 @@ package com.example.picknumberproject.view.main.reservationList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.picknumberproject.domain.repository.CompanyRepository
+import com.example.picknumberproject.R
 import com.example.picknumberproject.domain.repository.ReservationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReservationListViewModel @Inject constructor(
-    private val companyRepository: CompanyRepository,
     private val reservationRepository: ReservationRepository
 ) : ViewModel() {
 
@@ -40,8 +39,31 @@ class ReservationListViewModel @Inject constructor(
                         reservations = dataList.getOrNull()!!.map { it.toUiState() })
                 }
             } else {
-                _uiState.update { it.copy(userMessage = dataList.exceptionOrNull()!!.localizedMessage) }
+                _uiState.update { it.copy(userMessage = dataList.exceptionOrNull()!!.localizedMessage?.toInt()) }
             }
         }
     }
+
+    fun reservationDelete(uiState: ReservationItemUiState) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = reservationRepository.deleteReservationItem(
+                uiState.companyID,
+                uiState.reservationID
+            )
+            _uiState.update {
+                it.copy(
+                    userMessage = if (result.isSuccess) {
+                        R.string.reservation_deleted
+                    } else {
+                        R.string.failed
+                    }
+                )
+            }
+        }
+    }
+
+    fun userMessageShown() {
+        _uiState.update { it.copy(userMessage = null) }
+    }
+
 }
