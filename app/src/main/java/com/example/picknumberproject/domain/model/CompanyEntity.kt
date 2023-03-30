@@ -26,6 +26,8 @@ data class CompanyEntity(
     val sido: String,
     val tel: String,
     val type: String,
-    val use: String
+    val use: String,
+    val distance: String,
+    val duration: String
 ) : java.io.Serializable
 

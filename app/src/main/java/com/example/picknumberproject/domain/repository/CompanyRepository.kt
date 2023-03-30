@@ -1,6 +1,7 @@
 package com.example.picknumberproject.domain.repository
 
 import com.example.picknumberproject.domain.model.CompanyEntity
+import com.example.picknumberproject.domain.model.DirectionEntity
 
 interface CompanyRepository {
 
@@ -9,5 +10,10 @@ interface CompanyRepository {
     suspend fun searchCompanyListByQuery(query: String): Result<List<CompanyEntity>>
 
     suspend fun getCompanyEntity(query: String): Result<CompanyEntity>
+
+    suspend fun getDistanceAndDuration(
+        start: String,
+        goal: String
+    ): Result<DirectionEntity>
 
 }

@@ -4,5 +4,5 @@ import com.example.picknumberproject.domain.model.CompanyEntity
 
 data class MapUiState(
     val companyListData: List<CompanyEntity> = emptyList(),
-    val userMessage: Int? = null
+    val userMessage: String? = null
 )

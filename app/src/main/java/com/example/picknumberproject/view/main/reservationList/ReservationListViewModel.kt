@@ -80,6 +80,7 @@ class ReservationListViewModel @Inject constructor(
                     "",
                     "",
                     "",
+                    "", ""
                 )
             )
         } else {
@@ -103,6 +104,7 @@ class ReservationListViewModel @Inject constructor(
                 "",
                 "",
                 "",
+                "", ""
             )
         }
 

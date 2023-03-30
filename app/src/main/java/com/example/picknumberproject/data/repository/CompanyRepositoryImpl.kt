@@ -2,13 +2,17 @@ package com.example.picknumberproject.data.repository
 
 import com.example.picknumberproject.data.db.CompanyDao
 import com.example.picknumberproject.data.dto.company.toEntity
+import com.example.picknumberproject.data.dto.directions5.toEntity
 import com.example.picknumberproject.data.source.CompanyRemoteDataSource
+import com.example.picknumberproject.data.source.Directions5RemoteDataSource
 import com.example.picknumberproject.domain.model.CompanyEntity
+import com.example.picknumberproject.domain.model.DirectionEntity
 import com.example.picknumberproject.domain.repository.CompanyRepository
 import javax.inject.Inject
 
 class CompanyRepositoryImpl @Inject constructor(
     private val companyRemoteDataSource: CompanyRemoteDataSource,
+    private val directions5RemoteDataSource: Directions5RemoteDataSource,
     private val companyDao: CompanyDao
 ) : CompanyRepository {
 
@@ -34,4 +38,18 @@ class CompanyRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getDistanceAndDuration(
+        start: String,
+        goal: String
+    ): Result<DirectionEntity> {
+        return runCatching {
+            val response = directions5RemoteDataSource.getDirections5(start = start, goal = goal)
+            val body = response.body()
+            check(body != null) { "body 응답이 없습니다." }
+            body.toEntity()
+        }
+    }
 }
+
+
+

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
@@ -25,9 +26,15 @@ import kotlin.concurrent.timer
 class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
 
     companion object {
-        fun getIntent(context: Context): Intent {
-            return Intent(context, SignUpActivity::class.java)
+        fun getIntent(context: Context, signUpOrInfoUpdate: String): Intent {
+            return Intent(context, SignUpActivity::class.java).apply {
+                putExtra("signUpOrInfoUpdate", signUpOrInfoUpdate)
+            }
         }
+    }
+
+    private fun getSignUpOrInfoUpdate(): String {
+        return intent.getStringExtra("signUpOrInfoUpdate")!!
     }
 
     private val viewModel: SignUpViewModel by viewModels()
@@ -40,12 +47,34 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         initEventListeners()
         userPhoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
+        setSupportActionBar(signup_toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) //왼쪽 뒤로가기 사용여부
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.cancel_button) //왼쪽 뒤로가기 아이콘 변경
+
+        val getSignUpOrInfoUpdate = getSignUpOrInfoUpdate()
+
+        if (getSignUpOrInfoUpdate == "infoUpdate") {
+            signup_toolbar_title.text = "정보 수정"
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect(::updateUi)
             }
         }
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            android.R.id.home -> {
+                //toolbar의 back키 눌렀을 때 동작
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun navigateLoginActivity() {

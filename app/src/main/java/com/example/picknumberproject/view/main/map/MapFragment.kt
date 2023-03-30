@@ -62,7 +62,11 @@ class MapFragment(
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-        viewModel.bind(query)
+        val longitude = locationSource.lastLocation?.longitude
+        val latitude = locationSource.lastLocation?.latitude
+
+
+        viewModel.bind(query, "${longitude},${latitude}")
 
         routeButton.isVisible = false
     }
@@ -117,7 +121,7 @@ class MapFragment(
     private fun updateUi(uiState: MapUiState) {
         updateMarker(uiState)
         if (uiState.userMessage != null) {
-            showSnackBar(getString(uiState.userMessage))
+            showSnackBar(uiState.userMessage)
             viewModel.userMessageShown()
         }
     }
@@ -170,8 +174,9 @@ class MapFragment(
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.BLUE
-            //marker.tag =
-            //  bank.name + "/" + bank.address + "/" + bank.distance + "/" + bank.duration + "/" + bank.code + "/" + bank.divisionCode + "/" + bank.tel + "/" + bank.latitude + "/" + bank.longitude
+            marker.onClickListener = this
+            marker.tag =
+                "새마을 금고 본점(" + company.name + ")" + "/" + company.address + "/" + company.distance + "/" + company.duration + "/" + company.code + "/" + company.divisionCode + "/" + company.tel + "/" + company.latitude + "/" + company.longitude + "/" + company.companyID
         }
     }
 
@@ -206,7 +211,7 @@ class MapFragment(
 
             reservationButton.setOnClickListener {
                 Toast.makeText(context, "예약 버튼 클릭", Toast.LENGTH_SHORT).show()
-                val url = "" // TODO : 예약 URL 추후에 추가
+                val url = "http://service.landpick.net/reservation?${bankData[9]}"
                 navigationToReservation(url)
             }
 

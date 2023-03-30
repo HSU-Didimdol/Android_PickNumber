@@ -1,9 +1,13 @@
 package com.example.picknumberproject.data.source
 
-import com.example.picknumberproject.domain.model.CompanyEntity
+import com.example.picknumberproject.data.dto.directions5.Directions5Dto
+import retrofit2.Response
 
 interface Directions5RemoteDataSource {
 
-    suspend fun getCompanyDistance(companyList: List<CompanyEntity>): List<CompanyEntity>
+    suspend fun getDirections5(
+        start: String,
+        goal: String
+    ): Response<Directions5Dto>
 
 }

@@ -84,7 +84,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     }
 
     private fun navigateToInfoUpdateView() {
-        val intent = SignUpActivity.getIntent(this)
+        val intent = SignUpActivity.getIntent(this, "infoUpdate")
         startActivity(intent)
     }
 }

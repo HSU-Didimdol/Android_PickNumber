@@ -40,7 +40,7 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
     }
 
     private fun navigateSignUpActivity() {
-        val intent = SignUpActivity.getIntent(this)
+        val intent = SignUpActivity.getIntent(this, "signUp")
         startActivity(intent)
     }
 
