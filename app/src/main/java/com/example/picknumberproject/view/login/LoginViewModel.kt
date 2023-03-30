@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.picknumberproject.R
 import com.example.picknumberproject.domain.repository.AuthRepository
+import com.example.picknumberproject.domain.repository.CompanyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val companyRepository: CompanyRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
@@ -25,6 +28,21 @@ class LoginViewModel @Inject constructor(
 
     fun updatePhoneNumber(phoneNumber: String) {
         _uiState.update { it.copy(phoneNumber = phoneNumber) }
+    }
+
+    fun bind() {
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = companyRepository.getAllCompanyEntityList()
+            _uiState.update {
+                it.copy(
+                    userMessage = if (result.isSuccess) {
+                        R.string.success_data
+                    } else {
+                        R.string.failed_data
+                    }
+                )
+            }
+        }
     }
 
     fun signIn() {

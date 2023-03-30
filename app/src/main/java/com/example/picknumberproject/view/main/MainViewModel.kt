@@ -14,25 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val companyRepository: CompanyRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState = _uiState.asStateFlow()
-
-    fun bind() {
-        viewModelScope.launch(Dispatchers.Main) {
-            val result = companyRepository.getAllCompanyEntityList()
-            _uiState.update {
-                it.copy(
-                    userMessage = if (result.isSuccess) {
-                        R.string.success_data
-                    } else {
-                        R.string.failed_data
-                    }
-                )
-            }
-        }
-    }
-
 }

@@ -10,4 +10,6 @@ interface CompanyRepository {
 
     suspend fun getValidCode(query: String): Result<String>
 
+    suspend fun getCompanyNumber(query: String): Result<String>
+
 }

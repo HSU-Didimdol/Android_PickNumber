@@ -31,7 +31,7 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
         super.onCreate(savedInstanceState)
         initEventListeners()
         phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-
+        viewModel.bind()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect(::updateUi)

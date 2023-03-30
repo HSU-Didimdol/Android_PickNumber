@@ -11,7 +11,7 @@ import com.example.picknumberproject.data.url.Key
 import com.example.picknumberproject.data.url.Url
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.DELETE
+import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -24,7 +24,7 @@ interface MainServerApi {
     ): Response<ResponseBody<ReservationsDto>>
 
 
-    @DELETE(Url.DELETE_RESERVATION)
+    @HTTP(method = "DELETE", path = Url.DELETE_RESERVATION, hasBody = true)
     suspend fun deleteReservation(
         @Header("x-access-token") x_access_token: String,
         @Body deleteBody: DeleteBody

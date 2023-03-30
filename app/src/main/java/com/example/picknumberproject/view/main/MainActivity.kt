@@ -37,7 +37,6 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         setSupportActionBar(toolbar)
         initReservationListFragment()
-        viewModel.bind()
         initSearchView()
         infoUpdateButton.setOnClickListener {
             navigateToInfoUpdateView()

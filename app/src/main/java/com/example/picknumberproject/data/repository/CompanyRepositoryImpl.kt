@@ -34,4 +34,11 @@ class CompanyRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getCompanyNumber(query: String): Result<String> {
+        return runCatching {
+            val phoneNumber = companyDao.searchValidCode(query = query).tel
+            phoneNumber
+        }
+    }
+
 }

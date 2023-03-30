@@ -39,7 +39,11 @@ class ReservationListViewModel @Inject constructor(
             if (dataList.isSuccess) {
                 _uiState.update { data ->
                     data.copy(
-                        reservations = dataList.getOrNull()!!.map { it.toUiState() })
+                        reservations = dataList.getOrNull()!!.map {
+                            val phoneNumber = getCompanyNumber(it.companyID)
+                            val securityCode = getSecurityKey(it.companyID)
+                            it.toUiState(phoneNumber, securityCode)
+                        })
                 }
             } else {
                 _uiState.update { it.copy(userMessage = dataList.exceptionOrNull()!!.localizedMessage?.toInt()) }
@@ -47,8 +51,17 @@ class ReservationListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getValidCode(uiState: ReservationItemUiState): String {
-        val code = uiState.companyID.toString()
+    private suspend fun getCompanyNumber(code: Int): String {
+        val result = companyRepository.getCompanyNumber("%$code%")
+        return if (result.isSuccess) {
+            result.getOrDefault("")
+        } else {
+            ""
+        }
+
+    }
+
+    private suspend fun getSecurityKey(code: Int): String {
         val result = companyRepository.getValidCode("%$code%")
         return if (result.isSuccess) {
             result.getOrDefault("")
@@ -59,15 +72,15 @@ class ReservationListViewModel @Inject constructor(
 
     fun reservationDelete(uiState: ReservationItemUiState) {
         viewModelScope.launch(Dispatchers.IO) {
-            val securityKey = getValidCode(uiState)
-            Log.d("securityKey", securityKey)
+            Log.d("securityKey", uiState.securityCode)
             Log.d("companyID", uiState.companyID.toString())
             Log.d("reservationID", uiState.reservationID.toString())
             val result = reservationRepository.deleteReservationItem(
                 uiState.companyID,
                 uiState.reservationID,
-                securityKey
+                uiState.securityCode
             )
+            Log.d("result", result.toString())
             _uiState.update {
                 it.copy(
                     userMessage = if (result.isSuccess) {

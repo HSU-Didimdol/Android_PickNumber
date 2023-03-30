@@ -24,24 +24,28 @@ data class ReservationItemUiState(
     val validTimeBefore: Int,
     val workGroupID: Int,
     val workGroupName: String,
-    val companyNumber: String = ""
+    val companyNumber: String = "",
+    val securityCode: String = ""
 )
 
-fun ReservationEntity.toUiState() = ReservationItemUiState(
-    companyID = companyID,
-    companyName = companyName,
-    date = date,
-    hour = hour,
-    information = information,
-    minute = minute,
-    name = name,
-    phoneNumber = phoneNumber,
-    policyAgreement = policyAgreement,
-    registrationDate = registrationDate,
-    reservationID = reservationID,
-    state = state,
-    validTimeAfter = validTimeAfter,
-    validTimeBefore = validTimeBefore,
-    workGroupID = workGroupID,
-    workGroupName = workGroupName
-)
+fun ReservationEntity.toUiState(companyNumber: String, securityCode: String) =
+    ReservationItemUiState(
+        companyID = companyID,
+        companyName = companyName,
+        date = date,
+        hour = hour,
+        information = information,
+        minute = minute,
+        name = name,
+        phoneNumber = phoneNumber,
+        policyAgreement = policyAgreement,
+        registrationDate = registrationDate,
+        reservationID = reservationID,
+        state = state,
+        validTimeAfter = validTimeAfter,
+        validTimeBefore = validTimeBefore,
+        workGroupID = workGroupID,
+        workGroupName = workGroupName,
+        companyNumber = companyNumber,
+        securityCode = securityCode
+    )
