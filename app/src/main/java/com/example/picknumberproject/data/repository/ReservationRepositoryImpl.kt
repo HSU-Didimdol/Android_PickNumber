@@ -31,10 +31,12 @@ class ReservationRepositoryImpl @Inject constructor(
 
     override suspend fun deleteReservationItem(
         companyID: Int,
-        reservationID: Int
+        reservationID: Int,
+        token: String
     ): Result<Unit> {
         return runCatching {
             val response = reservationRemoteSource.deleteReservationItem(
+                token = token,
                 deleteBody = DeleteBody(
                     reservation = com.example.picknumberproject.data.requestBody.deleteReservation.Reservation(
                         companyID = companyID,
@@ -42,7 +44,7 @@ class ReservationRepositoryImpl @Inject constructor(
                     )
                 )
             )
-            response.getDataOrThrowMessage()
+            response
         }
     }
 }

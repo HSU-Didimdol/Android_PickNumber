@@ -19,4 +19,7 @@ interface CompanyDao {
 
     @Query("SELECT * FROM company_table WHERE searchQuery LIKE :query")
     suspend fun searchQuery(query: String): List<CompanyEntity>
+
+    @Query("SELECT * FROM company_table WHERE companyID LIKE :query")
+    suspend fun searchValidCode(query: String): CompanyEntity
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.picknumberproject.R
 import com.example.picknumberproject.domain.repository.AuthRepository
+import com.example.picknumberproject.domain.repository.CompanyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -60,6 +61,7 @@ class SignUpViewModel @Inject constructor(
         val range = (1000..9999) // 1000 ~ 9999까지의 숫자의 범위를 지정한다.
         val randomNumber = range.random().toString()
         viewModelScope.launch {
+
             val result = authRepository.checkAuthenticCode(
                 phoneNumber = phoneNumber,
                 authenticCode = randomNumber

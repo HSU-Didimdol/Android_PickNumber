@@ -1,7 +1,7 @@
 package com.example.picknumberproject.data.source
 
 import com.example.picknumberproject.data.api.MainServerApi
-import com.example.picknumberproject.data.dto.cancel.CanceledDto
+import com.example.picknumberproject.data.dto.delete.DeleteDto
 import com.example.picknumberproject.data.dto.reservation.ReservationsDto
 import com.example.picknumberproject.data.extension.ResponseBody
 import com.example.picknumberproject.data.requestBody.deleteReservation.DeleteBody
@@ -17,11 +17,11 @@ class ReservationRemoteSourceImpl @Inject constructor(
         mainServerApi.getReservationList(reservationBody = reservationBody)
 
     override suspend fun deleteReservationItem(
+        token: String,
         deleteBody: DeleteBody
-    ): Response<ResponseBody<CanceledDto>> =
+    ): Response<DeleteDto> =
         mainServerApi.deleteReservation(
+            x_access_token = token,
             deleteBody = deleteBody
         )
-
-
 }

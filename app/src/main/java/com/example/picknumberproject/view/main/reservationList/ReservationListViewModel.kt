@@ -1,8 +1,10 @@
 package com.example.picknumberproject.view.main.reservationList
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.picknumberproject.R
+import com.example.picknumberproject.domain.repository.CompanyRepository
 import com.example.picknumberproject.domain.repository.ReservationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReservationListViewModel @Inject constructor(
-    private val reservationRepository: ReservationRepository
+    private val reservationRepository: ReservationRepository,
+    private val companyRepository: CompanyRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -44,11 +47,26 @@ class ReservationListViewModel @Inject constructor(
         }
     }
 
+    private suspend fun getValidCode(uiState: ReservationItemUiState): String {
+        val code = uiState.companyID.toString()
+        val result = companyRepository.getValidCode("%$code%")
+        return if (result.isSuccess) {
+            result.getOrDefault("")
+        } else {
+            ""
+        }
+    }
+
     fun reservationDelete(uiState: ReservationItemUiState) {
         viewModelScope.launch(Dispatchers.IO) {
+            val securityKey = getValidCode(uiState)
+            Log.d("securityKey", securityKey)
+            Log.d("companyID", uiState.companyID.toString())
+            Log.d("reservationID", uiState.reservationID.toString())
             val result = reservationRepository.deleteReservationItem(
                 uiState.companyID,
-                uiState.reservationID
+                uiState.reservationID,
+                securityKey
             )
             _uiState.update {
                 it.copy(

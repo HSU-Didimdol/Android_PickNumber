@@ -8,5 +8,8 @@ interface AuthRepository {
 
     suspend fun signUp(userName: String, phoneNumber: String): Result<Unit>
 
-    suspend fun checkAuthenticCode(phoneNumber: String, authenticCode: String): Result<Unit>
+    suspend fun checkAuthenticCode(
+        phoneNumber: String,
+        authenticCode: String
+    ): Result<Unit>
 }

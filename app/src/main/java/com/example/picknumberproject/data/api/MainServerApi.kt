@@ -1,6 +1,6 @@
 package com.example.picknumberproject.data.api
 
-import com.example.picknumberproject.data.dto.cancel.CanceledDto
+import com.example.picknumberproject.data.dto.delete.DeleteDto
 import com.example.picknumberproject.data.dto.reservation.ReservationsDto
 import com.example.picknumberproject.data.dto.sms.ContentDto
 import com.example.picknumberproject.data.extension.ResponseBody
@@ -26,9 +26,9 @@ interface MainServerApi {
 
     @DELETE(Url.DELETE_RESERVATION)
     suspend fun deleteReservation(
-        @Header("x-access-token") x_access_token: String = Key.delete_token,
+        @Header("x-access-token") x_access_token: String,
         @Body deleteBody: DeleteBody
-    ): Response<ResponseBody<CanceledDto>>
+    ): Response<DeleteDto>
 
 
     @POST(Url.POST_NOTIFICATION_SMS)
