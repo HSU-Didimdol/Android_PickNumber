@@ -28,8 +28,9 @@
         <activity
             android:name=".view.signup.SignUpActivity"
             android:exported="false" />
+
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.main.MainActivity"
             android:exported="false" />
 
         <meta-data
@@ -45,10 +46,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
         </activity>
     </application>
 

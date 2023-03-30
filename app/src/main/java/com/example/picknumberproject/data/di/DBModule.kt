@@ -2,8 +2,10 @@ package com.example.picknumberproject.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.picknumberproject.data.db.BankDao
-import com.example.picknumberproject.data.db.BankDatabase
+import com.example.picknumberproject.data.db.CompanyDao
+import com.example.picknumberproject.data.db.CompanyDatabase
+import com.example.picknumberproject.data.db.UserDao
+import com.example.picknumberproject.data.db.UserDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,14 +19,27 @@ object DBModule {
 
     @Provides
     @Singleton
-    fun provideBankDB(@ApplicationContext context: Context): BankDatabase =
-        Room.databaseBuilder(context, BankDatabase::class.java, "bank_table")
+    fun provideCompanyDB(@ApplicationContext context: Context): CompanyDatabase =
+        Room.databaseBuilder(context, CompanyDatabase::class.java, "company_table")
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
 
     @Provides
-    fun provideBankDao(bankDatabase: BankDatabase): BankDao {
-        return bankDatabase.getBankDao()
+    fun provideCompanyDao(companyDatabase: CompanyDatabase): CompanyDao {
+        return companyDatabase.getDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserDB(@ApplicationContext context: Context): UserDatabase =
+        Room.databaseBuilder(context, UserDatabase::class.java, "user_table")
+            .fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
+            .build()
+
+    @Provides
+    fun provideUserDao(userDatabase: UserDatabase): UserDao {
+        return userDatabase.getDao()
     }
 }

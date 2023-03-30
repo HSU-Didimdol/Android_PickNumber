@@ -22,7 +22,6 @@
             android:background="?android:attr/windowBackground"
             android:backgroundTint="#F67A8D"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:menu="@menu/menu_signup"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <TextView

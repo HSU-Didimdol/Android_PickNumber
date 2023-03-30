@@ -1,7 +1,11 @@
 package com.example.picknumberproject.data.di
 
-import com.example.picknumberproject.data.repository.BankRepositoryImpl
-import com.example.picknumberproject.domain.repository.BankRepository
+import com.example.picknumberproject.data.repository.CompanyRepositoryImpl
+import com.example.picknumberproject.data.repository.AuthRepositoryImpl
+import com.example.picknumberproject.data.repository.ReservationRepositoryImpl
+import com.example.picknumberproject.domain.repository.CompanyRepository
+import com.example.picknumberproject.domain.repository.AuthRepository
+import com.example.picknumberproject.domain.repository.ReservationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,8 +18,20 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindBankRepository(
-        bankRepositoryImpl: BankRepositoryImpl
-    ): BankRepository
+    abstract fun bindCompanyRepository(
+        companyRepositoryImpl: CompanyRepositoryImpl
+    ): CompanyRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindReservationRepository(
+        reservationRepositoryImpl: ReservationRepositoryImpl
+    ): ReservationRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindAuthRepository(
+        authRepositoryImpl: AuthRepositoryImpl
+    ): AuthRepository
 
 }
