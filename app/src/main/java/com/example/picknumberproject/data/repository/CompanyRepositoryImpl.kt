@@ -27,16 +27,9 @@ class CompanyRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getValidCode(query: String): Result<String> {
+    override suspend fun getCompanyEntity(query: String): Result<CompanyEntity> {
         return runCatching {
-            val code = companyDao.searchValidCode(query = query).securityKey
-            code
-        }
-    }
-
-    override suspend fun getCompanyNumber(query: String): Result<String> {
-        return runCatching {
-            val phoneNumber = companyDao.searchValidCode(query = query).tel
+            val phoneNumber = companyDao.searchValidCode(query = query)
             phoneNumber
         }
     }

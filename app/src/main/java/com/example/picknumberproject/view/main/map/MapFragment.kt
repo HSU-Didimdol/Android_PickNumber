@@ -42,11 +42,12 @@ class MapFragment(
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMapBinding
         get() = FragmentMapBinding::inflate
 
+    private val mainActivity: MainActivity
+        get() = activity as MainActivity
+
     private val locationSource: FusedLocationSource by lazy {
         FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
     }
-    private val mainActivity: MainActivity
-        get() = activity as MainActivity
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000

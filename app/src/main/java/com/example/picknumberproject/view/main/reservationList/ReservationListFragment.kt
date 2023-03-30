@@ -1,6 +1,5 @@
 package com.example.picknumberproject.view.main.reservationList
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -20,11 +19,8 @@ import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.extension.RefreshStateContract
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.material.snackbar.Snackbar
+import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.fragment_reservation_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -38,7 +34,14 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
     private val viewModel: ReservationListViewModel by activityViewModels()
     private val initData: MutableList<ReservationItemUiState>? = null
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
+    private val locationSource: FusedLocationSource by lazy {
+        FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
+    }
 
     private val mainActivity: MainActivity
         get() = activity as MainActivity
@@ -57,7 +60,6 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
             onClickDeleteReservationButton = ::onClickDeleteReservationButton
         )
         initRecyclerView(adapter)
-        initLocationClient()
 
         setFragmentResultListener("refreshReservation") { _, _ ->
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Default) {
@@ -89,25 +91,22 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
 
     }
 
-    private fun initLocationClient() {
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(requireContext())
-
-        val locationRequest = LocationRequest.create()?.apply {
-            interval = 1000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode != ReservationListFragment.LOCATION_PERMISSION_REQUEST_CODE) {
+            return
         }
-
-        val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest!!)
-        val client = LocationServices.getSettingsClient(requireContext())
-        val task = client.checkLocationSettings(builder.build())
-        task.addOnSuccessListener {
-            Log.d(TAG, "location client setting success")
-        }
-
-        task.addOnFailureListener {
-            Log.d(TAG, "location client setting failure")
+        if (locationSource.onRequestPermissionsResult(
+                requestCode,
+                permissions,
+                grantResults
+            )
+        ) {
+            return
         }
     }
 
@@ -127,10 +126,8 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
     }
 
     private fun onClickFindRoadButton(uiState: ReservationItemUiState) {
-
-        //자동차 길찾기
-        val url = ""
-        //"nmap://route/car?slat=" + uiState.latitude + "&slng=" + uiState.longitude + "&sname=" + "&dlat=" + bankData[7] + "&dlng=" + bankData[8] + "&dname=" + bankData[0] + "&appname=com.example.picknumberproject"
+        val url =
+            "nmap://route/car?slat=" + locationSource.lastLocation?.latitude + "&slng=" + locationSource.lastLocation?.longitude + "&sname=" + "&dlat=" + uiState.latitude + "&dlng=" + uiState.longitude + "&dname=" + uiState.companyName + "&appname=com.example.picknumberproject"
 
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         intent.addCategory(Intent.CATEGORY_BROWSABLE)
@@ -145,13 +142,13 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
                 )
             )
         } else {
-            //requireContext().startActivity(intent)
+            requireContext().startActivity(intent)
         }
     }
 
     private fun onClickReservationPageButton(uiState: ReservationItemUiState) {
         val reservationPageFragment =
-            ReservationPageFragment("http://service.landpick.net/reservation?$uiState") // <- TODO : 임의적인 데이터
+            ReservationPageFragment("http://service.landpick.net/reservation?${uiState.companyID}") // <- TODO : 임의적인 데이터
         mainActivity.replaceFragment(reservationPageFragment)
     }
 

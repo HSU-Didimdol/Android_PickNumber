@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.picknumberproject.R
+import com.example.picknumberproject.domain.model.CompanyEntity
 import com.example.picknumberproject.domain.repository.CompanyRepository
 import com.example.picknumberproject.domain.repository.ReservationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,9 +41,13 @@ class ReservationListViewModel @Inject constructor(
                 _uiState.update { data ->
                     data.copy(
                         reservations = dataList.getOrNull()!!.map {
-                            val phoneNumber = getCompanyNumber(it.companyID)
-                            val securityCode = getSecurityKey(it.companyID)
-                            it.toUiState(phoneNumber, securityCode)
+                            val companyEntity = getCompanyNumber(it.companyID)
+                            it.toUiState(
+                                companyNumber = companyEntity.tel,
+                                securityCode = companyEntity.securityKey,
+                                longitude = companyEntity.longitude,
+                                latitude = companyEntity.latitude
+                            )
                         })
                 }
             } else {
@@ -51,23 +56,56 @@ class ReservationListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getCompanyNumber(code: Int): String {
-        val result = companyRepository.getCompanyNumber("%$code%")
+    private suspend fun getCompanyNumber(code: Int): CompanyEntity {
+        val result = companyRepository.getCompanyEntity("%$code%")
         return if (result.isSuccess) {
-            result.getOrDefault("")
+            result.getOrDefault(
+                CompanyEntity(
+                    "",
+                    "",
+                    0,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                )
+            )
         } else {
-            ""
+            CompanyEntity(
+                "",
+                "",
+                0,
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+            )
         }
 
-    }
-
-    private suspend fun getSecurityKey(code: Int): String {
-        val result = companyRepository.getValidCode("%$code%")
-        return if (result.isSuccess) {
-            result.getOrDefault("")
-        } else {
-            ""
-        }
     }
 
     fun reservationDelete(uiState: ReservationItemUiState) {

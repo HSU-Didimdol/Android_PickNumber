@@ -8,8 +8,6 @@ interface CompanyRepository {
 
     suspend fun searchCompanyListByQuery(query: String): Result<List<CompanyEntity>>
 
-    suspend fun getValidCode(query: String): Result<String>
-
-    suspend fun getCompanyNumber(query: String): Result<String>
+    suspend fun getCompanyEntity(query: String): Result<CompanyEntity>
 
 }

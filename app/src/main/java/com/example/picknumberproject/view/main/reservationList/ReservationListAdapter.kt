@@ -28,6 +28,10 @@ class ReservationListAdapter(
         holder.bind(currentList[position])
     }
 
+    override fun submitList(list: List<ReservationItemUiState>?) {
+        super.submitList(list)
+    }
+
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<ReservationItemUiState>() {
             override fun areItemsTheSame(

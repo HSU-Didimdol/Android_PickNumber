@@ -25,10 +25,17 @@ data class ReservationItemUiState(
     val workGroupID: Int,
     val workGroupName: String,
     val companyNumber: String = "",
-    val securityCode: String = ""
+    val securityCode: String = "",
+    val longitude: String = "",
+    val latitude: String = ""
 )
 
-fun ReservationEntity.toUiState(companyNumber: String, securityCode: String) =
+fun ReservationEntity.toUiState(
+    companyNumber: String,
+    securityCode: String,
+    longitude: String,
+    latitude: String
+) =
     ReservationItemUiState(
         companyID = companyID,
         companyName = companyName,
@@ -47,5 +54,7 @@ fun ReservationEntity.toUiState(companyNumber: String, securityCode: String) =
         workGroupID = workGroupID,
         workGroupName = workGroupName,
         companyNumber = companyNumber,
-        securityCode = securityCode
+        securityCode = securityCode,
+        longitude = longitude,
+        latitude = latitude
     )
