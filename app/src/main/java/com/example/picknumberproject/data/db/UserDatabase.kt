@@ -6,6 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.picknumberproject.domain.model.UserEntity
 
+/**
+ * UserDatabase 대한 추상클래스입니다.
+ * Companion Object를 통해 해당 내용을 추상클래스가 실행되었을때 바로 실행시켜줍니다.
+ */
+
 @Database(entities = [UserEntity::class], version = 1)
 abstract class UserDatabase : RoomDatabase() {
     abstract fun getDao(): UserDao

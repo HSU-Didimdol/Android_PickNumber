@@ -34,7 +34,7 @@
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.16893115942028986" />
         <entry key="app/src/main/res/layout/fragment_reservation.xml" value="0.28802083333333334" />
-        <entry key="app/src/main/res/layout/fragment_reservation_list.xml" value="0.48007414272474513" />
+        <entry key="app/src/main/res/layout/fragment_reservation_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_reservation_page.xml" value="0.14108409321175278" />
         <entry key="app/src/main/res/layout/item_load_state.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.375" />

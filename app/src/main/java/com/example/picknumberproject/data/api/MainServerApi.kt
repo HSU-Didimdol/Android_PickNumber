@@ -15,6 +15,14 @@ import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.POST
 
+/**
+ * MainServerApi의 interface 입니다. 예약과 관련 getReservationList함수와 deleteReservation함수를 담고있습니다.
+ * deleteReservation함수의 경우 @DELETE가 제대로 작동하지 않는 문제가 발생하여, 검색해보니
+ * @HTTP(method = "DELETE", path = "~~~", hasBody = true)라고 쓰는게 좋다고 합니다.
+ * 또한 인증번호를 위한 getSMSNotification함수 또한 담고있습니다.
+ * 이에 대한 Rrtrofit에 대한 객체는 Network 모듈에 담고있습니다.
+ */
+
 interface MainServerApi {
 
     @POST(Url.POST_RESERVATION)

@@ -6,6 +6,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.picknumberproject.domain.model.CompanyEntity
 
+/**
+ * company_table에서 담기는 Dao를 담고있는 interface입니다.
+ */
+
 @Dao
 interface CompanyDao {
     @Query("SELECT * FROM company_table")
