@@ -1,4 +1,4 @@
 # Android_PickNumber
 
-## 아키텍처 리팩토링 -> why? 조금 더 효율적인 코드 운용과 성능 개선을 위해서
-![아키텍쳐 비교](https://imgur.com/D6hcdF5.jpg)
+## 아키텍처 
+![download](https://user-images.githubusercontent.com/58154638/229750308-78cca4ca-8e01-4e64-9f8b-231781d79da0.jpg)
