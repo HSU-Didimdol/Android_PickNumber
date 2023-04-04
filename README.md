@@ -1,4 +1,4 @@
 # Android_PickNumber
 
 ## 아키텍처 
-![download](https://user-images.githubusercontent.com/58154638/229750308-78cca4ca-8e01-4e64-9f8b-231781d79da0.jpg)
+![아키텍처 수정본](https://user-images.githubusercontent.com/58154638/229753757-1f7cccc5-772e-4560-8e8b-a9b3c97c3b74.jpeg)
