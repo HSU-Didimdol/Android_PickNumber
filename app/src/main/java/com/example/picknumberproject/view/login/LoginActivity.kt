@@ -30,7 +30,7 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initEventListeners()
-        phoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        password.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         viewModel.bind()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -58,9 +58,9 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
                 viewModel.updateUserName(it.toString())
             }
         }
-        phoneNumber.addTextChangedListener {
+        password.addTextChangedListener {
             if (it != null) {
-                viewModel.updatePhoneNumber(it.toString())
+                viewModel.updatePassword(it.toString())
             }
         }
 
@@ -84,15 +84,15 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
             } else null
         }
 
-        phoneNumberInputLayout.apply {
-            isErrorEnabled = uiState.showPhoneNumberError
-            error = if (uiState.showPhoneNumberError) {
-                context.getString(R.string.phone_is_not_valid)
+        passwordInputLayout.apply {
+            isErrorEnabled = uiState.showPasswordError
+            error = if (uiState.showPasswordError) {
+                context.getString(R.string.password_is_not_valid)
             } else null
         }
 
         if (uiState.successToSignIn) {
-            if (viewModel.checkUserInfoExists(uiState.phoneNumber))
+            if (viewModel.checkUserInfoExists(uiState.password))
                 navigateMainActivity()
         }
 
