@@ -2,6 +2,8 @@ package com.example.picknumberproject.view.signup
 
 data class SignUpUiState(
     val userName: String = "",
+    val userPassword: String = "",
+    val confirmPassword: String = "",
     val phoneNumber: String = "",
     val authenticCode: String = "",
     val randomNumber: String = "0000",
@@ -11,13 +13,21 @@ data class SignUpUiState(
     val userMessage: Int? = null
 ) {
     val isInputValid: Boolean
-        get() = isNameValid && isPhoneNumberValid && isCodeValid
+        get() = isNameValid && isPhoneNumberValid && isCodeValid && isPasswordValid
 
     private val isCodeValid: Boolean
         get() = authenticCode == randomNumber
 
     private val isNameValid: Boolean
         get() = userName.length >= 3
+
+    private val isPasswordValid: Boolean
+        get() {
+            //비밀번호 조건: 최소 6자 이상, 최소한 한개의 영문자와 숫자를 포함해야 함
+            val passwordRegex = "^(?=.*[a-zA-Z])(?=.*\\d).{6,}$(?i)"
+            val regex = Regex(passwordRegex)
+            return userPassword.matches(regex)
+        }
 
     private val isPhoneNumberValid: Boolean
         get() {

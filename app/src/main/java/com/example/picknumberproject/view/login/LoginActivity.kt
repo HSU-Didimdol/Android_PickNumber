@@ -30,8 +30,9 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initEventListeners()
-        password.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
         viewModel.bind()
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect(::updateUi)

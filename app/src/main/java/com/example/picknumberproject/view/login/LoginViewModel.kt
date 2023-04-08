@@ -64,8 +64,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun checkUserInfoExists(phoneNumber: String): Boolean {
-        return authRepository.hasUserInfo(phoneNumber)
+    fun checkUserInfoExists(password: String): Boolean {
+        return authRepository.hasUserInfo(password)
     }
 
     fun userMessageShown() {
