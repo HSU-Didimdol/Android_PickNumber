@@ -14,9 +14,9 @@ class AuthRepositoryImpl @Inject constructor(
     private val api: MainServerApi
 ) : AuthRepository {
 
-    override suspend fun signIn(userName: String, phoneNumber: String): Result<Unit> {
+    override suspend fun signIn(userName: String, userPassword: String): Result<Unit> {
         return try {
-            userDao.getUserByPhone(phoneNumber).isNotEmpty()
+            userDao.getUserByPassword(userPassword).isNotEmpty()
             Result.success(Unit)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -26,10 +26,11 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signUp(
         userName: String,
+        userPassword: String,
         phoneNumber: String
     ): Result<Unit> {
         return try {
-            userDao.insertUser(UserEntity(phone = phoneNumber, name = userName))
+            userDao.insertUser(UserEntity(password = userPassword, name = userName, phone = phoneNumber))
             Result.success(Unit)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -58,9 +59,10 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun hasUserInfo(phoneNumber: String): Boolean {
-        val list = userDao.getPhone()
-        return list.contains(phoneNumber)
+    override fun hasUserInfo(password: String): Boolean {
+        val list = userDao.getPassword()
+        return list.contains(password)
     }
+
 
 }

@@ -18,10 +18,12 @@
     <string name="notSignUp_user">가입된 회원이 아닙니다.</string>
     <string name="not_valid_code">인증코드가 다릅니다.</string>
     <string name="do_not_signUp">이미 가입된 회원이거나 회원가입 양식에 알맞지 않습니다.</string>
+    <string name="password_mismatch">비밀번호가 일치하지 않습니다</string>
     <string name="userName">사용자 이름</string>
     <string name="reservation_deleted">예약 삭제</string>
     <string name="failed">실패!!</string>
     <string name="inputPhoneNumber">전화번호 입력</string>
+    <string name="inputPassword">비밀번호 입력</string>
     <string name="reservation">예약</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
@@ -32,11 +34,13 @@
     <string name="distance">거리</string>
     <string name="address">주소</string>
     <string name="name_is_not_valid">유효한 이름이 아닙니다.</string>
-    <string name="phone_is_not_valid">유효한 전화 번호가 아닙니다.</string>
+    <string name="password_is_not_valid">유효한 비밀번호가 아닙니다.</string>
     <string name="time">소요시간</string>
     <string name="setting">설정</string>
     <string name="user_name">사용자 이름</string>
     <string name="user_call">전화번호</string>
+    <string name="user_password">비밀번호</string>
+    <string name="confirm_password">비밀번호 확인</string>
     <string name="reservation_information">예약정보</string>
     <string name="cancellation">취소</string>
     <string name="category_reservation">예약관리 > 실시간 예약 문의</string>

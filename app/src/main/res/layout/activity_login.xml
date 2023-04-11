@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:background="@color/white"
-                android:text="@string/user_call"
+                android:text="@string/user_password"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -114,19 +114,19 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/phoneNumberInputLayout"
+                android:id="@+id/passwordInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="20dp">
 
                 <EditText
-                    android:id="@+id/phoneNumber"
+                    android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
-                    android:hint="@string/inputPhoneNumber"
-                    android:inputType="phone"
+                    android:hint="@string/inputPassword"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     tools:ignore="Autofill,TextFields" />
 

@@ -15,8 +15,14 @@ interface UserDao {
     @Query("SELECT phone FROM user_table")
     fun getPhone(): List<String>
 
+    @Query("SELECT password FROM user_table")
+    fun getPassword(): List<String>
+
     @Query("SELECT name FROM user_table WHERE phone= :phone")
     fun getUserByPhone(phone: String): String
+
+    @Query("SELECT name FROM user_table WHERE password= :password")
+    fun getUserByPassword(password: String): String
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(vararg user: UserEntity)
