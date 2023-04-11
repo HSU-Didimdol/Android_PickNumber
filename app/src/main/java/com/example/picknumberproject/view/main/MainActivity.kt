@@ -16,6 +16,7 @@ import com.example.picknumberproject.view.main.reservationList.ReservationListFr
 import com.example.picknumberproject.view.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_reservation_list.*
 
 
 @AndroidEntryPoint

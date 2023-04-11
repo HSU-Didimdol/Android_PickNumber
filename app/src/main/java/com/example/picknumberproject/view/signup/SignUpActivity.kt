@@ -1,5 +1,6 @@
 package com.example.picknumberproject.view.signup
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.example.picknumberproject.databinding.ActivitySignUpBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.coroutines.launch
 import kotlin.concurrent.timer
@@ -107,6 +109,7 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun initEventListeners() {
         userNameEditText.addTextChangedListener {
             if (it != null) {
@@ -127,8 +130,15 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         }
 
         verificationCodeButton.setOnClickListener {
-            viewModel.checkValidCode()
-            setTimer()
+            if (userPhoneEditText.length() == 0) {
+                showSnackBar("전화번호를 입력해주세요.")
+            } else { // 전화번호를 입력하고 요청 버튼 누르게
+                Log.d("요청 버튼 눌림", userPhoneEditText.text.toString())
+                viewModel.checkValidCode()
+                verificationCodeButton.isEnabled = false // 버튼 비활성화
+                verificationCodeButton.setBackgroundColor(R.color.gray)
+                setTimer()
+            }
         }
 
         signupButton.setOnClickListener {

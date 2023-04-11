@@ -1,10 +1,14 @@
 package com.example.picknumberproject.view.main.reservationList
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.picknumberproject.databinding.ReservationListItemBinding
+import kotlinx.android.synthetic.main.fragment_reservation_list.*
+import kotlin.coroutines.coroutineContext
 
 class ReservationListAdapter(
     private val onClickFindRoadButton: (ReservationItemUiState) -> Unit,
@@ -26,6 +30,7 @@ class ReservationListAdapter(
 
     override fun onBindViewHolder(holder: ReservationListViewHolder, position: Int) {
         holder.bind(currentList[position])
+        Log.d("예약 리스트", currentList.toString())
     }
 
     override fun submitList(list: List<ReservationItemUiState>?) {
