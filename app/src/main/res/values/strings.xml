@@ -42,7 +42,7 @@
     <string name="user_password">비밀번호</string>
     <string name="confirm_password">비밀번호 확인</string>
     <string name="reservation_information">예약정보</string>
-    <string name="cancellation">취소</string>
+    <string name="cancellation">예약취소</string>
     <string name="category_reservation">예약관리 > 실시간 예약 문의</string>
     <string name="check">조회</string>
 </resources>

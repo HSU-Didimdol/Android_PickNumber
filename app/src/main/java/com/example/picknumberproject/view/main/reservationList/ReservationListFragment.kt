@@ -70,6 +70,10 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
             }
         }
 
+        total.text = "총 ${adapter.currentList.size} 건"
+        Log.d("총 예약 건수", adapter.itemCount.toString())
+        Log.d("예약 리스트", adapter.currentList.toString())
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
@@ -119,6 +123,8 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
 
     private fun updateUi(uiState: ReservationListUiState, adapter: ReservationListAdapter) {
         adapter.submitList(uiState.reservations)
+        Log.d("uiState.reservations.size", uiState.reservations.size.toString())
+        total.text = "총 ${uiState.reservations.size} 건"
         if (uiState.userMessage != null) {
             viewModel.userMessageShown()
             showSnackBar(getString(uiState.userMessage))
