@@ -2,29 +2,28 @@ package com.example.picknumberproject.view.login
 
 data class LoginUiState(
     val userName: String = "",
-    val phoneNumber: String = "",
+    val password: String = "",
     val isLoading: Boolean = false,
     val successToSignIn: Boolean = false,
     val userMessage: Int? = null
 ) {
     val isInputValid: Boolean
-        get() = isNameValid && isPhoneNumberValid
+        get() = isNameValid && isPasswordValid
 
     private val isNameValid: Boolean
         get() = userName.length >= 3
 
-    private val isPhoneNumberValid: Boolean
+    private val isPasswordValid: Boolean
         get() {
-            return if (phoneNumber.isEmpty()) {
-                false
-            } else {
-                android.util.Patterns.PHONE.matcher(phoneNumber).matches()
-            }
+            //비밀번호 조건: 최소 6자 이상, 최소한 한개의 영문자와 숫자를 포함해야 함
+            val passwordRegex = "^(?=.*[a-zA-Z])(?=.*\\d).{6,}$(?i)"
+            val regex = Regex(passwordRegex)
+            return password.matches(regex)
         }
 
     val showNameError: Boolean
         get() = userName.isNotEmpty() && !isNameValid
 
-    val showPhoneNumberError: Boolean
-        get() = phoneNumber.isNotEmpty() && !isPhoneNumberValid
+    val showPasswordError: Boolean
+        get() = password.isNotEmpty() && !isPasswordValid
 }

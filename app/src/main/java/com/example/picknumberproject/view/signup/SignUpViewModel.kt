@@ -24,6 +24,14 @@ class SignUpViewModel @Inject constructor(
         _uiState.update { it.copy(userName = userName) }
     }
 
+    fun updateUserPassword(userPassword: String) {
+        _uiState.update { it.copy(userPassword = userPassword) }
+    }
+
+    fun updateConfirmPassword(confirmPassword: String) {
+        _uiState.update { it.copy(confirmPassword = confirmPassword) }
+    }
+
     fun updatePhoneNumber(phoneNumber: String) {
         _uiState.update { it.copy(phoneNumber = phoneNumber) }
     }
@@ -38,10 +46,18 @@ class SignUpViewModel @Inject constructor(
 
     fun signUp() {
         val name = uiState.value.userName
+        val password = uiState.value.userPassword
+        val confirmPassword = uiState.value.confirmPassword
         val phoneNumber = uiState.value.phoneNumber
+
+        if (password != confirmPassword) {
+            _uiState.update { it.copy(userMessage = R.string.password_mismatch) }
+            return
+        }
+
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            val result = authRepository.signUp(name, phoneNumber)
+            val result = authRepository.signUp(name, password, phoneNumber)
             if (result.isSuccess) {
                 _uiState.update { it.copy(successToSignUp = true, isLoading = false) }
             } else {

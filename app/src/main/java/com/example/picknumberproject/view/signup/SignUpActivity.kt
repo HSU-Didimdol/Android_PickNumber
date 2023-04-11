@@ -103,6 +103,7 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
             isEnabled = uiState.isInputValid && !uiState.isLoading
             setText(if (uiState.isLoading) R.string.loading else R.string.signUp)
         }
+
     }
 
     private fun showSnackBar(message: String) {
@@ -114,6 +115,19 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         userNameEditText.addTextChangedListener {
             if (it != null) {
                 viewModel.updateUserName(it.toString())
+            }
+        }
+
+        userPasswordEditText.addTextChangedListener {
+            if (it != null) {
+                viewModel.updateUserPassword(it.toString())
+            }
+        }
+
+
+        confirmPasswordEditText.addTextChangedListener {
+            if (it != null) {
+                viewModel.updateConfirmPassword(it.toString())
             }
         }
 

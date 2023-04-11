@@ -26,8 +26,8 @@ class LoginViewModel @Inject constructor(
         _uiState.update { it.copy(userName = userName) }
     }
 
-    fun updatePhoneNumber(phoneNumber: String) {
-        _uiState.update { it.copy(phoneNumber = phoneNumber) }
+    fun updatePassword(password: String) {
+        _uiState.update { it.copy(password = password) }
     }
 
     fun bind() {
@@ -47,10 +47,10 @@ class LoginViewModel @Inject constructor(
 
     fun signIn() {
         val name = uiState.value.userName
-        val phoneNumber = uiState.value.phoneNumber
+        val password = uiState.value.password
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            val result = authRepository.signIn(name, phoneNumber)
+            val result = authRepository.signIn(name, password)
             if (result.isSuccess) {
                 _uiState.update { it.copy(successToSignIn = true, isLoading = false) }
             } else {
@@ -64,8 +64,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun checkUserInfoExists(phoneNumber: String): Boolean {
-        return authRepository.hasUserInfo(phoneNumber)
+    fun checkUserInfoExists(password: String): Boolean {
+        return authRepository.hasUserInfo(password)
     }
 
     fun userMessageShown() {
