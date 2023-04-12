@@ -1,9 +1,7 @@
 package com.example.picknumberproject.view.main.map
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -21,10 +19,12 @@ import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.homepage.HomePageFragment
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.*
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationTrackingMode
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
@@ -38,7 +38,6 @@ class MapFragment(
     Overlay.OnClickListener {
 
     private lateinit var map: NaverMap
-    private lateinit var locatioinManager: LocationManager
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMapBinding
         get() = FragmentMapBinding::inflate
@@ -63,12 +62,6 @@ class MapFragment(
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-        val longitude = locationSource.lastLocation?.longitude
-        val latitude = locationSource.lastLocation?.latitude
-
-        viewModel.bind(query, "${longitude},${latitude}")
-
-        locatioinManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         routeButton.isVisible = false
     }
@@ -85,11 +78,17 @@ class MapFragment(
                     map.cameraPosition.target.latitude,
                     map.cameraPosition.target.longitude
                 ),
-                9.0
+                13.0
             )
         Log.d("map.cameraPosition.target.latitude", map.cameraPosition.target.latitude.toString())
         Log.d("map.cameraPosition.target.longitude", map.cameraPosition.target.longitude.toString())
         map.moveCamera(cameraUpdate)
+
+
+        viewModel.bind(
+            query,
+            "${map.cameraPosition.target.longitude},${map.cameraPosition.target.latitude}"
+        )
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -168,7 +167,6 @@ class MapFragment(
 
     private fun updateMarker(uiState: MapUiState) {
         val companyList = uiState.companyListData
-        val boundsBuilder = LatLngBounds.builder()
         Log.d("company", companyList.toString())
 
         // 마커들의 위치 정보를 기반으로 중심점과 확대/축소 레벨 계산

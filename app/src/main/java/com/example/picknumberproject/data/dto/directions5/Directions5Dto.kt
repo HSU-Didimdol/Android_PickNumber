@@ -10,6 +10,6 @@ data class Directions5Dto(
 )
 
 fun Directions5Dto.toEntity() = DirectionEntity(
-    duration = route.traoptimal[0].summary.duration / 1000,
-    distance = route.traoptimal[0].summary.distance / 1000 / 60
+    duration = route.traoptimal[0].summary.duration / 1000 / 60,
+    distance = route.traoptimal[0].summary.distance / 1000
 )

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebViewClient
+import androidx.fragment.app.activityViewModels
 import com.example.picknumberproject.databinding.FragmentReservationPageBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import kotlinx.android.synthetic.main.fragment_reservation_page.*
@@ -15,6 +16,9 @@ class ReservationPageFragment(
     private val url: String
 ) : ViewBindingFragment<FragmentReservationPageBinding>() {
 
+
+    private val viewModel: ReservationPageViewModel by activityViewModels()
+
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentReservationPageBinding
         get() = FragmentReservationPageBinding::inflate
 
@@ -22,6 +26,8 @@ class ReservationPageFragment(
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.bind(url)
 
         webView.settings.apply {
             this.setSupportMultipleWindows(false) // 새창 띄우기 허용
@@ -44,7 +50,7 @@ class ReservationPageFragment(
         }
 
         webView.webViewClient = WebViewClient()
-        webView.loadUrl(url)
+        webView.loadUrl(viewModel.uiState.value.url)
 
     }
 }

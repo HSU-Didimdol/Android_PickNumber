@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,17 +21,13 @@ import com.example.picknumberproject.view.main.reservationpage.ReservationPageFr
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.fragment_reservation_list.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class ReservationListFragment : ViewBindingFragment<FragmentReservationListBinding>() {
 
 
     private val viewModel: ReservationListViewModel by activityViewModels()
-    private val initData: MutableList<ReservationItemUiState>? = null
     private var launcher: ActivityResultLauncher<Intent>? = null
 
     private val locationSource: FusedLocationSource by lazy {
@@ -52,8 +47,6 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.bind(initData)
-
         val adapter = ReservationListAdapter(
             onClickFindRoadButton = ::onClickFindRoadButton,
             onClickReservationPageButton = ::onClickReservationPageButton,
@@ -61,16 +54,6 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
         )
         initRecyclerView(adapter)
 
-        setFragmentResultListener("refreshReservation") { _, _ ->
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Default) {
-                delay(300)
-                withContext(Dispatchers.Main) {
-                    adapter.notifyDataSetChanged()
-                }
-            }
-        }
-
-        total.text = "총 ${adapter.currentList.size} 건"
         Log.d("총 예약 건수", adapter.itemCount.toString())
         Log.d("예약 리스트", adapter.currentList.toString())
 
@@ -84,11 +67,12 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
 
         checkButton.setOnClickListener {
             adapter.notifyDataSetChanged()
+            adapter.submitList(viewModel.uiState.value.reservations)
         }
 
         launcher = registerForActivityResult(RefreshStateContract()) {
             if (it != null) {
-                adapter.notifyDataSetChanged()
+                adapter.submitList(viewModel.uiState.value.reservations)
                 it.message?.let { message -> showSnackBar(message) }
             }
         }
@@ -101,7 +85,7 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode != ReservationListFragment.LOCATION_PERMISSION_REQUEST_CODE) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
             return
         }
         if (locationSource.onRequestPermissionsResult(

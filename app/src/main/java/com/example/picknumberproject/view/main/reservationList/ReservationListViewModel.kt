@@ -9,9 +9,9 @@ import com.example.picknumberproject.domain.repository.CompanyRepository
 import com.example.picknumberproject.domain.repository.ReservationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,17 +26,16 @@ class ReservationListViewModel @Inject constructor(
         ReservationListUiState()
     )
     val uiState = _uiState.asStateFlow()
-    private var bounded = false
 
-    fun bind(
-        initData: MutableList<ReservationItemUiState>?
-    ) {
-        if (bounded) return
-        bounded = true
-        if (initData != null) {
-            _uiState.update { it.copy(reservations = initData) }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
+    private var fetchJob: Job? = null
+
+    init {
+        fetchReservations()
+    }
+
+    private fun fetchReservations() {
+        fetchJob?.cancel()
+        fetchJob = viewModelScope.launch(Dispatchers.IO) {
             val dataList = reservationRepository.getAllReservationList()
             if (dataList.isSuccess) {
                 _uiState.update { data ->

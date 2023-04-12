@@ -1,20 +1,16 @@
 package com.example.picknumberproject.view.main.reservationList
 
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.picknumberproject.databinding.ReservationListItemBinding
-import kotlinx.android.synthetic.main.fragment_reservation_list.*
-import kotlin.coroutines.coroutineContext
 
 class ReservationListAdapter(
     private val onClickFindRoadButton: (ReservationItemUiState) -> Unit,
     private val onClickReservationPageButton: (ReservationItemUiState) -> Unit,
     private val onClickDeleteReservationButton: (ReservationItemUiState) -> Unit
-
 ) : ListAdapter<ReservationItemUiState, ReservationListViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservationListViewHolder {
@@ -53,6 +49,5 @@ class ReservationListAdapter(
                 return oldItem == newItem
             }
         }
-
     }
 }

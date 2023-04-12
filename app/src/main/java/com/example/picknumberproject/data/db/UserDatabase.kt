@@ -11,7 +11,7 @@ import com.example.picknumberproject.domain.model.UserEntity
  * Companion Object를 통해 해당 내용을 추상클래스가 실행되었을때 바로 실행시켜줍니다.
  */
 
-@Database(entities = [UserEntity::class], version = 1)
+@Database(entities = [UserEntity::class], version = 2)
 abstract class UserDatabase : RoomDatabase() {
     abstract fun getDao(): UserDao
 

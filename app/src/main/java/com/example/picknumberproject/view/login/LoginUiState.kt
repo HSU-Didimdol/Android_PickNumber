@@ -5,7 +5,8 @@ data class LoginUiState(
     val password: String = "",
     val isLoading: Boolean = false,
     val successToSignIn: Boolean = false,
-    val userMessage: Int? = null
+    val userMessage: Int? = null,
+    val isLoggedIn: Boolean = false
 ) {
     val isInputValid: Boolean
         get() = isNameValid && isPasswordValid

@@ -52,7 +52,13 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             val result = authRepository.signIn(name, password)
             if (result.isSuccess) {
-                _uiState.update { it.copy(successToSignIn = true, isLoading = false) }
+                _uiState.update {
+                    it.copy(
+                        successToSignIn = true,
+                        isLoading = false,
+                        isLoggedIn = true
+                    )
+                }
             } else {
                 _uiState.update {
                     it.copy(

@@ -1,146 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.main.map.MapFragment">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.main.map.MapFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <com.naver.maps.map.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:layout_constraintBottom_toTopOf="@+id/bottomSheet"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/bottomSheet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="30dp"
-                android:layout_height="3dp"
-                android:layout_marginTop="12dp"
-                android:background="#cccccc"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:layout_constraintBottom_toTopOf="@+id/bottomSheet"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/bottomSheetNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:padding="8dp"
-                android:textColor="@color/teal_700"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/bottomSheetDistanceTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="@string/name" />
-
-            <TextView
-                android:id="@+id/bottomSheetAddressTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-                app:layout_constraintStart_toEndOf="@+id/bottomSheetDistanceTextView"
-                app:layout_constraintTop_toTopOf="@+id/view"
-                tools:text="@string/address" />
-
-            <TextView
-                android:id="@+id/bottomSheetDistanceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/view"
-                tools:text="@string/distance" />
-
-            <TextView
-                android:id="@+id/bottomSheetDurationTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="8dp"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bottomSheetDistanceTextView"
-                tools:text="@string/time" />
-
-            <Button
-                android:id="@+id/routeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:backgroundTint="#03A9F4"
-                android:drawableLeft="@drawable/baseline_fork_right_24"
-                android:drawableTint="#FFFFFF"
-                android:padding="8dp"
-                android:text="@string/find_road"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/view" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottomSheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:background="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bottomSheetDurationTextView"
-                app:layout_constraintVertical_bias="1.0">
+                app:layout_constraintStart_toStartOf="parent">
+
+            <View
+                    android:id="@+id/view"
+                    android:layout_width="30dp"
+                    android:layout_height="3dp"
+                    android:layout_marginTop="12dp"
+                    android:background="#cccccc"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                    android:id="@+id/bottomSheetNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:textColor="@color/teal_700"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="@string/name"
+                    app:layout_constraintBottom_toTopOf="@+id/bottomSheetAddressTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <TextView
+                    android:id="@+id/bottomSheetAddressTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    tools:text="@string/address"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginStart="24dp"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout" />
+
+            <TextView
+                    android:id="@+id/bottomSheetDistanceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="16dp"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toTopOf="@+id/bottomSheetDurationTextView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="@string/distance" />
+
+            <TextView
+                    android:id="@+id/bottomSheetDurationTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                    android:layout_marginBottom="16dp"
+                    tools:text="@string/time" />
+
+            <Button
+                    android:id="@+id/routeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#03A9F4"
+                    android:drawableTop="@drawable/baseline_fork_right_24"
+                    android:drawableTint="#FFFFFF"
+                    android:padding="8dp"
+                    android:text="@string/find_road"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:ignore="TextContrastCheck" />
+
+            <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
                 <Button
-                    android:id="@+id/homeButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FFFFFF"
-                    android:drawableLeft="@drawable/ic_baseline_home_24"
-                    android:text="@string/home"
-                    android:textColor="#000000" />
+                        android:id="@+id/homeButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:backgroundTint="#FFFFFF"
+                        android:drawableLeft="@drawable/ic_baseline_home_24"
+                        android:text="@string/home"
+                        android:textColor="#000000" />
 
                 <Button
-                    android:id="@+id/callButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FFFFFF"
-                    android:drawableLeft="@drawable/ic_baseline_call_24"
-                    android:text="@string/call"
-                    android:textColor="#000000" />
+                        android:id="@+id/callButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:backgroundTint="#FFFFFF"
+                        android:drawableLeft="@drawable/ic_baseline_call_24"
+                        android:text="@string/call"
+                        android:textColor="#000000" />
 
                 <Button
-                    android:id="@+id/reservationButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FFFFFF"
-                    android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
-                    android:text="@string/reservation"
-                    android:textColor="#000000" />
+                        android:id="@+id/reservationButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:backgroundTint="#FFFFFF"
+                        android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
+                        android:text="@string/reservation"
+                        android:textColor="#000000" />
 
             </LinearLayout>
 

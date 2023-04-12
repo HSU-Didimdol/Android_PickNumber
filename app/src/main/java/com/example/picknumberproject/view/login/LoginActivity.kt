@@ -1,8 +1,8 @@
 package com.example.picknumberproject.view.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
@@ -24,14 +24,18 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
 
     private val viewModel: LoginViewModel by viewModels()
 
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, LoginActivity::class.java)
+        }
+    }
+
     override val bindingInflater: (LayoutInflater) -> ActivityLoginBinding
         get() = ActivityLoginBinding::inflate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initEventListeners()
-
-        viewModel.bind()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -77,6 +81,10 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
     }
 
     private fun updateUi(uiState: LoginUiState) {
+
+        if (uiState.isLoggedIn) {
+            navigateMainActivity()
+        }
 
         nameInputLayout.apply {
             isErrorEnabled = uiState.showNameError

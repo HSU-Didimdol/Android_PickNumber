@@ -19,7 +19,6 @@ import com.example.picknumberproject.databinding.ActivitySignUpBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.coroutines.launch
 import kotlin.concurrent.timer
@@ -143,6 +142,11 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
             }
         }
 
+        if (agreementCheckBox.isChecked) {
+            viewModel.updateCheckBox(true)
+        }
+
+
         verificationCodeButton.setOnClickListener {
             if (userPhoneEditText.length() == 0) {
                 showSnackBar("전화번호를 입력해주세요.")
@@ -185,7 +189,6 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
                     viewModel.signUp()
                 }
             }
-
             if (second == 0) {
                 minute--
                 second = 60
