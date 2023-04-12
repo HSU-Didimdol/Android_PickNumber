@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
+import com.example.picknumberproject.view.extension.hideKeyboard
 import com.example.picknumberproject.view.main.map.MapFragment
 import com.example.picknumberproject.view.main.reservationList.ReservationListFragment
 import com.example.picknumberproject.view.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_reservation_list.*
 
 
 @AndroidEntryPoint
@@ -56,6 +56,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (query != null) {
                         replaceFragment(MapFragment(query))
+                        hideKeyboard()
                     }
                     return true
                 }

@@ -1,6 +1,5 @@
 package com.example.picknumberproject.view.main.reservationList
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -26,7 +25,6 @@ class ReservationListAdapter(
 
     override fun onBindViewHolder(holder: ReservationListViewHolder, position: Int) {
         holder.bind(currentList[position])
-        Log.d("예약 리스트", currentList.toString())
     }
 
     override fun submitList(list: List<ReservationItemUiState>?) {

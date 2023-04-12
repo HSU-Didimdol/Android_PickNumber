@@ -54,9 +54,6 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
         )
         initRecyclerView(adapter)
 
-        Log.d("총 예약 건수", adapter.itemCount.toString())
-        Log.d("예약 리스트", adapter.currentList.toString())
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
@@ -138,12 +135,11 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
 
     private fun onClickReservationPageButton(uiState: ReservationItemUiState) {
         val reservationPageFragment =
-            ReservationPageFragment("http://service.landpick.net/reservation?${uiState.companyID}") // <- TODO : 임의적인 데이터
+            ReservationPageFragment("http://service.landpick.net/reservation?${uiState.companyID}")
         mainActivity.replaceFragment(reservationPageFragment)
     }
 
     private fun onClickDeleteReservationButton(uiState: ReservationItemUiState) {
-        Log.d("deleteUistate", uiState.toString())
         viewModel.reservationDelete(uiState)
     }
 
