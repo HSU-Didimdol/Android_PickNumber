@@ -181,7 +181,9 @@ class MapFragment(
             marker.icon = MarkerIcons.GREEN
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
-            marker.iconTintColor = Color.BLUE
+            marker.iconTintColor = Color.MAGENTA
+            marker.captionText = company.name+ " " + company.divisionName
+            marker.captionTextSize = 16f
             marker.onClickListener = this
             marker.tag =
                 "새마을 금고 본점(" + company.name + ")" + "/" + company.address + "/" + company.distance + "/" + company.duration + "/" + company.code + "/" + company.divisionCode + "/" + company.tel + "/" + company.latitude + "/" + company.longitude + "/" + company.companyID
