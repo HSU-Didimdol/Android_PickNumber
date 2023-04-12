@@ -1,7 +1,9 @@
 package com.example.picknumberproject.view.main.map
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +21,7 @@ import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.homepage.HomePageFragment
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
@@ -35,6 +38,7 @@ class MapFragment(
     Overlay.OnClickListener {
 
     private lateinit var map: NaverMap
+    private lateinit var locatioinManager: LocationManager
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMapBinding
         get() = FragmentMapBinding::inflate
@@ -62,8 +66,9 @@ class MapFragment(
         val longitude = locationSource.lastLocation?.longitude
         val latitude = locationSource.lastLocation?.latitude
 
-
         viewModel.bind(query, "${longitude},${latitude}")
+
+        locatioinManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         routeButton.isVisible = false
     }
@@ -82,7 +87,8 @@ class MapFragment(
                 ),
                 9.0
             )
-
+        Log.d("map.cameraPosition.target.latitude", map.cameraPosition.target.latitude.toString())
+        Log.d("map.cameraPosition.target.longitude", map.cameraPosition.target.longitude.toString())
         map.moveCamera(cameraUpdate)
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -162,7 +168,13 @@ class MapFragment(
 
     private fun updateMarker(uiState: MapUiState) {
         val companyList = uiState.companyListData
+        val boundsBuilder = LatLngBounds.builder()
         Log.d("company", companyList.toString())
+
+        // 마커들의 위치 정보를 기반으로 중심점과 확대/축소 레벨 계산
+        var totalLat = 0.0
+        var totalLng = 0.0
+
         companyList.forEach { company ->
             val marker = Marker()
             marker.position = LatLng(company.latitude.toDouble(), company.longitude.toDouble())
@@ -175,7 +187,21 @@ class MapFragment(
             marker.onClickListener = this
             marker.tag =
                 "새마을 금고 본점(" + company.name + ")" + "/" + company.address + "/" + company.distance + "/" + company.duration + "/" + company.code + "/" + company.divisionCode + "/" + company.tel + "/" + company.latitude + "/" + company.longitude + "/" + company.companyID
+
+            totalLat += marker.position.latitude
+            totalLng += marker.position.longitude
         }
+
+        val centerLat = totalLat / companyList.size
+        val centerLng = totalLng / companyList.size
+
+        // 중심점과 확대/축소 레벨을 이용하여 카메라 이동
+        val center = LatLng(centerLat, centerLng)
+        val cameraUpdate = CameraUpdate.scrollAndZoomTo(center, 12.0)
+
+        // 생성한 CameraUpdate를 사용하여 지도 이동
+        map.moveCamera(cameraUpdate)
+
     }
 
     override fun onClick(p0: Overlay): Boolean {
