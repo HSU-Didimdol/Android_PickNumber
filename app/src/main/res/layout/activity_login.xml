@@ -153,7 +153,7 @@
             android:width="350dp"
             android:backgroundTint="@color/gray"
             android:text="@string/login"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -164,7 +164,7 @@
             android:width="350dp"
             android:backgroundTint="@color/gray"
             android:text="@string/signUp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
