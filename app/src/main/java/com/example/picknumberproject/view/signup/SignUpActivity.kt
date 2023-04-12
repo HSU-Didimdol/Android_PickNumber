@@ -179,6 +179,11 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
                     Toast.makeText(applicationContext, "인증 시간이 만료되었습니다.", Toast.LENGTH_SHORT).show()
                 }
                 return@timer
+            } else {
+                signupButton.setOnClickListener {
+                    cancel()
+                    viewModel.signUp()
+                }
             }
 
             if (second == 0) {
