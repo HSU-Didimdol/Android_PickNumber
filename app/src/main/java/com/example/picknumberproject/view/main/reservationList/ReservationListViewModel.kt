@@ -1,6 +1,5 @@
 package com.example.picknumberproject.view.main.reservationList
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.picknumberproject.R
@@ -33,7 +32,7 @@ class ReservationListViewModel @Inject constructor(
         fetchReservations()
     }
 
-    private fun fetchReservations() {
+    fun fetchReservations() {
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch(Dispatchers.IO) {
             val dataList = reservationRepository.getAllReservationList()
@@ -112,15 +111,11 @@ class ReservationListViewModel @Inject constructor(
 
     fun reservationDelete(uiState: ReservationItemUiState) {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("securityKey", uiState.securityCode)
-            Log.d("companyID", uiState.companyID.toString())
-            Log.d("reservationID", uiState.reservationID.toString())
             val result = reservationRepository.deleteReservationItem(
                 uiState.companyID,
                 uiState.reservationID,
                 uiState.securityCode
             )
-            Log.d("result", result.toString())
             _uiState.update {
                 it.copy(
                     userMessage = if (result.isSuccess) {
@@ -130,6 +125,7 @@ class ReservationListViewModel @Inject constructor(
                     }
                 )
             }
+            fetchReservations()
         }
     }
 

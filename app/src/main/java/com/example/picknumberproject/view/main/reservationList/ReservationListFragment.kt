@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
 
 class ReservationListFragment : ViewBindingFragment<FragmentReservationListBinding>() {
 
-
     private val viewModel: ReservationListViewModel by activityViewModels()
     private var launcher: ActivityResultLauncher<Intent>? = null
 
@@ -63,8 +62,7 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
         }
 
         checkButton.setOnClickListener {
-            adapter.notifyDataSetChanged()
-            adapter.submitList(viewModel.uiState.value.reservations)
+            viewModel.fetchReservations()
         }
 
         launcher = registerForActivityResult(RefreshStateContract()) {
