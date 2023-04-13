@@ -14,14 +14,14 @@ class ReservationRepositoryImpl @Inject constructor(
     private val reservationRemoteSource: ReservationRemoteSource
 ) : ReservationRepository {
 
-    override suspend fun getAllReservationList(): Result<List<ReservationEntity>> {
+    override suspend fun getAllReservationList(phoneNumber: String): Result<List<ReservationEntity>> {
         return runCatching {
             val response = reservationRemoteSource.getReservationList(
                 reservationBody = ReservationBody(
                     Reservation(
                         date = null,
                         workGroupID = null,
-                        phoneNumber = "010-5905-9620"
+                        phoneNumber = phoneNumber
                     )
                 )
             )

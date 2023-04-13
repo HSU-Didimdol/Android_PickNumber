@@ -2,6 +2,7 @@ package com.example.picknumberproject.domain.repository
 
 import com.example.picknumberproject.domain.model.CompanyEntity
 import com.example.picknumberproject.domain.model.DirectionEntity
+import kotlinx.coroutines.flow.StateFlow
 
 interface CompanyRepository {
 

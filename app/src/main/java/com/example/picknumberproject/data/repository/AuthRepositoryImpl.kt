@@ -30,7 +30,13 @@ class AuthRepositoryImpl @Inject constructor(
         phoneNumber: String
     ): Result<Unit> {
         return try {
-            userDao.insertUser(UserEntity(password = password, name = userName, phone = phoneNumber))
+            userDao.insertUser(
+                UserEntity(
+                    password = password,
+                    name = userName,
+                    phone = phoneNumber
+                )
+            )
             Result.success(Unit)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -56,6 +62,15 @@ class AuthRepositoryImpl @Inject constructor(
                 )
             )
             response.getDataOrThrowMessage()
+        }
+    }
+
+    override suspend fun getCurrentUserInfo(): Result<Unit> {
+        return try {
+            Result.success(Unit)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
         }
     }
 

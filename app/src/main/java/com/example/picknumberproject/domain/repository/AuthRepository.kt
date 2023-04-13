@@ -12,4 +12,6 @@ interface AuthRepository {
         phoneNumber: String,
         authenticCode: String
     ): Result<Unit>
+
+    suspend fun getCurrentUserInfo(): Result<Unit>
 }
