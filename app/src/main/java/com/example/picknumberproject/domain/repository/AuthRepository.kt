@@ -1,5 +1,7 @@
 package com.example.picknumberproject.domain.repository
 
+import com.example.picknumberproject.domain.model.UserEntity
+
 interface AuthRepository {
 
     suspend fun signIn(userName: String, password: String): Result<Unit>
@@ -13,5 +15,5 @@ interface AuthRepository {
         authenticCode: String
     ): Result<Unit>
 
-    suspend fun getCurrentUserInfo(): Result<Unit>
+    suspend fun getCurrentUserInfo(): Result<List<UserEntity>>
 }

@@ -23,7 +23,9 @@ data class SignUpUiState(
 
     private val isPasswordValid: Boolean
         get() {
-            //비밀번호 조건: 최소 6자 이상, 최소한 한개의 영문자와 숫자를 포함해야 함
+            /**
+             *   비밀번호 조건: 최소 6자 이상, 최소한 한개의 영문자와 숫자를 포함해야 함
+             */
             val passwordRegex = "^(?=.*[a-zA-Z])(?=.*\\d).{6,}$(?i)"
             val regex = Regex(passwordRegex)
             return userPassword.matches(regex)

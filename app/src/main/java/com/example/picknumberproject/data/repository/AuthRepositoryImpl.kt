@@ -65,12 +65,10 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCurrentUserInfo(): Result<Unit> {
-        return try {
-            Result.success(Unit)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Result.failure(e)
+    override suspend fun getCurrentUserInfo(): Result<List<UserEntity>> {
+        return runCatching {
+            val userDetail = userDao.getAll()
+            userDetail
         }
     }
 

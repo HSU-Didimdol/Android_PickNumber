@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.picknumberproject.R
 import com.example.picknumberproject.domain.model.CompanyEntity
+import com.example.picknumberproject.domain.repository.AuthRepository
 import com.example.picknumberproject.domain.repository.CompanyRepository
 import com.example.picknumberproject.domain.repository.ReservationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ReservationListViewModel @Inject constructor(
     private val reservationRepository: ReservationRepository,
-    private val companyRepository: CompanyRepository
+    private val companyRepository: CompanyRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -28,10 +30,22 @@ class ReservationListViewModel @Inject constructor(
 
     private var fetchJob: Job? = null
 
-    private val phoneNumber: String = "010-5905-9620"
+    private var phoneNumber: String = ""
 
     init {
+        getCurrentUser()
         fetchReservations()
+    }
+
+    private fun getCurrentUser() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = authRepository.getCurrentUserInfo()
+            if (result.isSuccess) {
+                phoneNumber = result.getOrNull()!![0].phone
+            } else {
+                _uiState.update { it.copy(userMessage = result.exceptionOrNull()!!.localizedMessage?.toInt()) }
+            }
+        }
     }
 
     fun fetchReservations() {
