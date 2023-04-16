@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.concurrent.timer
 
 @AndroidEntryPoint
@@ -33,6 +34,9 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
             }
         }
     }
+
+    private var timerTask: Timer? = null
+    private var time = 120
 
     private fun getSignUpOrInfoUpdate(): String {
         return intent.getStringExtra("signUpOrInfoUpdate")!!
@@ -84,11 +88,6 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
 
     private fun updateUi(uiState: SignUpUiState) {
 
-        // 추후에 체크 박스가 체크되면 버튼이 활성화 되게끔
-        if (agreementCheckBox.isChecked) {
-
-        }
-
         if (uiState.successToSignUp) {
             navigateLoginActivity()
         }
@@ -123,7 +122,6 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
             }
         }
 
-
         confirmPasswordEditText.addTextChangedListener {
             if (it != null) {
                 viewModel.updateConfirmPassword(it.toString())
@@ -153,9 +151,7 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
             } else { // 전화번호를 입력하고 요청 버튼 누르게
                 Log.d("요청 버튼 눌림", userPhoneEditText.text.toString())
                 viewModel.checkValidCode()
-                verificationCodeButton.isEnabled = false // 버튼 비활성화
-                verificationCodeButton.setBackgroundColor(R.color.gray)
-                setTimer()
+                startTimer()
             }
         }
 
@@ -165,12 +161,11 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
 
     }
 
-    private fun setTimer() {
-        val time = 120
+    private fun startTimer() {
         var second = time % 60
         var minute = time / 60
-
-        timer(period = 1000, initialDelay = 1000) {
+        resetTimer()
+        timerTask = timer(period = 1000, initialDelay = 1000) {
             runOnUiThread {
                 timeTextView.text = String.format("0$minute:%02d", second)
             }
@@ -195,6 +190,12 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
             }
             second--
         }
+    }
+
+    private fun resetTimer() {
+        timerTask?.cancel()
+        time = 120
+        timeTextView.text = String.format("02:00")
     }
 
 }
