@@ -1,5 +1,6 @@
 package com.example.picknumberproject.data.repository
 
+import com.example.picknumberproject.data.db.UserDao
 import com.example.picknumberproject.data.dto.reservation.toEntity
 import com.example.picknumberproject.data.extension.getDataOrThrowMessage
 import com.example.picknumberproject.data.requestBody.deleteReservation.DeleteBody
@@ -11,17 +12,19 @@ import com.example.picknumberproject.domain.repository.ReservationRepository
 import javax.inject.Inject
 
 class ReservationRepositoryImpl @Inject constructor(
-    private val reservationRemoteSource: ReservationRemoteSource
+    private val reservationRemoteSource: ReservationRemoteSource,
+    private val userDao: UserDao
 ) : ReservationRepository {
 
-    override suspend fun getAllReservationList(phoneNumber: String): Result<List<ReservationEntity>> {
+    override suspend fun getAllReservationList(): Result<List<ReservationEntity>> {
         return runCatching {
+            val phone = userDao.getAll()[0].phone
             val response = reservationRemoteSource.getReservationList(
                 reservationBody = ReservationBody(
                     Reservation(
                         date = null,
                         workGroupID = null,
-                        phoneNumber = phoneNumber
+                        phoneNumber = phone
                     )
                 )
             )

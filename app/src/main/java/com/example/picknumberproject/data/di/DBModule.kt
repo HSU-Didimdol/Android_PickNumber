@@ -2,10 +2,7 @@ package com.example.picknumberproject.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.picknumberproject.data.db.CompanyDao
-import com.example.picknumberproject.data.db.CompanyDatabase
-import com.example.picknumberproject.data.db.UserDao
-import com.example.picknumberproject.data.db.UserDatabase
+import com.example.picknumberproject.data.db.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

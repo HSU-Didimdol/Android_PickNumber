@@ -16,7 +16,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signIn(userName: String, password: String): Result<Unit> {
         return try {
-            userDao.getUserByPassword(password).isNotEmpty()
+            userDao.getUserByNameAndPassword(name = userName, password = password)
             Result.success(Unit)
         } catch (e: Exception) {
             e.printStackTrace()

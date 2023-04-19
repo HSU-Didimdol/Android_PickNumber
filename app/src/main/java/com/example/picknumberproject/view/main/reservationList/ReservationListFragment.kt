@@ -18,13 +18,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.picknumberproject.databinding.FragmentReservationListBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.extension.RefreshStateContract
-import com.example.picknumberproject.view.extension.registerObserverForScrollToTop
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.android.synthetic.main.fragment_reservation_list.*
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class ReservationListFragment : ViewBindingFragment<FragmentReservationListBinding>() {
@@ -100,17 +101,21 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
         binding.apply {
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(context)
-            adapter.registerObserverForScrollToTop(recyclerView)
         }
 
     }
 
     @SuppressLint("SetTextI18n")
     private fun updateUi(uiState: ReservationListUiState, adapter: ReservationListAdapter) {
-        if (uiState.reservations.isNotEmpty()) {
-            binding.loadState.emptyText.isVisible = false
+        binding.loadState.emptyText.isVisible =
+            uiState.reservations.isEmpty() // 만약 리스트에 아무것도 없다면 "예약 없음" 텍스트가 반환된다.
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss") // 날짜 별로 정렬
+        val sortedList = uiState.reservations.sortedBy {
+            LocalDateTime.parse(it.registrationDate, formatter)
         }
-        adapter.submitList(uiState.reservations)
+
+        adapter.submitList(sortedList)
         Log.d("uiState.reservations.size", uiState.reservations.size.toString())
         total.text = "총 ${uiState.reservations.size} 건"
         if (uiState.userMessage != null) {

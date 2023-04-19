@@ -18,6 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivitySignUpBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
+import com.example.picknumberproject.view.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -53,15 +54,6 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         initEventListeners()
         userPhoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        val getSignUpOrInfoUpdate = getSignUpOrInfoUpdate()
-        if (getSignUpOrInfoUpdate == "infoUpdate") {
-            signup_toolbar_title.text = "정보 수정"
-            signupButton.text = getString(R.string.save)
-            logoutButton.isVisible = true
-        } else {
-            logoutButton.isVisible = false
-        }
-
         setSupportActionBar(signup_toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //왼쪽 뒤로가기 사용여부
@@ -87,10 +79,22 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
     }
 
     private fun navigateLoginActivity() {
+        val intent = LoginActivity.getIntent(this).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        startActivity(intent)
         finish()
     }
 
     private fun updateUi(uiState: SignUpUiState) {
+
+        val getSignUpOrInfoUpdate = getSignUpOrInfoUpdate()
+        if (getSignUpOrInfoUpdate == "infoUpdate") {
+            signup_toolbar_title.text = getString(R.string.ChangingInformation)
+            logoutButton.isVisible = true
+        } else {
+            logoutButton.isVisible = false
+        }
 
         if (uiState.successToSignUp) {
             navigateLoginActivity()
@@ -102,8 +106,18 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         }
 
         signupButton.apply {
+            setText(
+                if (uiState.isLoading) R.string.loading
+                else {
+                    if (getSignUpOrInfoUpdate == "infoUpdate") {
+                        R.string.save
+                    } else {
+                        R.string.signUp
+                    }
+
+                }
+            )
             isEnabled = uiState.isInputValid && !uiState.isLoading
-            setText(if (uiState.isLoading) R.string.loading else R.string.signUp)
         }
 
     }

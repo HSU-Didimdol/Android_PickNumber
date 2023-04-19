@@ -1,5 +1,7 @@
 package com.example.picknumberproject.view.signup
 
+import com.example.picknumberproject.domain.model.UserEntity
+
 data class SignUpUiState(
     val userName: String = "",
     val userPassword: String = "",
@@ -10,7 +12,8 @@ data class SignUpUiState(
     val isLoading: Boolean = false,
     val checkBox: Boolean = false,
     val successToSignUp: Boolean = false,
-    val userMessage: Int? = null
+    val userMessage: Int? = null,
+    val userEntity: UserEntity? = null
 ) {
     val isInputValid: Boolean
         get() = isNameValid && isPhoneNumberValid && isCodeValid && isPasswordValid

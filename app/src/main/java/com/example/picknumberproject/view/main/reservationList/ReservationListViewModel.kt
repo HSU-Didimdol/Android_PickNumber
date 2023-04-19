@@ -51,7 +51,7 @@ class ReservationListViewModel @Inject constructor(
     fun fetchReservations() {
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch(Dispatchers.IO) {
-            val dataList = reservationRepository.getAllReservationList(phoneNumber)
+            val dataList = reservationRepository.getAllReservationList()
             if (dataList.isSuccess) {
                 _uiState.update { data ->
                     data.copy(
