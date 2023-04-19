@@ -76,6 +76,4 @@ class AuthRepositoryImpl @Inject constructor(
         val list = userDao.getPassword()
         return list.contains(password)
     }
-
-
 }

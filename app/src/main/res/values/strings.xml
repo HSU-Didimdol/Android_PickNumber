@@ -12,6 +12,8 @@
     <string name="call">전화</string>
     <string name="signUp">회원가입</string>
     <string name="login">로그인</string>
+    <string name="save">저장</string>
+    <string name="login_fail">자동로그인 실패</string>
     <string name="reservation_Inqury">예약 문의</string>
     <string name="success_data">회사목록을 불러왔습니다.</string>
     <string name="failed_data">회사목록을 불러오는데 실패하였습니다.</string>

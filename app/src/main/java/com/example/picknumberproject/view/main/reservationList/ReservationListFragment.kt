@@ -1,5 +1,6 @@
 package com.example.picknumberproject.view.main.reservationList
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.picknumberproject.databinding.FragmentReservationListBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.extension.RefreshStateContract
+import com.example.picknumberproject.view.extension.registerObserverForScrollToTop
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
 import com.google.android.material.snackbar.Snackbar
@@ -97,10 +100,16 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
         binding.apply {
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(context)
+            adapter.registerObserverForScrollToTop(recyclerView)
         }
+
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateUi(uiState: ReservationListUiState, adapter: ReservationListAdapter) {
+        if (uiState.reservations.isNotEmpty()) {
+            binding.loadState.emptyText.isVisible = false
+        }
         adapter.submitList(uiState.reservations)
         Log.d("uiState.reservations.size", uiState.reservations.size.toString())
         total.text = "총 ${uiState.reservations.size} 건"

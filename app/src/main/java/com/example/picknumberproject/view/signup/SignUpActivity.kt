@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -52,16 +53,19 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         initEventListeners()
         userPhoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
+        val getSignUpOrInfoUpdate = getSignUpOrInfoUpdate()
+        if (getSignUpOrInfoUpdate == "infoUpdate") {
+            signup_toolbar_title.text = "정보 수정"
+            signupButton.text = getString(R.string.save)
+            logoutButton.isVisible = true
+        } else {
+            logoutButton.isVisible = false
+        }
+
         setSupportActionBar(signup_toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //왼쪽 뒤로가기 사용여부
         supportActionBar?.setHomeAsUpIndicator(R.drawable.cancel_button) //왼쪽 뒤로가기 아이콘 변경
-
-        val getSignUpOrInfoUpdate = getSignUpOrInfoUpdate()
-
-        if (getSignUpOrInfoUpdate == "infoUpdate") {
-            signup_toolbar_title.text = "정보 수정"
-        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -72,7 +76,7 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()) {
+        when (item.itemId) {
             android.R.id.home -> {
                 //toolbar의 back키 눌렀을 때 동작
                 finish()
@@ -157,6 +161,10 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
 
         signupButton.setOnClickListener {
             viewModel.signUp()
+        }
+
+        logoutButton.setOnClickListener {
+            navigateLoginActivity()
         }
 
     }

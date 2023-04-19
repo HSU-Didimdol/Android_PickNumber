@@ -22,6 +22,10 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
 
+    init {
+        loggedIn()
+    }
+
     fun updateUserName(userName: String) {
         _uiState.update { it.copy(userName = userName) }
     }
@@ -41,6 +45,24 @@ class LoginViewModel @Inject constructor(
                         R.string.failed_data
                     }
                 )
+            }
+        }
+    }
+
+    private fun loggedIn() {
+        viewModelScope.launch {
+            val result = authRepository.getCurrentUserInfo()
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(isLoggedIn = true)
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        userMessage = R.string.login_fail,
+                        isLoading = false
+                    )
+                }
             }
         }
     }

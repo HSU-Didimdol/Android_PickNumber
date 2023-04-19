@@ -28,7 +28,7 @@ abstract class CompanyDatabase : RoomDatabase() {
                         "company_table"
                     )
                         .fallbackToDestructiveMigration()
-                        .build();
+                        .build()
                 }
             }
             return INSTANCE as CompanyDatabase

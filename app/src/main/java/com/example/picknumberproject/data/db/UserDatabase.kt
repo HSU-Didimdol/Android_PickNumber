@@ -28,7 +28,7 @@ abstract class UserDatabase : RoomDatabase() {
                         "user_table"
                     )
                         .fallbackToDestructiveMigration()
-                        .build();
+                        .build()
                 }
             }
             return INSTANCE as UserDatabase

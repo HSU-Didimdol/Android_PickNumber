@@ -10,10 +10,7 @@ import com.example.picknumberproject.data.requestBody.sms.ContentBody
 import com.example.picknumberproject.data.url.Key
 import com.example.picknumberproject.data.url.Url
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.HTTP
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * MainServerApi의 interface 입니다. 예약과 관련 getReservationList함수와 deleteReservation함수를 담고있습니다.
@@ -30,7 +27,6 @@ interface MainServerApi {
         @Header("x-access-token") x_access_token: String = Key.x_access_token,
         @Body reservationBody: ReservationBody
     ): Response<ResponseBody<ReservationsDto>>
-
 
     @HTTP(method = "DELETE", path = Url.DELETE_RESERVATION, hasBody = true)
     suspend fun deleteReservation(
