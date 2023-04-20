@@ -3,7 +3,7 @@ package com.example.picknumberproject.view.main.reservationList
 import com.example.picknumberproject.domain.model.ReservationEntity
 
 data class ReservationListUiState(
-    val userMessage: Int? = null,
+    val userMessage: String? = null,
     val reservations: List<ReservationItemUiState> = emptyList()
 )
 

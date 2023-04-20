@@ -71,19 +71,6 @@ class MapFragment(
         val uiSetting = map.uiSettings
         uiSetting.isLocationButtonEnabled = true
         map.locationSource = locationSource
-        map.locationTrackingMode = LocationTrackingMode.Follow
-        val cameraUpdate = CameraUpdate
-            .scrollAndZoomTo(
-                LatLng(
-                    map.cameraPosition.target.latitude,
-                    map.cameraPosition.target.longitude
-                ),
-                13.0
-            )
-        Log.d("map.cameraPosition.target.latitude", map.cameraPosition.target.latitude.toString())
-        Log.d("map.cameraPosition.target.longitude", map.cameraPosition.target.longitude.toString())
-        map.moveCamera(cameraUpdate)
-
 
         viewModel.bind(
             query,

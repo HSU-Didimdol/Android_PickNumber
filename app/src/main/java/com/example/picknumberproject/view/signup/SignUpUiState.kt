@@ -12,6 +12,7 @@ data class SignUpUiState(
     val isLoading: Boolean = false,
     val checkBox: Boolean = false,
     val successToSignUp: Boolean = false,
+    val successToLogOut: Boolean = false,
     val userMessage: Int? = null,
     val userEntity: UserEntity? = null
 ) {

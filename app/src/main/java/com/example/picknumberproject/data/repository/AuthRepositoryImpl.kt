@@ -3,19 +3,23 @@ package com.example.picknumberproject.data.repository
 import com.example.picknumberproject.data.api.MainServerApi
 import com.example.picknumberproject.data.db.UserDao
 import com.example.picknumberproject.data.extension.getDataOrThrowMessage
+import com.example.picknumberproject.data.model.Login
 import com.example.picknumberproject.data.requestBody.sms.ContentBody
 import com.example.picknumberproject.data.requestBody.sms.Contents
+import com.example.picknumberproject.data.source.AuthLocalDataSource
 import com.example.picknumberproject.domain.model.UserEntity
 import com.example.picknumberproject.domain.repository.AuthRepository
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
-    private val api: MainServerApi
+    private val api: MainServerApi,
+    private val localDataSource: AuthLocalDataSource
 ) : AuthRepository {
 
     override suspend fun signIn(userName: String, password: String): Result<Unit> {
         return try {
+            localDataSource.setData(Login(userName = userName, password = password))
             userDao.getUserByNameAndPassword(name = userName, password = password)
             Result.success(Unit)
         } catch (e: Exception) {
@@ -62,6 +66,24 @@ class AuthRepositoryImpl @Inject constructor(
                 )
             )
             response.getDataOrThrowMessage()
+        }
+    }
+
+    override suspend fun logout(): Result<Unit> {
+        return runCatching {
+            localDataSource.clear()
+        }
+    }
+
+    override suspend fun checkLoggedIn(): Result<Boolean> {
+        return try {
+            if (localDataSource.hasData()) {
+                Result.success(true)
+            } else {
+                Result.success(false)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

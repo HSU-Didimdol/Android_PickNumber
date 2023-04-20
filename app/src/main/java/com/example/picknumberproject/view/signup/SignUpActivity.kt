@@ -80,7 +80,7 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
 
     private fun navigateLoginActivity() {
         val intent = LoginActivity.getIntent(this).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
         finish()
@@ -100,6 +100,9 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
             navigateLoginActivity()
         }
 
+        if (uiState.successToLogOut) {
+            navigateLoginActivity()
+        }
         if (uiState.userMessage != null) {
             showSnackBar(getString(uiState.userMessage))
             viewModel.userMessageShown()
@@ -178,7 +181,7 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         }
 
         logoutButton.setOnClickListener {
-            navigateLoginActivity()
+            viewModel.logout()
         }
 
     }

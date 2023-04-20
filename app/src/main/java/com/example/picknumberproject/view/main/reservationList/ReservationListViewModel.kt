@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.picknumberproject.R
 import com.example.picknumberproject.domain.model.CompanyEntity
-import com.example.picknumberproject.domain.repository.AuthRepository
 import com.example.picknumberproject.domain.repository.CompanyRepository
 import com.example.picknumberproject.domain.repository.ReservationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +19,6 @@ import javax.inject.Inject
 class ReservationListViewModel @Inject constructor(
     private val reservationRepository: ReservationRepository,
     private val companyRepository: CompanyRepository,
-    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -30,22 +28,8 @@ class ReservationListViewModel @Inject constructor(
 
     private var fetchJob: Job? = null
 
-    private var phoneNumber: String = ""
-
     init {
-        getCurrentUser()
         fetchReservations()
-    }
-
-    private fun getCurrentUser() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = authRepository.getCurrentUserInfo()
-            if (result.isSuccess) {
-                phoneNumber = result.getOrNull()!![0].phone
-            } else {
-                _uiState.update { it.copy(userMessage = result.exceptionOrNull()!!.localizedMessage?.toInt()) }
-            }
-        }
     }
 
     fun fetchReservations() {
@@ -66,7 +50,7 @@ class ReservationListViewModel @Inject constructor(
                         })
                 }
             } else {
-                _uiState.update { it.copy(userMessage = dataList.exceptionOrNull()!!.localizedMessage?.toInt()) }
+                _uiState.update { it.copy(userMessage = dataList.exceptionOrNull()!!.localizedMessage) }
             }
         }
     }
@@ -134,11 +118,11 @@ class ReservationListViewModel @Inject constructor(
             )
             _uiState.update {
                 it.copy(
-                    userMessage = if (result.isSuccess) {
+                    userMessage = (if (result.isSuccess) {
                         R.string.reservation_deleted
                     } else {
                         R.string.failed
-                    }
+                    }) as String?
                 )
             }
             fetchReservations()

@@ -43,6 +43,24 @@ class SignUpViewModel @Inject constructor(
         _uiState.update { it.copy(checkBox = check) }
     }
 
+    fun logout() {
+        viewModelScope.launch {
+            val result = authRepository.logout()
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(successToLogOut = true)
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        userMessage = R.string.login_fail,
+                        isLoading = false
+                    )
+                }
+            }
+        }
+    }
+
     fun signUp() {
         val name = uiState.value.userName
         val password = uiState.value.userPassword

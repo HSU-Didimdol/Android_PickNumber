@@ -1,13 +1,22 @@
 package com.example.picknumberproject.data.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
-import com.example.picknumberproject.data.db.*
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+import com.example.picknumberproject.data.db.CompanyDao
+import com.example.picknumberproject.data.db.CompanyDatabase
+import com.example.picknumberproject.data.db.UserDao
+import com.example.picknumberproject.data.db.UserDatabase
+import com.example.picknumberproject.data.source.AuthLocalDataSource
+import com.example.picknumberproject.data.source.AuthLocalDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -46,5 +55,32 @@ object DBModule {
     @Provides
     fun provideUserDao(userDatabase: UserDatabase): UserDao {
         return userDatabase.getDao()
+    }
+
+    @Singleton
+    @Provides
+    @Named("auth")
+    fun provideEncryptedSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences {
+        val masterKeyAlias = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        return EncryptedSharedPreferences.create(
+            context,
+            "auth",
+            masterKeyAlias,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthLocalDataSource(
+        @Named("auth") sharedPreferences: SharedPreferences
+    ): AuthLocalDataSource {
+        return AuthLocalDataSourceImpl(sharedPreferences)
     }
 }

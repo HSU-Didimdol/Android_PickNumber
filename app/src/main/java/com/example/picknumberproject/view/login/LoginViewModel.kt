@@ -1,5 +1,6 @@
 package com.example.picknumberproject.view.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.picknumberproject.R
@@ -51,10 +52,11 @@ class LoginViewModel @Inject constructor(
 
     private fun loggedIn() {
         viewModelScope.launch {
-            val result = authRepository.getCurrentUserInfo()
+            val result = authRepository.checkLoggedIn()
+            Log.d("checkLoggedIn", result.toString())
             if (result.isSuccess) {
                 _uiState.update {
-                    it.copy(isLoggedIn = true)
+                    it.copy(isLoggedIn = result.getOrNull()!!)
                 }
             } else {
                 _uiState.update {
@@ -77,8 +79,7 @@ class LoginViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         successToSignIn = true,
-                        isLoading = false,
-                        isLoggedIn = true
+                        isLoading = false
                     )
                 }
             } else {
