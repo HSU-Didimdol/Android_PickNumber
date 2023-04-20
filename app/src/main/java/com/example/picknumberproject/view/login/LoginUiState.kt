@@ -12,7 +12,7 @@ data class LoginUiState(
         get() = isNameValid && isPasswordValid
 
     private val isNameValid: Boolean
-        get() = userName.length >= 4
+        get() = userName.length >= 3
 
     private val isPasswordValid: Boolean
         get() {

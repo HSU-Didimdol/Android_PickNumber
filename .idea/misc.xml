@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../Library/Android/sdk/platforms/android-33/data/res/layout/simple_dropdown_item_1line.xml" value="0.20199275362318841" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.292" />
         <entry key="app/src/main/res/drawable/baseline_fork_right_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.292" />
@@ -22,7 +23,7 @@
         <entry key="app/src/main/res/layout/activity_info_update.xml" value="0.2767210144927536" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.28191489361702127" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.375" />
