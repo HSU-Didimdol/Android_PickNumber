@@ -58,7 +58,6 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //왼쪽 뒤로가기 사용여부
         supportActionBar?.setHomeAsUpIndicator(R.drawable.cancel_button) //왼쪽 뒤로가기 아이콘 변경
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect(::updateUi)
@@ -92,6 +91,11 @@ class SignUpActivity : ViewBindingActivity<ActivitySignUpBinding>() {
         if (getSignUpOrInfoUpdate == "infoUpdate") {
             signup_toolbar_title.text = getString(R.string.ChangingInformation)
             logoutButton.isVisible = true
+            if (uiState.currentUser != null) {
+                userNameEditText.setText(uiState.currentUser.name)
+                userPasswordEditText.setText(uiState.currentUser.password)
+                userPhoneEditText.setText(uiState.currentUser.phone)
+            }
         } else {
             logoutButton.isVisible = false
         }

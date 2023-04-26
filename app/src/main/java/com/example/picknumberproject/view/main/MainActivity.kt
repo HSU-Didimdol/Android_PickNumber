@@ -75,7 +75,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
             replace(R.id.container_view, reservationListFragment)
         }.commit()
     }
-
+    // TODO : fragmentTransaction 수정
     fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()

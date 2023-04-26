@@ -191,6 +191,7 @@ class MapFragment(
 
     }
 
+    //TODO : State 유지
     override fun onClick(p0: Overlay): Boolean {
         routeButton.isVisible = true
         if (p0 is Marker) {
