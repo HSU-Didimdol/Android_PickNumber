@@ -169,7 +169,7 @@ class MapFragment(
             marker.width = Marker.SIZE_AUTO
             marker.height = Marker.SIZE_AUTO
             marker.iconTintColor = Color.MAGENTA
-            marker.captionText = company.name+ " " + company.divisionName
+            marker.captionText = company.name + " " + company.divisionName
             marker.captionTextSize = 16f
             marker.onClickListener = this
             marker.tag =
@@ -198,6 +198,13 @@ class MapFragment(
             Log.d("p0:", p0.tag.toString())
             val bankData = p0.tag.toString().split("/")
             bottomSheetNameTextView.text = bankData[0]
+            bottomSheetNameTextView.setOnClickListener {
+
+                // 중심점과 확대/축소 레벨을 이용하여 카메라 이동
+                val center = LatLng(bankData[7].toDouble(), bankData[8].toDouble())
+                val cameraUpdate = CameraUpdate.scrollAndZoomTo(center, 12.0)
+                map.moveCamera(cameraUpdate)
+            }
             bottomSheetAddressTextView.text = bankData[1]
             bottomSheetDistanceTextView.text = bankData[2] + " km"
 
