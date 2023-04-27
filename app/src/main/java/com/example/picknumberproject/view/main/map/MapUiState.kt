@@ -8,3 +8,5 @@ data class MapUiState(
     val userMessage: String? = null,
     val currentState: Overlay? = null
 )
+
+

@@ -14,6 +14,7 @@ import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.extension.hideKeyboard
 import com.example.picknumberproject.view.main.map.MapFragment
 import com.example.picknumberproject.view.main.reservationList.ReservationListFragment
+import com.example.picknumberproject.view.main.search.SearchFragment
 import com.example.picknumberproject.view.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -62,7 +63,9 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-
+                    if (newText != null) {
+                        replaceFragment(SearchFragment(newText))
+                    }
                     return true
                 }
             })
@@ -75,6 +78,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
             replace(R.id.container_view, reservationListFragment)
         }.commit()
     }
+
     // TODO : fragmentTransaction 수정
     fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager

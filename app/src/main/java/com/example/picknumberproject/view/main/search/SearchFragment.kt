@@ -1,9 +1,11 @@
 package com.example.picknumberproject.view.main.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,8 +13,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.picknumberproject.databinding.FragmentSearchBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
+import com.example.picknumberproject.view.extension.RefreshStateContract
 import com.example.picknumberproject.view.main.MainActivity
-import com.example.picknumberproject.view.main.reservationList.ReservationItemUiState
+import com.example.picknumberproject.view.main.map.MapUiState
+import com.example.picknumberproject.view.main.map.MapViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.coroutines.launch
@@ -27,7 +31,9 @@ class SearchFragment(
     private val mainActivity: MainActivity
         get() = activity as MainActivity
 
-    private val viewModel: SearchViewModel by activityViewModels()
+    private val viewModel: MapViewModel by activityViewModels()
+
+    private var launcher: ActivityResultLauncher<Intent>? = null
 
 
     private val locationSource: FusedLocationSource by lazy {
@@ -40,8 +46,14 @@ class SearchFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val adapter = SearchAdapter(
-            onClickItem = ::onClickSearchItem
+            onClickSearchItem = ::onClickSearchItem
+        )
+
+        viewModel.bind(
+            query,
+            "${locationSource.lastLocation?.longitude},${locationSource.lastLocation?.latitude}"
         )
 
         initRecyclerView(adapter)
@@ -52,9 +64,14 @@ class SearchFragment(
                     updateUi(it, adapter)
                 }
             }
-
         }
 
+        launcher = registerForActivityResult(RefreshStateContract()) {
+            if (it != null) {
+                adapter.submitList(viewModel.uiState.value.companyListData)
+                it.message?.let { message -> showSnackBar(message) }
+            }
+        }
     }
 
     private fun initRecyclerView(adapter: SearchAdapter) {
@@ -65,15 +82,15 @@ class SearchFragment(
 
     }
 
-    private fun updateUi(uiState: SearchUiState, adapter: SearchAdapter) {
-
+    private fun updateUi(uiState: MapUiState, adapter: SearchAdapter) {
+        adapter.submitList(uiState.companyListData)
         if (uiState.userMessage != null) {
             viewModel.userMessageShown()
-            showSnackBar(getString(uiState.userMessage))
+            showSnackBar(uiState.userMessage)
         }
     }
 
-    private fun onClickSearchItem(uiState: ReservationItemUiState) {
+    private fun onClickSearchItem(uiState: SearchItemUiState) {
 
     }
 

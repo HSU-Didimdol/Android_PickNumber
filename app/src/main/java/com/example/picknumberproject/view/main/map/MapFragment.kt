@@ -203,10 +203,8 @@ class MapFragment(
         if (viewModel.notValidCurrentState()) {
             viewModel.updateCurrentState(p0)
         }
+        tagging = p0.tag.toString()
 
-        if (tagging == null) {
-            tagging = p0.tag.toString()
-        }
 
         if (p0 is Marker) {
             Log.d("p0:", p0.tag.toString())
