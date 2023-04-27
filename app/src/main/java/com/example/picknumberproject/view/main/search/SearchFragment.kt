@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.picknumberproject.databinding.FragmentSearchBinding
+import com.example.picknumberproject.domain.model.CompanyEntity
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.extension.RefreshStateContract
 import com.example.picknumberproject.view.main.MainActivity
@@ -90,7 +91,7 @@ class SearchFragment(
         }
     }
 
-    private fun onClickSearchItem(uiState: SearchItemUiState) {
+    private fun onClickSearchItem(uiState: CompanyEntity) {
 
     }
 

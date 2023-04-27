@@ -6,7 +6,7 @@ import com.example.picknumberproject.domain.model.CompanyEntity
 
 class SearchViewHolder(
     private val binding: SearchItemBinding,
-    private val onClickSearchItem: (SearchItemUiState) -> Unit
+    private val onClickSearchItem: (CompanyEntity) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(company: CompanyEntity) = with(binding) {
         nameTextView.text = company.name

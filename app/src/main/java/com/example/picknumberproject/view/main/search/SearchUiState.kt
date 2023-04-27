@@ -6,7 +6,3 @@ data class SearchUiState(
     val companyListData: List<CompanyEntity> = emptyList(),
     val userMessage: Int? = null
 )
-
-data class SearchItemUiState(
-    val companyID: Int
-)

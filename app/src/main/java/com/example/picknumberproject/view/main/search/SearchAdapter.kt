@@ -8,7 +8,7 @@ import com.example.picknumberproject.databinding.SearchItemBinding
 import com.example.picknumberproject.domain.model.CompanyEntity
 
 class SearchAdapter(
-    private val onClickSearchItem: (SearchItemUiState) -> (Unit)
+    private val onClickSearchItem: (CompanyEntity) -> (Unit)
 ) : ListAdapter<CompanyEntity, SearchViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
