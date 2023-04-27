@@ -121,7 +121,7 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
         total.text = "총 ${uiState.reservations.size} 건"
         if (uiState.userMessage != null) {
             viewModel.userMessageShown()
-            showSnackBar(uiState.userMessage)
+            showSnackBar(getString(uiState.userMessage))
         }
     }
 

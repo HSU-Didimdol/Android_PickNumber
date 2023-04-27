@@ -38,6 +38,7 @@ class MapFragment(
     Overlay.OnClickListener {
 
     private lateinit var map: NaverMap
+    private var tagging: String? = null
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMapBinding
         get() = FragmentMapBinding::inflate
@@ -62,7 +63,6 @@ class MapFragment(
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-
         routeButton.isVisible = false
     }
 
@@ -71,6 +71,11 @@ class MapFragment(
         val uiSetting = map.uiSettings
         uiSetting.isLocationButtonEnabled = true
         map.locationSource = locationSource
+
+        if (!viewModel.notValidCurrentState()) {
+            viewModel.uiState.value.currentState
+            onClick(viewModel.uiState.value.currentState!!)
+        }
 
         viewModel.bind(
             query,
@@ -135,6 +140,7 @@ class MapFragment(
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         mapView.onSaveInstanceState(outState)
+        outState.putString("tagging", tagging)
     }
 
     override fun onStop() {
@@ -177,6 +183,7 @@ class MapFragment(
 
             totalLat += marker.position.latitude
             totalLng += marker.position.longitude
+
         }
 
         val centerLat = totalLat / companyList.size
@@ -191,25 +198,31 @@ class MapFragment(
 
     }
 
-    //TODO : State 유지
     override fun onClick(p0: Overlay): Boolean {
         routeButton.isVisible = true
+        if (viewModel.notValidCurrentState()) {
+            viewModel.updateCurrentState(p0)
+        }
+
+        if (tagging == null) {
+            tagging = p0.tag.toString()
+        }
+
         if (p0 is Marker) {
             Log.d("p0:", p0.tag.toString())
-            val bankData = p0.tag.toString().split("/")
-            bottomSheetNameTextView.text = bankData[0]
+            val companyData = p0.tag.toString().split("/")
+            bottomSheetNameTextView.text = companyData[0]
             bottomSheetNameTextView.setOnClickListener {
-
                 // 중심점과 확대/축소 레벨을 이용하여 카메라 이동
-                val center = LatLng(bankData[7].toDouble(), bankData[8].toDouble())
+                val center = LatLng(companyData[7].toDouble(), companyData[8].toDouble())
                 val cameraUpdate = CameraUpdate.scrollAndZoomTo(center, 12.0)
                 map.moveCamera(cameraUpdate)
             }
-            bottomSheetAddressTextView.text = bankData[1]
-            bottomSheetDistanceTextView.text = bankData[2] + " km"
+            bottomSheetAddressTextView.text = companyData[1]
+            bottomSheetDistanceTextView.text = companyData[2] + " km"
 
             // 소요시간 '시간 분' 으로 맞추기
-            val duration = bankData[3].toInt()
+            val duration = companyData[3].toInt()
 
             if (duration >= 60) {
                 val hour = duration / 60
@@ -221,31 +234,28 @@ class MapFragment(
 
             homeButton.setOnClickListener {
                 Toast.makeText(context, "홈 버튼 클릭", Toast.LENGTH_SHORT).show()
-                //https://www.kfcc.co.kr/map/view.do?gmgoCd={0}&name=&gmgoNm=&divCd={1}&code1={0}&code2={1}&tab=sub_tab_map
-                //{0} = code, {1} = divisionCode
                 val url =
-                    "https://www.kfcc.co.kr/map/view.do?gmgoCd=" + bankData[4] + "&name=&gmgoNm=&divCd=00" + bankData[5] + "&code1=" + bankData[4] + "&code2=00" + bankData[5] + "&tab=sub_tab_map"
+                    "https://www.kfcc.co.kr/map/view.do?gmgoCd=" + companyData[4] + "&name=&gmgoNm=&divCd=00" + companyData[5] + "&code1=" + companyData[4] + "&code2=00" + companyData[5] + "&tab=sub_tab_map"
                 navigationToHomePage(url)
             }
 
             reservationButton.setOnClickListener {
                 Toast.makeText(context, "예약 버튼 클릭", Toast.LENGTH_SHORT).show()
-                val url = "http://service.landpick.net/reservation?${bankData[9]}"
+                val url = "http://service.landpick.net/reservation?${companyData[9]}"
                 navigationToReservation(url)
             }
 
             callButton.setOnClickListener {
                 Toast.makeText(context, "전화 버튼 클릭", Toast.LENGTH_SHORT).show()
-                val call = bankData[6]
+                val call = companyData[6]
                 val intent2 = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$call"))
                 startActivity(intent2)
-
             }
 
             routeButton.setOnClickListener {
                 //자동차 길찾기
                 val url =
-                    "nmap://route/car?slat=" + map.cameraPosition.target.latitude + "&slng=" + map.cameraPosition.target.longitude + "&sname=" + "&dlat=" + bankData[7] + "&dlng=" + bankData[8] + "&dname=" + bankData[0] + "&appname=com.example.picknumberproject"
+                    "nmap://route/car?slat=" + map.cameraPosition.target.latitude + "&slng=" + map.cameraPosition.target.longitude + "&sname=" + "&dlat=" + companyData[7] + "&dlng=" + companyData[8] + "&dname=" + companyData[0] + "&appname=com.example.picknumberproject"
 
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 intent.addCategory(Intent.CATEGORY_BROWSABLE)

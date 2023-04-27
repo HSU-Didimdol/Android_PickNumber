@@ -13,4 +13,5 @@
             android:scrollbarFadeDuration="0"
             tools:ignore="SpeakableTextPresentCheck"
             tools:listitem="@layout/search_item" />
+
 </FrameLayout>
