@@ -84,6 +84,9 @@ class SearchFragment(
     }
 
     private fun updateUi(uiState: MapUiState, adapter: SearchAdapter) {
+        uiState.companyListData.sortedBy {
+            it.distance.toInt()
+        }
         adapter.submitList(uiState.companyListData)
         if (uiState.userMessage != null) {
             viewModel.userMessageShown()
