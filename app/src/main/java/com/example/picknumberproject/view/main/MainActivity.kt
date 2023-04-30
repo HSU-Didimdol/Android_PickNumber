@@ -51,7 +51,6 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
 
     private fun initSearchView() {
         binding.searchView.isSubmitButtonEnabled = true
-        binding.searchView.suggestionsAdapter
         binding.searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -63,7 +62,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText != null) {
+                    if (newText != null && newText.isNotEmpty()) {
                         replaceFragment(SearchFragment(newText))
                     }
                     return true

@@ -90,7 +90,7 @@ class SearchFragment(
         adapter.submitList(uiState.companyListData)
         if (uiState.userMessage != null) {
             viewModel.userMessageShown()
-            showSnackBar(uiState.userMessage)
+            showSnackBar(getString(uiState.userMessage))
         }
     }
 

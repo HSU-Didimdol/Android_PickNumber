@@ -38,8 +38,6 @@ class MapFragment(
     Overlay.OnClickListener {
 
     private lateinit var map: NaverMap
-    private var tagging: String? = null
-
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMapBinding
         get() = FragmentMapBinding::inflate
 
@@ -116,7 +114,7 @@ class MapFragment(
     private fun updateUi(uiState: MapUiState) {
         updateMarker(uiState)
         if (uiState.userMessage != null) {
-            showSnackBar(uiState.userMessage)
+            showSnackBar(getString(uiState.userMessage))
             viewModel.userMessageShown()
         }
     }
@@ -140,7 +138,6 @@ class MapFragment(
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         mapView.onSaveInstanceState(outState)
-        outState.putString("tagging", tagging)
     }
 
     override fun onStop() {
@@ -200,11 +197,7 @@ class MapFragment(
 
     override fun onClick(p0: Overlay): Boolean {
         routeButton.isVisible = true
-        if (viewModel.notValidCurrentState()) {
-            viewModel.updateCurrentState(p0)
-        }
-        tagging = p0.tag.toString()
-
+        viewModel.updateCurrentState(p0)
 
         if (p0 is Marker) {
             Log.d("p0:", p0.tag.toString())

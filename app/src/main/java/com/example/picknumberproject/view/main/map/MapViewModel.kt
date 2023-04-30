@@ -56,7 +56,7 @@ class MapViewModel @Inject constructor(
                     })
                 }
             } else {
-                _uiState.update { it.copy(userMessage = result.exceptionOrNull()!!.localizedMessage) }
+                _uiState.update { it.copy(userMessage = result.exceptionOrNull()!!.localizedMessage!!.toInt()) }
             }
         }
     }

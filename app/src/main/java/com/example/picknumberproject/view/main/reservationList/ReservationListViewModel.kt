@@ -50,7 +50,7 @@ class ReservationListViewModel @Inject constructor(
                         })
                 }
             } else {
-                _uiState.update { it.copy(userMessage = dataList.exceptionOrNull()?.localizedMessage?.toInt()) }
+                _uiState.update { it.copy(userMessage = dataList.exceptionOrNull()!!.localizedMessage!!.toInt()) }
             }
         }
     }

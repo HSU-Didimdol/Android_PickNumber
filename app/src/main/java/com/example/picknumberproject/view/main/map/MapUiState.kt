@@ -5,7 +5,7 @@ import com.naver.maps.map.overlay.Overlay
 
 data class MapUiState(
     val companyListData: List<CompanyEntity> = emptyList(),
-    val userMessage: String? = null,
+    val userMessage: Int? = null,
     val currentState: Overlay? = null
 )
 
