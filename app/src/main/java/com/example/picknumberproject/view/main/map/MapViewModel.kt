@@ -26,40 +26,31 @@ class MapViewModel @Inject constructor(
         }
     }
 
+    fun updateCurrentLanLat(latitude: Double, longitude: Double) {
+        _uiState.update {
+            it.copy(currentCameraLatitude = latitude, currentCameraLongitude = longitude)
+        }
+    }
+
     fun notValidCurrentState(): Boolean {
         return uiState.value.currentState == null
     }
 
     fun bind(query: String, myLocation: String) {
         viewModelScope.launch {
-            val result = companyRepository.searchCompanyListByQuery("%$query%")
+            val result = companyRepository.searchCompanyListByQuery("%$query%", myLocation)
             if (result.isSuccess) {
-                _uiState.update { uiState ->
-                    uiState.copy(companyListData = result.getOrNull()!!.map { companyEntity ->
-                        val goal = "${companyEntity.longitude},${companyEntity.latitude}"
-                        val directionEntity =
-                            companyRepository.getDistanceAndDuration(
-                                start = myLocation,
-                                goal = goal
-                            )
-                        if (directionEntity.isSuccess) {
-                            companyEntity.copy(
-                                duration = directionEntity.getOrNull()!!.duration.toString(),
-                                distance = directionEntity.getOrNull()!!.distance.toString()
-                            )
-                        } else {
-                            companyEntity.copy(
-                                duration = "0",
-                                distance = "0"
-                            )
-                        }
-                    })
+                _uiState.update {
+                    it.copy(companyListData = result.getOrThrow())
                 }
             } else {
-                _uiState.update { it.copy(userMessage = result.exceptionOrNull()!!.localizedMessage!!.toInt()) }
+                _uiState.update {
+                    it.copy(userMessage = result.exceptionOrNull()!!.localizedMessage!!.toInt())
+                }
             }
         }
     }
+
 
     fun userMessageShown() {
         _uiState.update { it.copy(userMessage = null) }

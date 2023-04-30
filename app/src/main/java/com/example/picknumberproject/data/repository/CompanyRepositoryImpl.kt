@@ -24,10 +24,28 @@ class CompanyRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun searchCompanyListByQuery(query: String): Result<List<CompanyEntity>> {
+    override suspend fun searchCompanyListByQuery(
+        query: String,
+        myLocation: String
+    ): Result<List<CompanyEntity>> {
         return runCatching {
             val companyList = companyDao.searchQuery(query = query)
-            companyList
+            val companyListDirections = companyList.map {
+                val goal = "${it.longitude},${it.latitude}"
+                val directionEntity = getDistanceAndDuration(start = myLocation, goal = goal)
+                if (directionEntity.isSuccess) {
+                    it.copy(
+                        duration = directionEntity.getOrNull()!!.duration.toString(),
+                        distance = directionEntity.getOrNull()!!.distance.toString()
+                    )
+                } else {
+                    it.copy(
+                        duration = "0",
+                        distance = "0"
+                    )
+                }
+            }
+            companyListDirections
         }
     }
 

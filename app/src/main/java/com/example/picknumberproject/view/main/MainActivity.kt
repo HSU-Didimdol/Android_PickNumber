@@ -63,7 +63,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     if (newText != null && newText.isNotEmpty()) {
-                        replaceFragment(SearchFragment(newText))
+                       // replaceFragment(SearchFragment(newText))
                     }
                     return true
                 }

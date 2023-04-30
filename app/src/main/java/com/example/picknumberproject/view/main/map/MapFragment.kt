@@ -53,8 +53,6 @@ class MapFragment(
     }
 
     private val viewModel: MapViewModel by activityViewModels()
-    //  "x": "126.9050532",
-    //  "y": "37.4652659",
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -182,17 +180,25 @@ class MapFragment(
             totalLng += marker.position.longitude
 
         }
+        if (viewModel.uiState.value.currentCameraLatitude != null && viewModel.uiState.value.currentCameraLongitude != null) {
+            val center = LatLng(
+                viewModel.uiState.value.currentCameraLatitude!!,
+                viewModel.uiState.value.currentCameraLongitude!!
+            )
+            Log.d("center", center.toString())
+            val cameraUpdate = CameraUpdate.scrollAndZoomTo(center, 12.0)
+            map.moveCamera(cameraUpdate)
+        } else {
+            val centerLat = totalLat / companyList.size
+            val centerLng = totalLng / companyList.size
 
-        val centerLat = totalLat / companyList.size
-        val centerLng = totalLng / companyList.size
+            // 중심점과 확대/축소 레벨을 이용하여 카메라 이동
+            val center = LatLng(centerLat, centerLng)
+            val cameraUpdate = CameraUpdate.scrollAndZoomTo(center, 12.0)
 
-        // 중심점과 확대/축소 레벨을 이용하여 카메라 이동
-        val center = LatLng(centerLat, centerLng)
-        val cameraUpdate = CameraUpdate.scrollAndZoomTo(center, 12.0)
-
-        // 생성한 CameraUpdate를 사용하여 지도 이동
-        map.moveCamera(cameraUpdate)
-
+            // 생성한 CameraUpdate를 사용하여 지도 이동
+            map.moveCamera(cameraUpdate)
+        }
     }
 
     override fun onClick(p0: Overlay): Boolean {
@@ -224,6 +230,10 @@ class MapFragment(
             }
 
             homeButton.setOnClickListener {
+                viewModel.updateCurrentLanLat(
+                    latitude = map.cameraPosition.target.latitude,
+                    longitude = map.cameraPosition.target.longitude
+                )
                 Toast.makeText(context, "홈 버튼 클릭", Toast.LENGTH_SHORT).show()
                 val url =
                     "https://www.kfcc.co.kr/map/view.do?gmgoCd=" + companyData[4] + "&name=&gmgoNm=&divCd=00" + companyData[5] + "&code1=" + companyData[4] + "&code2=00" + companyData[5] + "&tab=sub_tab_map"
@@ -231,12 +241,20 @@ class MapFragment(
             }
 
             reservationButton.setOnClickListener {
+                viewModel.updateCurrentLanLat(
+                    latitude = map.cameraPosition.target.latitude,
+                    longitude = map.cameraPosition.target.longitude
+                )
                 Toast.makeText(context, "예약 버튼 클릭", Toast.LENGTH_SHORT).show()
                 val url = "http://service.landpick.net/reservation?${companyData[9]}"
                 navigationToReservation(url)
             }
 
             callButton.setOnClickListener {
+                viewModel.updateCurrentLanLat(
+                    latitude = map.cameraPosition.target.latitude,
+                    longitude = map.cameraPosition.target.longitude
+                )
                 Toast.makeText(context, "전화 버튼 클릭", Toast.LENGTH_SHORT).show()
                 val call = companyData[6]
                 val intent2 = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$call"))
@@ -244,6 +262,10 @@ class MapFragment(
             }
 
             routeButton.setOnClickListener {
+                viewModel.updateCurrentLanLat(
+                    latitude = map.cameraPosition.target.latitude,
+                    longitude = map.cameraPosition.target.longitude
+                )
                 //자동차 길찾기
                 val url =
                     "nmap://route/car?slat=" + map.cameraPosition.target.latitude + "&slng=" + map.cameraPosition.target.longitude + "&sname=" + "&dlat=" + companyData[7] + "&dlng=" + companyData[8] + "&dname=" + companyData[0] + "&appname=com.example.picknumberproject"
