@@ -110,7 +110,6 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
         binding.loadState.emptyText.isVisible =
             uiState.reservations.isEmpty() // 만약 리스트에 아무것도 없다면 "예약 없음" 텍스트가 반환된다.
 
-        //TODO : 이 부분 확인
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss") // 날짜 별로 정렬
         val sortedList = uiState.reservations.sortedBy {
             LocalDateTime.parse(it.registrationDate, formatter)

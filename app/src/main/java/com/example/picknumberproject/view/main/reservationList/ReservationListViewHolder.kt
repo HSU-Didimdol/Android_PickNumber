@@ -27,7 +27,5 @@ class ReservationListViewHolder(
         deleteButton.setOnClickListener {
             onClickDeleteReservationButton(uiState)
         }
-
-
     }
 }
