@@ -13,7 +13,7 @@ class SearchViewHolder(
         val context = root.context
         nameTextView.text = context.getString(R.string.company_name, company.name)
         addressTextView.text = company.address
-        distanceTextView.text = company.distance
+        distanceTextView.text = context.getString(R.string.distanceText, company.distance)
 
         searchItem.setOnClickListener {
             onClickSearchItem

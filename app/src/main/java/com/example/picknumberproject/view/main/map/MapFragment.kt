@@ -185,7 +185,6 @@ class MapFragment(
                 viewModel.uiState.value.currentCameraLatitude!!,
                 viewModel.uiState.value.currentCameraLongitude!!
             )
-            Log.d("center", center.toString())
             val cameraUpdate = CameraUpdate.scrollAndZoomTo(center, 12.0)
             map.moveCamera(cameraUpdate)
         } else {
@@ -206,7 +205,6 @@ class MapFragment(
         viewModel.updateCurrentState(p0)
 
         if (p0 is Marker) {
-            Log.d("p0:", p0.tag.toString())
             val companyData = p0.tag.toString().split("/")
             bottomSheetNameTextView.text = companyData[0]
             bottomSheetNameTextView.setOnClickListener {
