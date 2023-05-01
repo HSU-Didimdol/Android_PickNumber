@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebViewClient
+import androidx.fragment.app.activityViewModels
 import com.example.picknumberproject.databinding.FragmentHomePageBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import kotlinx.android.synthetic.main.fragment_home_page.*
@@ -15,6 +16,7 @@ class HomePageFragment(
     private val url: String
 ) : ViewBindingFragment<FragmentHomePageBinding>() {
 
+    private val viewModel: HomePageViewModel by activityViewModels()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomePageBinding
         get() = FragmentHomePageBinding::inflate
@@ -22,6 +24,8 @@ class HomePageFragment(
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.bind(url)
 
         webView.settings.apply {
             this.setSupportMultipleWindows(false) // 새창 띄우기 허용
@@ -44,7 +48,7 @@ class HomePageFragment(
         }
 
         webView.webViewClient = WebViewClient()
-        webView.loadUrl(url)
+        webView.loadUrl(viewModel.uiState.value.url)
 
     }
 }
