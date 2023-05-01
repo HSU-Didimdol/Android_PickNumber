@@ -12,7 +12,6 @@ import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.extension.hideKeyboard
-import com.example.picknumberproject.view.main.map.MapFragment
 import com.example.picknumberproject.view.main.reservationList.ReservationListFragment
 import com.example.picknumberproject.view.main.search.SearchFragment
 import com.example.picknumberproject.view.signup.SignUpActivity
@@ -55,17 +54,14 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (query != null) {
-                        replaceFragment(MapFragment(query))
+                        replaceFragment(SearchFragment(query))
                         hideKeyboard()
                     }
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText != null && newText.isNotEmpty()) {
-                       // replaceFragment(SearchFragment(newText))
-                    }
-                    return true
+                    return false
                 }
             })
     }
