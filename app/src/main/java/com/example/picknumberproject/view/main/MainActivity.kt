@@ -12,6 +12,7 @@ import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.extension.hideKeyboard
+import com.example.picknumberproject.view.main.map.MapFragment
 import com.example.picknumberproject.view.main.reservationList.ReservationListFragment
 import com.example.picknumberproject.view.main.search.SearchFragment
 import com.example.picknumberproject.view.signup.SignUpActivity
@@ -50,12 +51,19 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
 
     private fun initSearchView() {
         binding.searchView.isSubmitButtonEnabled = true
+        var num = 0
         binding.searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (query != null) {
+                    num++
+                    if (query != null && num == 1) {
                         replaceFragment(SearchFragment(query))
                         hideKeyboard()
+                    }
+                    if (query != null && num == 2) {
+                        replaceFragment(MapFragment(query))
+                        hideKeyboard()
+                        num = 0
                     }
                     return true
                 }

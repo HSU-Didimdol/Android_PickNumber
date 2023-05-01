@@ -19,7 +19,6 @@ import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.map.MapUiState
 import com.example.picknumberproject.view.main.map.MapViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.coroutines.launch
 
 class SearchFragment(
@@ -36,15 +35,6 @@ class SearchFragment(
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
-
-    private val locationSource: FusedLocationSource by lazy {
-        FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
-    }
-
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -54,7 +44,7 @@ class SearchFragment(
 
         viewModel.bind(
             query,
-            "${locationSource.lastLocation?.longitude},${locationSource.lastLocation?.latitude}"
+            ""
         )
 
         initRecyclerView(adapter)
@@ -80,7 +70,6 @@ class SearchFragment(
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(context)
         }
-
     }
 
     private fun updateUi(uiState: MapUiState, adapter: SearchAdapter) {
