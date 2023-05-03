@@ -21,6 +21,7 @@ class SearchViewModel @Inject constructor(
 
     fun bind(query: String, myLocation: String) {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
             val result = companyRepository.searchCompanyListByQuery("%$query%", myLocation)
             if (result.isSuccess) {
                 _uiState.update {
@@ -31,6 +32,7 @@ class SearchViewModel @Inject constructor(
                     it.copy(userMessage = result.exceptionOrNull()!!.localizedMessage!!.toInt())
                 }
             }
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
 

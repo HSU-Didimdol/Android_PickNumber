@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,7 @@ import com.example.picknumberproject.view.main.map.MapFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.launch
 
 class SearchFragment(
@@ -72,6 +74,7 @@ class SearchFragment(
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
                     updateUi(it, adapter)
+                    initProgressBar(it)
                 }
             }
         }
@@ -89,6 +92,10 @@ class SearchFragment(
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(context)
         }
+    }
+
+    private fun initProgressBar(uiState: SearchUiState) {
+        progress_circular.isVisible = uiState.isLoading
     }
 
     private fun updateUi(uiState: SearchUiState, adapter: SearchAdapter) {

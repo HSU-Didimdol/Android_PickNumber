@@ -15,6 +15,7 @@
     <string name="request">요청</string>
     <string name="home">홈</string>
     <string name="call">전화</string>
+    <string name="rebase">조회</string>
     <string name="company_name">새마을 금고 본점(%s)</string>
     <string name="viewTerms">약관보기</string>
     <string name="Km">%s Km</string>

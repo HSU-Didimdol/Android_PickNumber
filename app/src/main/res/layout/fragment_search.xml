@@ -14,4 +14,10 @@
             tools:ignore="SpeakableTextPresentCheck"
             tools:listitem="@layout/search_item" />
 
+    <include
+            android:id="@+id/progress_circular"
+            layout="@layout/progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
 </FrameLayout>

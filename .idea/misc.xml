@@ -41,6 +41,7 @@
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.28958333333333336" />
         <entry key="app/src/main/res/layout/item_load_state.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/progress.xml" value="0.23777173913043478" />
         <entry key="app/src/main/res/layout/reservation_list_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/search_item.xml" value="0.375" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.28854166666666664" />
