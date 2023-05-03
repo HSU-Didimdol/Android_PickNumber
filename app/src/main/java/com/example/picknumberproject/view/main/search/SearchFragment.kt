@@ -19,8 +19,7 @@ import com.example.picknumberproject.domain.model.CompanyEntity
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.extension.RefreshStateContract
 import com.example.picknumberproject.view.main.MainActivity
-import com.example.picknumberproject.view.main.map.MapUiState
-import com.example.picknumberproject.view.main.map.MapViewModel
+import com.example.picknumberproject.view.main.map.MapFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
@@ -36,7 +35,7 @@ class SearchFragment(
     private val mainActivity: MainActivity
         get() = activity as MainActivity
 
-    private val viewModel: MapViewModel by activityViewModels()
+    private val viewModel: SearchViewModel by activityViewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
@@ -92,7 +91,7 @@ class SearchFragment(
         }
     }
 
-    private fun updateUi(uiState: MapUiState, adapter: SearchAdapter) {
+    private fun updateUi(uiState: SearchUiState, adapter: SearchAdapter) {
         val sortedList = uiState.companyListData.sortedBy {
             it.distance.toDouble()
         }
@@ -103,8 +102,8 @@ class SearchFragment(
         }
     }
 
-    private fun onClickSearchItem(uiState: CompanyEntity) {
-
+    private fun onClickSearchItem(company: CompanyEntity) {
+        mainActivity.replaceFragment(MapFragment(listOf(company)))
     }
 
     private fun showSnackBar(message: String) {

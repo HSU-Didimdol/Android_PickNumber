@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.FragmentMapBinding
+import com.example.picknumberproject.domain.model.CompanyEntity
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.homepage.HomePageFragment
@@ -34,7 +35,7 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.launch
 
 class MapFragment(
-    private val query: String
+    private val companyList: List<CompanyEntity>
 ) : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallback,
     Overlay.OnClickListener {
 
@@ -60,6 +61,8 @@ class MapFragment(
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
+        viewModel.bind(companyList = companyList)
+
         routeButton.isVisible = false
     }
 
@@ -73,11 +76,6 @@ class MapFragment(
             viewModel.uiState.value.currentState
             onClick(viewModel.uiState.value.currentState!!)
         }
-
-        viewModel.bind(
-            query,
-            "${map.cameraPosition.target.longitude},${map.cameraPosition.target.latitude}"
-        )
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -181,38 +179,39 @@ class MapFragment(
             totalLng += marker.position.longitude
 
         }
+
         if (viewModel.uiState.value.currentCameraLatitude != null && viewModel.uiState.value.currentCameraLongitude != null) {
-            val center = LatLng(
+            val cameraPosition = LatLng(
                 viewModel.uiState.value.currentCameraLatitude!!,
                 viewModel.uiState.value.currentCameraLongitude!!
             )
-            val cameraUpdate = CameraUpdate.scrollAndZoomTo(center, 12.0)
+            val cameraUpdate = CameraUpdate.scrollAndZoomTo(cameraPosition, 12.0)
             map.moveCamera(cameraUpdate)
         } else {
             val centerLat = totalLat / companyList.size
             val centerLng = totalLng / companyList.size
 
-            // 중심점과 확대/축소 레벨을 이용하여 카메라 이동
             val center = LatLng(centerLat, centerLng)
             val cameraUpdate = CameraUpdate.scrollAndZoomTo(center, 12.0)
 
-            // 생성한 CameraUpdate를 사용하여 지도 이동
             map.moveCamera(cameraUpdate)
         }
     }
 
     override fun onClick(p0: Overlay): Boolean {
         routeButton.isVisible = true
-        viewModel.updateCurrentState(p0)
+
 
         if (p0 is Marker) {
             val companyData = p0.tag.toString().split("/")
+            val location = LatLng(companyData[7].toDouble(), companyData[8].toDouble())
+            val cameraUpdate = CameraUpdate.scrollAndZoomTo(location, 12.0)
+            map.moveCamera(cameraUpdate)
             bottomSheetNameTextView.text = companyData[0]
             bottomSheetNameTextView.setOnClickListener {
-                // 중심점과 확대/축소 레벨을 이용하여 카메라 이동
-                val center = LatLng(companyData[7].toDouble(), companyData[8].toDouble())
-                val cameraUpdate = CameraUpdate.scrollAndZoomTo(center, 12.0)
-                map.moveCamera(cameraUpdate)
+                val clickLocation = LatLng(companyData[7].toDouble(), companyData[8].toDouble())
+                val clickCameraUpdate = CameraUpdate.scrollAndZoomTo(clickLocation, 12.0)
+                map.moveCamera(clickCameraUpdate)
             }
             bottomSheetAddressTextView.text = companyData[1]
             bottomSheetDistanceTextView.text = getString(R.string.Km, companyData[2])
@@ -232,7 +231,8 @@ class MapFragment(
             homeButton.setOnClickListener {
                 viewModel.updateCurrentLanLat(
                     latitude = map.cameraPosition.target.latitude,
-                    longitude = map.cameraPosition.target.longitude
+                    longitude = map.cameraPosition.target.longitude,
+                    tag = p0
                 )
                 Toast.makeText(context, "홈 버튼 클릭", Toast.LENGTH_SHORT).show()
                 val url =
@@ -243,7 +243,8 @@ class MapFragment(
             reservationButton.setOnClickListener {
                 viewModel.updateCurrentLanLat(
                     latitude = map.cameraPosition.target.latitude,
-                    longitude = map.cameraPosition.target.longitude
+                    longitude = map.cameraPosition.target.longitude,
+                    tag = p0
                 )
                 Toast.makeText(context, "예약 버튼 클릭", Toast.LENGTH_SHORT).show()
                 val url = "http://service.landpick.net/reservation?${companyData[9]}"
@@ -253,7 +254,8 @@ class MapFragment(
             callButton.setOnClickListener {
                 viewModel.updateCurrentLanLat(
                     latitude = map.cameraPosition.target.latitude,
-                    longitude = map.cameraPosition.target.longitude
+                    longitude = map.cameraPosition.target.longitude,
+                    tag = p0
                 )
                 Toast.makeText(context, "전화 버튼 클릭", Toast.LENGTH_SHORT).show()
                 val call = companyData[6]
@@ -264,7 +266,8 @@ class MapFragment(
             routeButton.setOnClickListener {
                 viewModel.updateCurrentLanLat(
                     latitude = map.cameraPosition.target.latitude,
-                    longitude = map.cameraPosition.target.longitude
+                    longitude = map.cameraPosition.target.longitude,
+                    tag = p0
                 )
                 //자동차 길찾기
                 val url =

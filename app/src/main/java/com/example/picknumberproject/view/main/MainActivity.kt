@@ -1,27 +1,20 @@
 package com.example.picknumberproject.view.main
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.extension.hideKeyboard
-import com.example.picknumberproject.view.main.map.MapFragment
 import com.example.picknumberproject.view.main.reservationList.ReservationListFragment
 import com.example.picknumberproject.view.main.search.SearchFragment
 import com.example.picknumberproject.view.signup.SignUpActivity
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -58,18 +51,11 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
 
     private fun initSearchView() {
         binding.searchView.isSubmitButtonEnabled = true
-        var num = 0
         binding.searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    num++
-                    if (query != null && num == 1) {
+                    if (query != null) {
                         replaceFragment(SearchFragment(query))
-                        hideKeyboard()
-                    }
-                    if (query != null && num == 2) {
-                        num = 0
-                        replaceFragment(MapFragment(query))
                         hideKeyboard()
                     }
                     return true

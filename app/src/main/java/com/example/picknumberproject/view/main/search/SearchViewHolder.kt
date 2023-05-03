@@ -16,7 +16,7 @@ class SearchViewHolder(
         distanceTextView.text = context.getString(R.string.distanceText, company.distance)
 
         searchItem.setOnClickListener {
-            onClickSearchItem
+            onClickSearchItem(company)
         }
     }
 
