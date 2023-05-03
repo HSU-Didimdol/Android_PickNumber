@@ -17,6 +17,9 @@
     <string name="call">전화</string>
     <string name="company_name">새마을 금고 본점(%s)</string>
     <string name="viewTerms">약관보기</string>
+    <string name="Km">%s Km</string>
+    <string name="HourMin">%s 시간 %s 분</string>
+    <string name="Duration">%s 분</string>
     <string name="distanceText">%s Km</string>
     <string name="ChangingInformation">정보 수정</string>
     <string name="signUp">회원가입</string>

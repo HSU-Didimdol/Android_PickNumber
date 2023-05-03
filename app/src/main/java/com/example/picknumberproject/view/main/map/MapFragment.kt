@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.FragmentMapBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.main.MainActivity
@@ -214,7 +215,7 @@ class MapFragment(
                 map.moveCamera(cameraUpdate)
             }
             bottomSheetAddressTextView.text = companyData[1]
-            bottomSheetDistanceTextView.text = companyData[2] + " km"
+            bottomSheetDistanceTextView.text = getString(R.string.Km, companyData[2])
 
             // 소요시간 '시간 분' 으로 맞추기
             val duration = companyData[3].toInt()
@@ -222,9 +223,10 @@ class MapFragment(
             if (duration >= 60) {
                 val hour = duration / 60
                 val minute = duration % 60
-                bottomSheetDurationTextView.text = "$hour 시간 $minute 분"
+                bottomSheetDurationTextView.text =
+                    getString(R.string.HourMin, hour.toString(), minute.toString())
             } else {
-                bottomSheetDurationTextView.text = "$duration 분"
+                bottomSheetDurationTextView.text = getString(R.string.Duration, duration.toString())
             }
 
             homeButton.setOnClickListener {
