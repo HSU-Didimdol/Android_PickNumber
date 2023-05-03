@@ -1,11 +1,14 @@
 package com.example.picknumberproject.view.main.search
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +21,8 @@ import com.example.picknumberproject.view.extension.RefreshStateContract
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.map.MapUiState
 import com.example.picknumberproject.view.main.map.MapViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -35,6 +40,8 @@ class SearchFragment(
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -42,10 +49,23 @@ class SearchFragment(
             onClickSearchItem = ::onClickSearchItem
         )
 
-        viewModel.bind(
-            query,
-            ""
-        )
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener {
+            viewModel.bind(
+                query,
+                "${it.longitude},${it.latitude}"
+            )
+        }
 
         initRecyclerView(adapter)
 
@@ -73,10 +93,10 @@ class SearchFragment(
     }
 
     private fun updateUi(uiState: MapUiState, adapter: SearchAdapter) {
-        uiState.companyListData.sortedBy {
-            it.distance.toInt()
+        val sortedList = uiState.companyListData.sortedBy {
+            it.distance.toDouble()
         }
-        adapter.submitList(uiState.companyListData)
+        adapter.submitList(sortedList)
         if (uiState.userMessage != null) {
             viewModel.userMessageShown()
             showSnackBar(getString(uiState.userMessage))
