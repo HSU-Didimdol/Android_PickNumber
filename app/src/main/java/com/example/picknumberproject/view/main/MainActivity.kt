@@ -37,12 +37,15 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         return intent.getStringExtra("query")!!
     }
 
+    private var frontQuery: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, true)
+        frontQuery = getQuery()
         setSupportActionBar(toolbar)
         initSearchFragment()
-        initSearchView(getQuery())
+        initSearchView()
 
         infoUpdateButton.setOnClickListener {
             navigateToInfoUpdateView()
@@ -54,14 +57,20 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         }
     }
 
-    private fun initSearchView(queryData: String) {
-        binding.searchView.setQuery(queryData, false)
+    private fun initSearchView() {
+        binding.searchView.setQuery(frontQuery, false)
         binding.searchView.isSubmitButtonEnabled = true
         binding.searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (query != null) {
+                    if (query != null && frontQuery == query) {
+                        val company = emptyList<CompanyEntity>()
+                        replaceMapFragment(company)
                         hideKeyboard()
+                    }
+                    if(query != null && frontQuery != query){
+                        replaceSearchFragment(query)
+                        frontQuery = query
                     }
                     return true
                 }
@@ -89,7 +98,6 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
             .commit()
     }
 
-    // TODO : remove 메소드 사용
     fun replaceSearchFragment(query: String) {
         val fragmentManager = supportFragmentManager
         val searchFragment = SearchFragment(query)
@@ -98,10 +106,9 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         }.commit()
     }
 
-    // TODO : remove 메소드 사용
     fun replaceMapFragment(company: List<CompanyEntity>) {
         val fragmentManager = supportFragmentManager
-        val mapFragment = MapFragment()
+        val mapFragment = MapFragment(company)
         fragmentManager.beginTransaction().apply {
             replace(R.id.container_view, mapFragment)
         }.commit()

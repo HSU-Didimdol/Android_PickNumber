@@ -21,8 +21,8 @@ import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.homepage.HomePageFragment
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
-import com.example.picknumberproject.view.main.search.SearchUiState
-import com.example.picknumberproject.view.main.search.SearchViewModel
+import com.example.picknumberproject.view.main.MainUiState
+import com.example.picknumberproject.view.main.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
@@ -36,7 +36,9 @@ import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.launch
 
-class MapFragment() : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallback,
+class MapFragment(
+    private val company: List<CompanyEntity>
+) : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallback,
     Overlay.OnClickListener {
 
     private lateinit var map: NaverMap
@@ -54,12 +56,14 @@ class MapFragment() : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallb
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
 
-    private val viewModel: SearchViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+        viewModel.mapBind(companyList = company)
 
         routeButton.isVisible = false
     }
@@ -106,7 +110,7 @@ class MapFragment() : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallb
         }
     }
 
-    private fun updateUi(uiState: SearchUiState) {
+    private fun updateUi(uiState: MainUiState) {
         updateMarker(uiState)
         if (uiState.userMessage != null) {
             showSnackBar(getString(uiState.userMessage))
@@ -150,7 +154,7 @@ class MapFragment() : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallb
         mapView.onLowMemory()
     }
 
-    private fun updateMarker(uiState: SearchUiState) {
+    private fun updateMarker(uiState: MainUiState) {
         val companyList = uiState.companyListData
         Log.d("company", companyList.toString())
 

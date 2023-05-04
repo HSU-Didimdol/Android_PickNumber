@@ -1,7 +1,8 @@
-package com.example.picknumberproject.view.main.search
+package com.example.picknumberproject.view.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.picknumberproject.domain.model.CompanyEntity
 import com.example.picknumberproject.domain.repository.CompanyRepository
 import com.naver.maps.map.overlay.Overlay
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,12 +14,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val companyRepository: CompanyRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(SearchUiState())
-    val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(MainUiState())
+    val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
     fun updateCurrentLanLat(latitude: Double, longitude: Double, tag: Overlay?) {
         _uiState.update {
@@ -32,6 +33,16 @@ class SearchViewModel @Inject constructor(
 
     fun notValidCurrentState(): Boolean {
         return uiState.value.currentState == null
+    }
+
+    fun mapBind(companyList: List<CompanyEntity>) {
+        if (companyList.isNotEmpty()) {
+            viewModelScope.launch {
+                _uiState.update {
+                    it.copy(companyListData = companyList)
+                }
+            }
+        }
     }
 
     fun bind(query: String, myLocation: String) {
