@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view.main.reservationList
+package com.example.picknumberproject.view.home.reservationList
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.picknumberproject.databinding.FragmentReservationListBinding
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.extension.RefreshStateContract
-import com.example.picknumberproject.view.main.MainActivity
+import com.example.picknumberproject.view.home.HomeActivity
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.map.util.FusedLocationSource
@@ -41,8 +41,8 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
 
-    private val mainActivity: MainActivity
-        get() = activity as MainActivity
+    private val homeActivity: HomeActivity
+        get() = activity as HomeActivity
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentReservationListBinding
         get() = FragmentReservationListBinding::inflate
@@ -148,7 +148,7 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
     private fun onClickReservationPageButton(uiState: ReservationItemUiState) {
         val reservationPageFragment =
             ReservationPageFragment("http://service.landpick.net/reservation?${uiState.companyID}")
-        mainActivity.replaceFragment(reservationPageFragment)
+        homeActivity.replaceFragment(reservationPageFragment)
     }
 
     private fun onClickDeleteReservationButton(uiState: ReservationItemUiState) {

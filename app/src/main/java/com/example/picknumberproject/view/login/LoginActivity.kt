@@ -12,7 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityLoginBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
-import com.example.picknumberproject.view.main.MainActivity
+import com.example.picknumberproject.view.home.HomeActivity
 import com.example.picknumberproject.view.signup.SignUpActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +50,7 @@ class LoginActivity : ViewBindingActivity<ActivityLoginBinding>() {
     }
 
     private fun navigateMainActivity() {
-        val intent = MainActivity.getIntent(this).apply {
+        val intent = HomeActivity.getIntent(this).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
         }
         startActivity(intent)

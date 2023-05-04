@@ -1,66 +1,61 @@
-package com.example.picknumberproject.view.main
+package com.example.picknumberproject.view.home
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import com.example.picknumberproject.R
-import com.example.picknumberproject.databinding.ActivityMainBinding
-import com.example.picknumberproject.domain.model.CompanyEntity
+import com.example.picknumberproject.databinding.ActivityHomeBinding
 import com.example.picknumberproject.view.common.ViewBindingActivity
 import com.example.picknumberproject.view.extension.hideKeyboard
-import com.example.picknumberproject.view.home.HomeActivity
-import com.example.picknumberproject.view.main.map.MapFragment
-import com.example.picknumberproject.view.main.search.SearchFragment
+import com.example.picknumberproject.view.home.reservationList.ReservationListFragment
+import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
-@AndroidEntryPoint
-class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
 
-    override val bindingInflater: (LayoutInflater) -> ActivityMainBinding
-        get() = ActivityMainBinding::inflate
+@AndroidEntryPoint
+class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
 
     companion object {
-        fun getIntent(context: Context, query: String): Intent {
-            return Intent(context, MainActivity::class.java).apply {
-                putExtra("query", query)
-            }
+        fun getIntent(context: Context): Intent {
+            return Intent(context, HomeActivity::class.java)
         }
     }
 
-    private fun getQuery(): String {
-        return intent.getStringExtra("query")!!
-    }
+    private val viewModel: HomeViewModel by viewModels()
+
+    override val bindingInflater: (LayoutInflater) -> ActivityHomeBinding
+        get() = ActivityHomeBinding::inflate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, true)
         setSupportActionBar(toolbar)
-        initSearchFragment()
-        initSearchView(getQuery())
 
+        initReservationListFragment()
+        initSearchView()
         infoUpdateButton.setOnClickListener {
             navigateToInfoUpdateView()
         }
 
-        binding.homeButton.setOnClickListener {
-            HomeActivity.getIntent(this)
-            finish()
+        homeButton.setOnClickListener {
+            initReservationListFragment()
         }
     }
 
-    private fun initSearchView(queryData: String) {
-        binding.searchView.setQuery(queryData, false)
+    private fun initSearchView() {
         binding.searchView.isSubmitButtonEnabled = true
         binding.searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (query != null) {
+                        navigateSearchActivity(query)
                         hideKeyboard()
                     }
                     return true
@@ -72,11 +67,16 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
             })
     }
 
-    private fun initSearchFragment() {
+    private fun navigateSearchActivity(query: String) {
+        val intent = MainActivity.getIntent(this@HomeActivity, query)
+        startActivity(intent)
+    }
+
+    private fun initReservationListFragment() {
         val fragmentManager = supportFragmentManager
-        val searchFragment = SearchFragment(getQuery())
+        val reservationListFragment = ReservationListFragment()
         fragmentManager.beginTransaction().apply {
-            replace(R.id.container_view, searchFragment)
+            replace(R.id.container_view, reservationListFragment)
         }.commit()
     }
 
@@ -87,24 +87,6 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
             .replace(R.id.container_view, fragment)
             .addToBackStack(null)
             .commit()
-    }
-
-    // TODO : remove 메소드 사용
-    fun replaceSearchFragment(query: String) {
-        val fragmentManager = supportFragmentManager
-        val searchFragment = SearchFragment(query)
-        fragmentManager.beginTransaction().apply {
-            replace(R.id.container_view, searchFragment)
-        }.commit()
-    }
-
-    // TODO : remove 메소드 사용
-    fun replaceMapFragment(company: List<CompanyEntity>) {
-        val fragmentManager = supportFragmentManager
-        val mapFragment = MapFragment()
-        fragmentManager.beginTransaction().apply {
-            replace(R.id.container_view, mapFragment)
-        }.commit()
     }
 
     private fun navigateToInfoUpdateView() {

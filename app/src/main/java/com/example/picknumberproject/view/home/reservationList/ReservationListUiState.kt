@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view.main.reservationList
+package com.example.picknumberproject.view.home.reservationList
 
 import com.example.picknumberproject.domain.model.ReservationEntity
 

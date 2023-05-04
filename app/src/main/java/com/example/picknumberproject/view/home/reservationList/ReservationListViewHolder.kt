@@ -1,4 +1,4 @@
-package com.example.picknumberproject.view.main.reservationList
+package com.example.picknumberproject.view.home.reservationList
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.picknumberproject.databinding.ReservationListItemBinding

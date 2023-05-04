@@ -110,7 +110,7 @@ class SearchFragment(
     }
 
     private fun onClickSearchItem(company: CompanyEntity) {
-        mainActivity.replaceFragment(MapFragment(listOf(company)))
+        mainActivity.replaceFragment(MapFragment())
     }
 
     private fun showSnackBar(message: String) {

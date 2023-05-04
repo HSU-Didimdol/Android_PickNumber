@@ -21,6 +21,8 @@ import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.main.homepage.HomePageFragment
 import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
+import com.example.picknumberproject.view.main.search.SearchUiState
+import com.example.picknumberproject.view.main.search.SearchViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
@@ -34,9 +36,7 @@ import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.launch
 
-class MapFragment(
-    private val companyList: List<CompanyEntity>
-) : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallback,
+class MapFragment() : ViewBindingFragment<FragmentMapBinding>(), OnMapReadyCallback,
     Overlay.OnClickListener {
 
     private lateinit var map: NaverMap
@@ -54,14 +54,12 @@ class MapFragment(
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
 
-    private val viewModel: MapViewModel by activityViewModels()
+    private val viewModel: SearchViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
-
-        viewModel.bind(companyList = companyList)
 
         routeButton.isVisible = false
     }
@@ -108,7 +106,7 @@ class MapFragment(
         }
     }
 
-    private fun updateUi(uiState: MapUiState) {
+    private fun updateUi(uiState: SearchUiState) {
         updateMarker(uiState)
         if (uiState.userMessage != null) {
             showSnackBar(getString(uiState.userMessage))
@@ -152,7 +150,7 @@ class MapFragment(
         mapView.onLowMemory()
     }
 
-    private fun updateMarker(uiState: MapUiState) {
+    private fun updateMarker(uiState: SearchUiState) {
         val companyList = uiState.companyListData
         Log.d("company", companyList.toString())
 
