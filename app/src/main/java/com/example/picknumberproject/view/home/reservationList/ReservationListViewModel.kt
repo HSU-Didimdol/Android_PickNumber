@@ -45,7 +45,7 @@ class ReservationListViewModel @Inject constructor(
                                 companyNumber = companyEntity.tel,
                                 securityCode = companyEntity.securityKey,
                                 longitude = companyEntity.longitude,
-                                latitude = companyEntity.latitude
+                                latitude = companyEntity.latitude,
                             )
                         })
                 }

@@ -27,7 +27,7 @@ data class ReservationItemUiState(
     val companyNumber: String = "",
     val securityCode: String = "",
     val longitude: String = "",
-    val latitude: String = ""
+    val latitude: String = "",
 )
 
 fun ReservationEntity.toUiState(

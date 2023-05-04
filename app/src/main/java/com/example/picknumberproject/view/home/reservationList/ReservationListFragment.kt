@@ -147,7 +147,8 @@ class ReservationListFragment : ViewBindingFragment<FragmentReservationListBindi
 
     private fun onClickReservationPageButton(uiState: ReservationItemUiState) {
         val reservationPageFragment =
-            ReservationPageFragment("http://service.landpick.net/reservation?${uiState.companyID}")
+            ReservationPageFragment("http://service.landpick.net/reservation?securityKey=${uiState.securityCode}")
+        Log.d("http://service.landpick.net/reservation?${uiState.securityCode}", "reservationkey")
         homeActivity.replaceFragment(reservationPageFragment)
     }
 

@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/drawable/searchview_background.xml" value="0.102" />
         <entry key="app/src/main/res/drawable/top_radius_white_background.xml" value="0.1455" />
         <entry key="app/src/main/res/drawable/underline.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.28958333333333336" />
         <entry key="app/src/main/res/layout/activity_info_update.xml" value="0.2767210144927536" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.28191489361702127" />

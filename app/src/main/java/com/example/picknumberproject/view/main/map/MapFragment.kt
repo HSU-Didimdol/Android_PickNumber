@@ -19,10 +19,10 @@ import com.example.picknumberproject.databinding.FragmentMapBinding
 import com.example.picknumberproject.domain.model.CompanyEntity
 import com.example.picknumberproject.view.common.ViewBindingFragment
 import com.example.picknumberproject.view.main.MainActivity
-import com.example.picknumberproject.view.main.homepage.HomePageFragment
-import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
 import com.example.picknumberproject.view.main.MainUiState
 import com.example.picknumberproject.view.main.MainViewModel
+import com.example.picknumberproject.view.main.homepage.HomePageFragment
+import com.example.picknumberproject.view.main.reservationpage.ReservationPageFragment
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
@@ -175,7 +175,7 @@ class MapFragment(
             marker.captionTextSize = 16f
             marker.onClickListener = this
             marker.tag =
-                "새마을 금고 본점(" + company.name + ")" + "/" + company.address + "/" + company.distance + "/" + company.duration + "/" + company.code + "/" + company.divisionCode + "/" + company.tel + "/" + company.latitude + "/" + company.longitude + "/" + company.companyID
+                "새마을 금고 본점(" + company.name + ")" + "/" + company.address + "/" + company.distance + "/" + company.duration + "/" + company.code + "/" + company.divisionCode + "/" + company.tel + "/" + company.latitude + "/" + company.longitude + "/" + company.securityKey
 
             totalLat += marker.position.latitude
             totalLng += marker.position.longitude
