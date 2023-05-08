@@ -98,6 +98,7 @@ class SearchFragment(
 
     private fun initProgressBar(uiState: MainUiState) {
         progress_circular.isVisible = uiState.isLoading
+        recyclerView.isVisible = !uiState.isLoading
     }
 
     private fun updateUi(uiState: MainUiState, adapter: SearchAdapter) {
@@ -118,6 +119,12 @@ class SearchFragment(
 
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+
     }
 
 }
