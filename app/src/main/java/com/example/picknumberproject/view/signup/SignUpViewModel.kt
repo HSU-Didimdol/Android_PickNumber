@@ -19,7 +19,7 @@ class SignUpViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState = _uiState.asStateFlow()
 
-    init{
+    init {
         getCurrentUserInfo()
     }
 
@@ -69,7 +69,13 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             val result = authRepository.getCurrentUserInfo()
             if (result.isSuccess) {
-                _uiState.update { it.copy(currentUser = result.getOrNull()!![0]) }
+                if (result.getOrNull()!!.isNotEmpty()) {
+                    _uiState.update { it.copy(currentUser = result.getOrNull()!![0]) }
+                } else {
+                    _uiState.update {
+                        it.copy(currentUser = null)
+                    }
+                }
             } else {
                 _uiState.update {
                     it.copy(currentUser = null)
