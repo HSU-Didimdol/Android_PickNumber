@@ -1,8 +1,16 @@
 # Android_PickNumber
 
+## 기술
+- Coroutine
+- View Binding
+- ViewModel
+- Hilt
+- Dagger
+- Retrofit2
+- OkHttp3
+
 ## 아키텍처 
 ![아키텍처 수정본](https://user-images.githubusercontent.com/58154638/229753757-1f7cccc5-772e-4560-8e8b-a9b3c97c3b74.jpeg)
-
 
 ## 앱 스크린샷
 |로그인 화면|회원가입 화면|메인 화면|
