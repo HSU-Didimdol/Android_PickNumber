@@ -238,7 +238,7 @@ class MapFragment(
                 )
                 Toast.makeText(context, "홈 버튼 클릭", Toast.LENGTH_SHORT).show()
                 val url =
-                    "https://www.kfcc.co.kr/map/view.do?gmgoCd=" + companyData[4] + "&name=&gmgoNm=&divCd=00" + companyData[5] + "&code1=" + companyData[4] + "&code2=00" + companyData[5] + "&tab=sub_tab_map"
+                    "https://www.kfcc.co.kr/map/view.do?gmgoCd=" + companyData[4] + "&name=&gmgoNm=&divCd=" + companyData[5] + "&code1=" + companyData[4] + "&code2=" + companyData[5] + "&tab=sub_tab_map"
                 navigationToHomePage(url)
             }
 
