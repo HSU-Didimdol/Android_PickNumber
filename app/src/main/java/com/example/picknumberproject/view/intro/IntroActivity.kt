@@ -49,12 +49,7 @@ class IntroActivity : ViewBindingActivity<ActivityIntroBinding>() {
 
     private fun updateUi(uiState: LoginUiState) {
         if (uiState.userMessage != null) {
-            showSnackBar(getString(uiState.userMessage))
             viewModel.userMessageShown()
         }
-    }
-
-    private fun showSnackBar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 }

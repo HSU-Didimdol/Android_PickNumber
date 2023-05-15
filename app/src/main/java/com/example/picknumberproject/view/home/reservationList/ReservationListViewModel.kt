@@ -50,7 +50,7 @@ class ReservationListViewModel @Inject constructor(
                         })
                 }
             } else {
-                _uiState.update { it.copy(userMessage = R.string.failed) }
+                _uiState.update { it.copy(userMessage = R.string.failed_reservationList) }
             }
         }
     }
@@ -121,7 +121,7 @@ class ReservationListViewModel @Inject constructor(
                     userMessage = (if (result.isSuccess) {
                         R.string.reservation_deleted
                     } else {
-                        R.string.failed
+                        R.string.failed_delete_reservation
                     })
                 )
             }

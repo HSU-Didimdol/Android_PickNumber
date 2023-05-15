@@ -39,6 +39,8 @@
     <string name="userName">사용자 이름</string>
     <string name="reservation_deleted">예약 삭제</string>
     <string name="failed">실패!!</string>
+    <string name="failed_delete_reservation">예약 취소가 실패하였습니다.</string>
+    <string name="failed_reservationList">예약목록을 불러오는데 실패하였습니다.</string>
     <string name="inputPhoneNumber">전화번호 입력</string>
     <string name="inputPassword">비밀번호 입력</string>
     <string name="reservation">예약</string>
