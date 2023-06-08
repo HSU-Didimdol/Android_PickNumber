@@ -29,9 +29,6 @@
                 android:name=".view.main.MainActivity"
                 android:exported="false" />
         <activity
-                android:name="com.example.picknumberproject.view.main.search.SearchActivity"
-                android:exported="false" />
-        <activity
                 android:name=".view.intro.IntroActivity"
                 android:exported="true">
             <intent-filter>
