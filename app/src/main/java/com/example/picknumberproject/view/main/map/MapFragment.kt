@@ -249,7 +249,7 @@ class MapFragment(
                     tag = p0
                 )
                 Toast.makeText(context, "예약 버튼 클릭", Toast.LENGTH_SHORT).show()
-                val url = "http://service.landpick.net/reservation?${companyData[9]}"
+                val url = "http://service.landpick.net/reservation?securityKey=${companyData[9]}"
                 navigationToReservation(url)
             }
 
