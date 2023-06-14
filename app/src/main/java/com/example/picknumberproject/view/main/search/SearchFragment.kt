@@ -123,8 +123,6 @@ class SearchFragment(
 
     override fun onDestroyView() {
         super.onDestroyView()
-
-
     }
 
 }
