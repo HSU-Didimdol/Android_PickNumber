@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.domain.model.CompanyEntity
@@ -63,28 +62,27 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     private fun initSearchView() {
         binding.searchView.setQuery(frontQuery, false)
         binding.searchView.isSubmitButtonEnabled = true
-        binding.searchView.setOnQueryTextListener(
-            object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (query != null) {
-                        if (viewModel.uiState.value.searchToMap) {
-                            val company = emptyList<CompanyEntity>()
-                            viewModel.updateMapToSearch()
-                            replaceMapFragment(company)
-                            hideKeyboard()
-                        } else {
-                            replaceSearchFragment(query)
-                            viewModel.updateSearchToMap()
-                            frontQuery = query
-                        }
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    if (viewModel.uiState.value.searchToMap) {
+                        val company = emptyList<CompanyEntity>()
+                        viewModel.updateMapToSearch()
+                        replaceMapFragment(company)
+                        hideKeyboard()
+                    } else {
+                        replaceSearchFragment(query)
+                        viewModel.updateSearchToMap()
+                        frontQuery = query
                     }
-                    return true
                 }
+                return true
+            }
 
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    return false
-                }
-            })
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
     }
 
     private fun initSearchFragment() {
@@ -98,10 +96,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction
-            .replace(R.id.container_view, fragment)
-            .addToBackStack(null)
-            .commit()
+        fragmentTransaction.replace(R.id.container_view, fragment).addToBackStack(null).commit()
     }
 
     fun replaceSearchFragment(query: String) {
