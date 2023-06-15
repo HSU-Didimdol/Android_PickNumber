@@ -31,6 +31,18 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun updateSearchToMap() {
+        _uiState.update {
+            it.copy(searchToMap = true)
+        }
+    }
+
+    fun updateMapToSearch() {
+        _uiState.update {
+            it.copy(searchToMap = false)
+        }
+    }
+
     fun notValidCurrentState(): Boolean {
         return uiState.value.currentState == null
     }

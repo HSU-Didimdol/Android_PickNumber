@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ActivityMainBinding
 import com.example.picknumberproject.domain.model.CompanyEntity
@@ -38,6 +40,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     }
 
     private var frontQuery: String? = null
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,14 +66,17 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         binding.searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (query != null && frontQuery == query) {
-                        val company = emptyList<CompanyEntity>()
-                        replaceMapFragment(company)
-                        hideKeyboard()
-                    }
-                    if(query != null && frontQuery != query){
-                        replaceSearchFragment(query)
-                        frontQuery = query
+                    if (query != null) {
+                        if (viewModel.uiState.value.searchToMap) {
+                            val company = emptyList<CompanyEntity>()
+                            viewModel.updateMapToSearch()
+                            replaceMapFragment(company)
+                            hideKeyboard()
+                        } else {
+                            replaceSearchFragment(query)
+                            viewModel.updateSearchToMap()
+                            frontQuery = query
+                        }
                     }
                     return true
                 }

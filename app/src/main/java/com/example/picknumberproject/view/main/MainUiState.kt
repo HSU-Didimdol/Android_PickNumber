@@ -9,5 +9,6 @@ data class MainUiState(
     val isLoading: Boolean = false,
     val currentState: Overlay? = null,
     val currentCameraLongitude: Double? = null,
-    val currentCameraLatitude: Double? = null
+    val currentCameraLatitude: Double? = null,
+    val searchToMap: Boolean = true
 )
