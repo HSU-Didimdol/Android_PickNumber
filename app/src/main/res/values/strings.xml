@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DiDimDol</string>
+    <string name="app_name">LandPick</string>
     <string name="searchHint">업체명을 입력하시오..</string>
     <string name="fail_to_connect">연결에 실패하였습니다.</string>
     <string name="empty_result">결과가 존재하지 않습니다.</string>

@@ -54,19 +54,16 @@ class SearchFragment(
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
+                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
         }
         fusedLocationClient.lastLocation.addOnSuccessListener {
             viewModel.bind(
-                query,
-                "${it.longitude},${it.latitude}"
+                query, "${it.longitude},${it.latitude}"
             )
         }
 
