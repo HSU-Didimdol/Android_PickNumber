@@ -1,6 +1,7 @@
 package com.example.picknumberproject.view.home.reservationList
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.picknumberproject.R
 import com.example.picknumberproject.databinding.ReservationListItemBinding
 
 class ReservationListViewHolder(
@@ -11,9 +12,10 @@ class ReservationListViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(uiState: ReservationItemUiState) = with(binding) {
-
+        val context = root.context
         companyName.text = uiState.companyName
-        reservationDate.text = uiState.registrationDate
+        reservationDate.text =
+            context.getString(R.string.reservation_date_item, uiState.date, uiState.hour)
         reservationNumber.text = uiState.companyNumber
 
         reservationButton.setOnClickListener {

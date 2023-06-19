@@ -40,7 +40,7 @@
             android:id="@+id/signupInfoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="76dp"
+            android:layout_marginTop="70dp"
             android:text="@string/signUpInfo"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -58,7 +58,7 @@
             android:background="#49000000"
             android:padding="1dp"
             android:stretchColumns="2"
-            app:layout_constraintBottom_toTopOf="@+id/tableLayout2"
+            app:layout_constraintBottom_toTopOf="@+id/password_info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/signupInfoTextView">
@@ -113,17 +113,29 @@
 
     </TableLayout>
 
+    <TextView
+            android:id="@+id/password_info"
+            android:text="@string/password_condition"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
     <TableLayout
             android:id="@+id/tableLayout2"
             android:layout_width="354dp"
             android:layout_height="250dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="5dp"
             android:background="#49000000"
             android:padding="1dp"
             android:stretchColumns="*"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tableLayout">
+            app:layout_constraintTop_toBottomOf="@+id/password_info">
 
         <TableRow
                 android:layout_width="match_parent"

@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:textColor="@color/teal_700"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -56,11 +56,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
+                    android:padding="4dp"
                     tools:text="@string/address"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginBottom="100dp"
-                    android:layout_marginStart="24dp"
-                    app:layout_constraintBottom_toTopOf="@+id/linearLayout" />
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/bottomSheetDistanceTextView" />
 
             <TextView
                     android:id="@+id/bottomSheetDistanceTextView"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginStart="16dp"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toTopOf="@+id/bottomSheetDurationTextView"
                     app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toTopOf="@+id/linearLayout"
