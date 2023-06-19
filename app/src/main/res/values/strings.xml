@@ -13,7 +13,7 @@
     <string name="validCode">인증번호</string>
     <string name="agreeToTheTermsAndConditions">이용약관 동의</string>
     <string name="request">요청</string>
-    <string name="reservation_date_item">%s %s</string>
+    <string name="reservation_date_item">%s %s:%s</string>
     <string name="home">홈</string>
     <string name="call">전화</string>
     <string name="rebase">조회</string>

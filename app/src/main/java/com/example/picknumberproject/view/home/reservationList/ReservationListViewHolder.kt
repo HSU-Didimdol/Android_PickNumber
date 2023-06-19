@@ -15,7 +15,12 @@ class ReservationListViewHolder(
         val context = root.context
         companyName.text = uiState.companyName
         reservationDate.text =
-            context.getString(R.string.reservation_date_item, uiState.date, uiState.hour)
+            context.getString(
+                R.string.reservation_date_item,
+                uiState.date,
+                uiState.hour,
+                uiState.minute
+            )
         reservationNumber.text = uiState.companyNumber
 
         reservationButton.setOnClickListener {
