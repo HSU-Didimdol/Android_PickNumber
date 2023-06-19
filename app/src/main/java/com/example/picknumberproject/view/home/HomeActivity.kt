@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -21,8 +20,6 @@ import com.example.picknumberproject.view.extension.hideKeyboard
 import com.example.picknumberproject.view.home.reservationList.ReservationListFragment
 import com.example.picknumberproject.view.main.MainActivity
 import com.example.picknumberproject.view.signup.SignUpActivity
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
