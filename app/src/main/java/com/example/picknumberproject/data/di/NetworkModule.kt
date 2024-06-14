@@ -1,6 +1,6 @@
 package com.example.picknumberproject.data.di
 
-import com.example.picknumberproject.BuildConfig
+import androidx.viewbinding.BuildConfig
 import com.example.picknumberproject.data.api.CompanyApi
 import com.example.picknumberproject.data.api.Direction5Api
 import com.example.picknumberproject.data.api.MainServerApi
